@@ -1,0 +1,5 @@
+# Sources Folder of Data Directory
+Data/Sources
+
+#google API keys
+googleAPIs.js
