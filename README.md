@@ -79,22 +79,28 @@ This tool allows you to query flight plan route data and plot it to a map.
 	
 ### Known Bugs ###
 
-* Query Input Fields try to query database when backspace is used
-* Some coordinate extraction issues from Full RTE Search
-* Autocomplete suggestion window doesnt scale to input width
 * Character encoding issues (umlauts etc - UTF-8 is not applied everyhwere)
 
 ### Setup ###
+
+* Uses module scripts, so must be served by a webserver. A simple Python http server suffices for localhost testing.
+* Uses the google Maps JavaScript API which is restricted, so you need to provide your own API key in googleAPIs.js
 
 Main Files:
 
 * index.html
 * styles.css
 * script.js
+* queryFunctions.js
+* coordinateConversions.js
+* routeDeconstructor.js
+* googleAPIs.js
 
 Dependencies:
 
 * leaflet.js
+	* Rainviewer from <a href="https://github.com/mwasil/Leaflet.Rainviewer" target="_blank">mwasil</a>
+* google Maps JavaScript API
 
 Additional files:
 Data is delivered by JSON files for: 
@@ -102,11 +108,9 @@ Data is delivered by JSON files for:
 * ICAO Location Indicators (worldwide)
 * ICAO Waypoint/Reporting Point Indicators (Europe/IFPZ)
 * ICAO Navigation Aid Indicators for
-* Place names
 * Airspace shapes
 
-These files must be provided named as referred to in index.html, JSON constants as referred to in the respective Javascript functions.
-Mock files are in the Downloads section.
+These will have to be updated on AIRAC dates. Input data is CSV or in case of EAD data, raw text. You will need to convert the input data into usable Objects. 
 
 ### Data Sources ###
 
@@ -117,7 +121,7 @@ Mock files are in the Downloads section.
 3. ICAO Navigation Aid Indicators
 	* ourairports.com
 4. Place names
-	* opendatasoft.com
+	* google Maps JavaScript API
 5. Base Maps
 	* Google
 		* Google Web Map Service
@@ -125,8 +129,6 @@ Mock files are in the Downloads section.
         * OSM Web Map Service
 6. Points of Interest
 	* Swiss Airports
-		 * BAZL Web Map Tile Service
-	* Swiss Hospital Heliports
 		 * BAZL Web Map Tile Service
 7. Overlays
 	* Swiss VFR ICAO Chart
