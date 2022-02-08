@@ -13,7 +13,6 @@ body{
     left: 0;
     font-family: "Helvetica";
 }
-
 #mapperContainer{
     display: flex;
     height: 100%;
@@ -37,34 +36,11 @@ margin: 0 0 1rem 0;
 .queryButtons{
     width: 30%;
 }
-#mapPlaceDrop, #mapNavaidDrop, #mapRepDrop{
+#mapPlaceDrop, #mapNavaidDrop, #mapRepDrop, #mapPlace, #mapNavaid, #mapRep{
 width: 70%;
 }
-#mapPlace, #mapNavaid, #mapRep {
-width: 100%;
-}
-#navaidDropUL,
-#placeDropUL, #repDropUL{
-list-style: none;
-margin: 0;
-padding: 5px;
-}
-#navaidDropUL li:nth-child(even),
-#placeDropUL li:nth-child(even),
-#repDropUL li:nth-child(even)
-{
 
-background: #DCDCDC;
-}
 
-.navaidDropLI, .placeDropLI, .repDropLI{
-padding: 5px;
-}
-.navaidDropLI:hover,
-.placeDropLI:hover,
-.repDropLI:hover{
-    cursor:pointer;
-}
 #toolHalf{
 width: 25%;
 height: 100%;
