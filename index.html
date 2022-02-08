@@ -1,294 +1,278 @@
+<!DOCTYPE html>
 <head>
- <link rel="stylesheet" href="styles.css">
- <script src="script.js" type="module"></script>
- <script src="queryFunctions.js" type="module" async></script>
- <script src="coordinateConversions.js" type="module" async></script>
- <script src="routeDeconstructor.js" type="module" async></script>
-  <script src="./Data/airports.js" async></script>
-   <script src="./Data/navaids.js" async></script>
-      <script src="./Data/repicao.js" async></script>
-      <script src="./Data/shapeConstants.js" async></script>
-      <script src="./Data/LD_JSON.js" async></script>
-      <script src="./Data/ED_JSON.js" async></script>
-      <script src="./Data/EB_JSON.js" async></script>
-      <script src="./Data/LF_JSON.js" async></script>
-      <script src="./Data/LI_JSON.js" async></script>
-      <script src="./Data/LE_JSON.js" async></script>
-      <script src="./Data/LY_JSON.js" async></script>
-      <script src="./Data/LS_JSON.js" async></script>
-      <script src="./Data/LS_SUB_JSON.js" async></script>
-	  <script src="googleAPIs.js" type="module" async></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" type="module"></script>
+    <script src="queryFunctions.js" type="module" async></script>
+    <script src="coordinateConversions.js" type="module" async></script>
+    <script src="routeDeconstructor.js" type="module" async></script>
+    <script src="./Data/airports.js" async></script>
+    <script src="./Data/navaids.js" async></script>
+    <script src="./Data/repicao.js" async></script>
+    <script src="./Data/shapeConstants.js" async></script>
+    <script src="./Data/LD_JSON.js" async></script>
+    <script src="./Data/ED_JSON.js" async></script>
+    <script src="./Data/EB_JSON.js" async></script>
+    <script src="./Data/LF_JSON.js" async></script>
+    <script src="./Data/LI_JSON.js" async></script>
+    <script src="./Data/LE_JSON.js" async></script>
+    <script src="./Data/LY_JSON.js" async></script>
+    <script src="./Data/LS_JSON.js" async></script>
+    <script src="./Data/LS_SUB_JSON.js" async></script>
+    <script src="googleAPIs.js" type="module" async></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.js"></script>
 
-
-  <meta charset="utf-8">
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.css"/>
-<script src="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.13.0/devicon.min.css">
+    <meta charset="utf-8">
+   
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.13.0/devicon.min.css">
 </head>
-<div id="map"></div>
 <body>
-<div id="mapperContainer">
-<div id="toolHalf">
-<div id="tabContainer">
-    <div id="tabRow"></div>
-    <div id="tabContentContainer">
-      <div id="tabContent">
-        <div id="tabContentInner">
-        <div id="searchOnMap">
-        <div id="mapAllContainer">
-                <textarea class="queryBoxes" id="mapAll" placeholder="-LSZA0700&#10;-N0160VFR W LUINO BRISSAGO&#10;-LSZL0030"></textarea><button class="queryButtons" id="mapAllButton">Search entire Route</button>
-            </div>
-            <div id="mapLociContainer">
-                <textarea class="queryBoxes" id="mapLoci" placeholder="LSZH LSGG KJFK"></textarea><button class="queryButtons" id="mapLociButton">Search Loci</button>
-            </div>
-            <div id="mapPlaceContainer">
-                <div id="mapPlaceDrop"><textarea class="queryBoxes" id="mapPlace" placeholder="Hallau,Reichenbach im Kandertal,Hinwil"></textarea></div><button class="queryButtons" id="mapPlaceButton">Search Place</button>
-            </div>
-            <div id="mapNavaidContainer">
-                <div id="mapNavaidDrop"><textarea class="queryBoxes" id="mapNavaid" placeholder="ZUE TRA KLO"></textarea></div><button class="queryButtons" id="mapNavaidButton">Search Navaid</button>
-            </div>
-            <div id="mapRepContainer">
-                <div id="mapRepDrop"><textarea class="queryBoxes" id="mapRep" placeholder="RINLI RAMOK MILPA"></textarea></div><button class="queryButtons" id="mapRepButton">Search Waypoint</button>
-            </div>
-            <div id="mapCoordsContainer">
-                <textarea class="queryBoxes" id="mapCoords" placeholder="4620N00733E 470126N0080129E"></textarea><button class="queryButtons" id="mapCoordsButton">Search Coordinates</button>
-            </div>
-            <br>
-            <div class="mapToolTitles">Search Loci:</div>
-                <ul>
-                    <li>Worldwide ICAO Location Indicator search</li>
-                    <li>Multiple Location Indicators separated by space</li>
-                    <li>Case insensitive</li>
-                </ul>
-                <code>LSZH</code> or <code>LSZH kjfk fabl</code><br>
-            <br>
-            <div class="mapToolTitles">Search Place:</div>
-                <ul>
-                    <li>Routed via google Maps, so cities, mountains, lakes, etc are queried</li>
-                    <li>Queries separated by comma (,)</li>
-                    <li>Case insensitive</li>
-                    <li>Location bias is Switzerland</li>
-                </ul>
-                <code>Hallau</code> or <code>hallau, Bad Zurzach,HEGNAU</code><br>
-            <br>
-            <div class="mapToolTitles">Search Navaids:</div>
-                <ul>
-                    <li>Worldwide Navaid Indicator search</li>
-                    <li>Multiple Navaids separated by space</li>
-                    <li>Case insensitive.</li>
-                </ul>
-                <code>ZUE</code> or <code>klo zue TRA</code><br>
-            <br>
-            <div class="mapToolTitles">Search Waypoints:</div>
-                <ul>
-                    <li>European (IFPZ) Waypoint (5 letter) search</li>
-                    <li>Multiple Waypoints separated by space</li>
-                    <li>Case insensitive.</li>
-                </ul>
-                <code>RAMKOK</code> or <code>songi Lebso</code><br>
-            <br>
-            <div class="mapToolTitles">Search Coordinates:</div>
-                <ul>
-                    <li>Coordinate search</li>
-                    <li>Single or multiple</li>
-                    <li>Case insensitive</li>
-                    <li>Plotted coordinates will be displayed as decimal coordinates</li>
-                </ul>
-                Format either <code>4701N00745E</code> or <code>470140N0074530E</code>.<br>
-                Mixed format allowed <code>{nnnn}N|S{nnnnn}E|W</code> or <code>{nnnnnn}N|S{nnnnnnn}E|W</code><br>
-                Ignores anything else, so <code>4701N00745E/n0150F090 DCT SPR DCT 471233n0080125e</code> is valid and only the coordinates will be plotted.<br>
-            <br>
-            <div class="mapToolTitles">Search entire Route (experimental):</div>
-                <br>
-                Copy the entire route of a FPL in here including DEP and DEST. An extremely complicated and advanced algorithm will automatically detect LOCIs, Places, Navaids, Waypoints and Coordinates and plot them.<br>
-                <br>
-                <code>-LSZA0700</code><br>
-                <code>-N0160VFR W LUINO BRISSAGO</code><br>
-                <code>-LSZL0030</code>
-            <br>
-            <hr>
-
-        </div>
-        
-        <div id="coordinateConversion">
-            <div class="inputContainer">
-            <div class="mapToolTitles">DEG / MIN / SEC to Decimal DEG </div>
-            <br>
-                <div class="inputMinContainer">
-                    <div class="inputMinContainerInner">
-                        <div class="minutesns">
-                            <input id="nsmindeg" placeholder="46" maxlength="2">
-                            <input id="nsminmin" placeholder="48" maxlength="2">
-                            <input id="nsminsec" placeholder="04" maxlength="2">
-                            <select id="ns">
-                                <option>N</option>
-                                <option>S</option>
-                            </select>
-                        </div>
-                        <div class="minutesew">
-                            <input id="ewmindeg" placeholder="008" maxlength="3">
-                            <input id="ewminmin" placeholder="13" maxlength="2">
-                            <input id="ewminsec" placeholder="36" maxlength="2">
-                            <select id="ew">
-                                <option>E</option>
-                                <option>W</option>
-                            </select>
+    <div id="map"></div>
+    <div id="mapperContainer">
+        <div id="toolHalf">
+            <div id="tabContainer">
+                <div id="tabRow"></div>
+                <div id="tabContentContainer">
+                    <div id="tabContent">
+                        <div id="tabContentInner">
+                            <div id="searchOnMap">
+                                <div id="mapAllContainer">
+                                    <textarea class="queryBoxes" id="mapAll" placeholder="-LSZA0700&#10;-N0160VFR W LUINO BRISSAGO&#10;-LSZL0030"></textarea>
+                                    <button class="queryButtons" id="mapAllButton">Search entire Route</button>
+                                </div>
+                                <div id="mapLociContainer">
+                                    <textarea class="queryBoxes" id="mapLoci" placeholder="LSZH LSGG KJFK"></textarea>
+                                    <button class="queryButtons" id="mapLociButton">Search Loci</button>
+                                </div>
+                                <div id="mapPlaceContainer">
+                                    <textarea class="queryBoxes" id="mapPlace" placeholder="Hallau,Reichenbach im Kandertal,Hinwil"></textarea>
+                                    <button class="queryButtons" id="mapPlaceButton">Search Place</button>
+                                </div>
+                                <div id="mapNavaidContainer">
+                                    <textarea class="queryBoxes" id="mapNavaid" placeholder="ZUE TRA KLO"></textarea>
+                                    <button class="queryButtons" id="mapNavaidButton">Search Navaid</button>
+                                </div>
+                                 <div id="mapRepContainer">
+                                    <textarea class="queryBoxes" id="mapRep" placeholder="RINLI RAMOK MILPA"></textarea>
+                                    <button class="queryButtons" id="mapRepButton">Search Waypoint</button>
+                                </div>
+                                <div id="mapCoordsContainer">
+                                    <textarea class="queryBoxes" id="mapCoords" placeholder="4620N00733E 470126N0080129E"></textarea>
+                                    <button class="queryButtons" id="mapCoordsButton">Search Coordinates</button>
+                                </div>
+                                <br>
+                                <div class="mapToolTitles">Search Loci:</div>
+                                <ul>
+                                    <li>Worldwide ICAO Location Indicator search</li>
+                                    <li>Multiple Location Indicators separated by space</li>
+                                    <li>Case insensitive</li>
+                                </ul>
+                                <code>LSZH</code> or <code>LSZH kjfk fabl</code><br>
+                                <br>
+                                <div class="mapToolTitles">Search Place:</div>
+                                <ul>
+                                    <li>Routed via google Maps, so cities, mountains, lakes, etc are queried</li>
+                                    <li>Queries separated by comma (,)</li>
+                                    <li>Case insensitive</li>
+                                    <li>Location bias is Switzerland</li>
+                                </ul>
+                                <code>Hallau</code> or <code>hallau, Bad Zurzach,HEGNAU</code><br>
+                                <br>
+                                <div class="mapToolTitles">Search Navaids:</div>
+                                <ul>
+                                    <li>Worldwide Navaid Indicator search</li>
+                                    <li>Multiple Navaids separated by space</li>
+                                    <li>Case insensitive.</li>
+                                </ul>
+                                <code>ZUE</code> or <code>klo zue TRA</code><br>
+                                <br>
+                                <div class="mapToolTitles">Search Waypoints:</div>
+                                <ul>
+                                    <li>European (IFPZ) Waypoint (5 letter) search</li>
+                                    <li>Multiple Waypoints separated by space</li>
+                                    <li>Case insensitive.</li>
+                                </ul>
+                                <code>RAMKOK</code> or <code>songi Lebso</code><br>
+                                <br>
+                                <div class="mapToolTitles">Search Coordinates:</div>
+                                <ul>
+                                    <li>Coordinate search</li>
+                                    <li>Single or multiple</li>
+                                    <li>Case insensitive</li>
+                                    <li>Plotted coordinates will be displayed as decimal coordinates</li>
+                                </ul>
+                                Format either <code>4701N00745E</code> or <code>470140N0074530E</code>.<br>
+                                Mixed format allowed <code>{nnnn}N|S{nnnnn}E|W</code> or <code>{nnnnnn}N|S{nnnnnnn}E|W</code><br>
+                                Ignores anything else, so <code>4701N00745E/n0150F090 DCT SPR DCT 471233n0080125e</code> is valid and only the coordinates will be plotted.<br>
+                                <br>
+                                <div class="mapToolTitles">Search entire Route (experimental):</div>
+                                <br>
+                                Copy the entire route of a FPL in here including DEP and DEST. An extremely complicated and advanced algorithm will automatically detect LOCIs, Places, Navaids, Waypoints and Coordinates and plot them.<br>
+                                <br>
+                                <code>-LSZA0700</code><br>
+                                <code>-N0160VFR W LUINO BRISSAGO</code><br>
+                                <code>-LSZL0030</code>
+                                <br>
+                                <hr>
+                            </div>
+                            <div id="coordinateConversion">
+                                <div class="inputContainer">
+                                    <div class="mapToolTitles">DEG / MIN / SEC to Decimal DEG </div>
+                                    <br>
+                                    <div class="inputMinContainer">
+                                        <div class="inputMinContainerInner">
+                                            <div class="minutesns">
+                                                <input id="nsmindeg" placeholder="46" maxlength="2">
+                                                <input id="nsminmin" placeholder="48" maxlength="2">
+                                                <input id="nsminsec" placeholder="04" maxlength="2">
+                                                <select id="ns">
+                                                    <option>N</option>
+                                                    <option>S</option>
+                                                </select>
+                                            </div>
+                                            <div class="minutesew">
+                                                <input id="ewmindeg" placeholder="008" maxlength="3">
+                                                <input id="ewminmin" placeholder="13" maxlength="2">
+                                                <input id="ewminsec" placeholder="36" maxlength="2">
+                                                <select id="ew">
+                                                    <option>E</option>
+                                                    <option>W</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button id="mincalc">Convert</button>
+                                        <div id="result" class="coordresult"></div>
+                                    </div>
+                                    <div class="mapToolTitles">DEG / Decimal MIN / SEC to DEG / MIN / SEC</div>
+                                    <br>
+                                    <div class="inputMinDecContainer">
+                                        <div class="inputMinDecContainerInner">
+                                            <div class="minutesns">
+                                                <input id="nsmindecdeg" placeholder="46" maxlength="2">
+                                                <input id="nsmindecmin" placeholder="48.066667" >
+                                                <select id="ns3">
+                                                    <option>N</option>
+                                                    <option>S</option>
+                                                </select>
+                                            </div>
+                                            <div class="minutesew">
+                                                <input id="ewmindecdeg" placeholder="008" maxlength="3">
+                                                <input id="ewmindecmin" placeholder="13.600000" >
+                                                <select id="ew3">
+                                                    <option>E</option>
+                                                    <option>W</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button id="mindeccalc">Convert</button>
+                                        <div id="result2" class="coordresult"></div>
+                                    </div>
+                                    <div class="mapToolTitles">Decimal DEG to DEG / MIN / SEC</div>
+                                    <br>
+                                    <div class="inputDecContainer">
+                                        <div class="inputDecContainerInner">
+                                            <div class="decimalns">
+                                                <input id="nsdec" placeholder="46.8011">
+                                                <select id="ns2">
+                                                    <option>N</option>
+                                                    <option>S</option>
+                                                </select>
+                                            </div>
+                                            <div class="decimalew">
+                                                <input id="ewdec" placeholder="008.2265">
+                                                <select id="ew2">
+                                                    <option>E</option>
+                                                    <option>W</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button id="deccalc">Convert</button>
+                                        <div id="result1" class="coordresult"></div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div id="baseMaps">
+                                <div id="mapChoiceTileContainer">
+                                    <div id="mapChoiceTileContainerInner"></div>
+                                </div>
+                            </div>
+                            <div id="about">
+                                <div id="mapToolAboutContent">
+                                    <div class="mapToolTitles">Coordinate Precision</div>
+                                    <ul>
+                                        <li>Coordinate conversion based on WGS84 coordinates</li>
+                                        <li>Accurate to 1/10000 of a degree (~11.1m) with slight variations of +/- 4m due to rounding operations</li>
+                                        <li>0 degrees are treated as positive 0.00000001 degrees, which is an accuracy deviation of 1.11mm.</li>
+                                    </ul>
+                                    <div class="mapToolTitles">Base Map Data Source</div>
+                                    <ul>
+                                        <li>Google Maps Tiles generated via Google Web Map Service</li>
+                                        <li>OpenStreetMap Tiles generated via <a href="https://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank">OpenStreetMap Tile Servers</a></li>
+                                        <li>National Geograpic Map Tiles generated via ArcGIS Web Map Service</li>
+                                        <li>NASA/ESRI Map Tiles generated via ArcGIS Web Map Service</li>
+                                    </ul>
+                                    <div class="mapToolTitles">Overlay Data Source</div>
+                                    <ul>
+                                        <li>Swisstopo, VFR Chart, Airfields and Drone Restrictions layers generated via official <a href="https://www.geo.admin.ch/en/geo-services/geo-services/portrayal-services-web-mapping/web-map-tiling-services-wmts.html" target="_blank">Swiss Federal Web Map Services</a></li>
+                                        <li>Airspace layers from <a href="https://www.openaip.net/" target="_blank">openAIP.net</a></li>
+                                        <li>Airspace layer Switzerland from ON-D</li>
+                                        <li>Rainviewer from <a href="https://github.com/mwasil/Leaflet.Rainviewer" target="_blank">mwasil</a></li>
+                                    </ul>
+                                    <div class="mapToolTitles">POI Data Source</div>
+                                    <ul>
+                                        <li>Place names and coordinates via <a href="https://developers.google.com/maps/documentation/javascript/places target="_blank">google Maps JavaScript API</a></li>
+                                        <li>Location indicators and coordinates from <a href="https://ourairports.com/data/" target="_blank">ourairports.com</a></li>
+                                        <li>Navaid indicators and coordinates from <a href="https://ourairports.com/data/" target="_blank">ourairports.com</a></li>
+                                        <li>Waypoints and coordinates from <a href="https://www.ead.eurocontrol.int/cms-eadbasic/opencms/en/login/ead-basic/" target="_blank">EAD Basic</a></li>
+                                    </ul>
+                                    <div class="mapToolTitles">Legal</div>
+                                        &copy; Marcel Weber for AIM Services Switzerland<br>
+                                        Source code on <a href="https://github.com/m00gendai/mapping-tool-v2" target="_blank">github</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button id="mincalc">Convert</button>
-                    <div id="result" class="coordresult"></div>
-                </div>
-                <div class="mapToolTitles">DEG / Decimal MIN / SEC to DEG / MIN / SEC</div>
-                <br>
-                <div class="inputMinDecContainer">
-                    <div class="inputMinDecContainerInner">
-                        <div class="minutesns">
-                            <input id="nsmindecdeg" placeholder="46" maxlength="2">
-                            <input id="nsmindecmin" placeholder="48.066667" >
-                            <select id="ns3">
-                                <option>N</option>
-                                <option>S</option>
-                            </select>
-                        </div>
-                        <div class="minutesew">
-                            <input id="ewmindecdeg" placeholder="008" maxlength="3">
-                            <input id="ewmindecmin" placeholder="13.600000" >
-                            <select id="ew3">
-                                <option>E</option>
-                                <option>W</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button id="mindeccalc">Convert</button>
-                    <div id="result2" class="coordresult"></div>
-                </div>
-                <div class="mapToolTitles">Decimal DEG to DEG / MIN / SEC</div>
-                <br>
-                <div class="inputDecContainer">
-                    <div class="inputDecContainerInner">
-                        <div class="decimalns">
-                            <input id="nsdec" placeholder="46.8011">
-                            <select id="ns2">
-                                <option>N</option>
-                                <option>S</option>
-                            </select>
-                        </div>
-                        <div class="decimalew">
-                            <input id="ewdec" placeholder="008.2265">
-                            <select id="ew2">
-                                <option>E</option>
-                                <option>W</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button id="deccalc">Convert</button>
-                    <div id="result1" class="coordresult"></div>
                 </div>
             </div>
-            	<hr>
         </div>
-        
-        <div id="baseMaps">
-            
-        <div id="mapChoiceTileContainer">
-	<div id="mapChoiceTileContainerInner">
-	</div>
-
-</div>
-
+        <div id="mapHalf">
+            <div id="mapid"></div>
+            <div id="cursorTooltip"></div>
+            <div id="mapOptionsBar">
+                <button class="mapOptions" id="clearMarker" title="Clear Markers"></button>
+                <button class="mapOptions"  id="clearPopups" title="Clear Popups"></button>
+                <button class="mapOptions"  id="clearLine" title="Clear Lines"></button>
+                <button class="mapOptions"  id="toggleTopo" title="Toggle Swiss Topo Layer">swisstopo</button>
+                <button class="mapOptions"  id="toggleVFR" title="Toggle Swiss VFR Chart Layer">VFR Chart</button>
+                <button class="mapOptions"  id="toggleDrone" title="Toggle Swiss Drone Restriction Layer">Drone Areas</button>
+                <button class="mapOptions"  id="toggleFields" title="Toggle Swiss Airfields and Hospital Landing Sites">Airfields</button>
+                <button class="mapOptions"  id="focusSwitzerland" title="Focus Switzerland"></button>
+                <button class="mapOptions"  id="focusEurope" title="Focus Europe"></button>
+                <button class="mapOptions"  id="focusWorld" title="Focus World"></button>
+            </div>
+            <div id="mapDistanceBar">
+                <div id="timeInputContainer">
+                    <div id="timeLabel">Speed:</div>
+                    <div id="timeInput">
+                        <input id="speedInput">
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DEP</th>
+                            <th>DIST</th>
+                            <th>DEST</th>
+                            <th>TOTAL</th>
+                            <th>TIME</th>
+                        </tr>
+                    </thead>
+                    <tbody id="distTable"></tbody>
+                </table>
+            </div>
         </div>
-            
-        <div id="about">
-        <div id="mapToolAboutContent">
-<div class="mapToolTitles">Coordinate Precision</div>
-<ul>
-<li>Coordinate conversion based on WGS84 coordinates</li>
-<li>Accurate to 1/10000 of a degree (~11.1m) with slight variations of +/- 4m due to rounding operations</li>
-<li>0 degrees are treated as positive 0.00000001 degrees, which is an accuracy deviation of 1.11mm.</li>
-</ul>
-<div class="mapToolTitles">Base Map Data Source</div>
-<ul>
-<li>Google Maps Tiles generated via Google Web Map Service</li>
-<li>OpenStreetMap Tiles generated via <a href="https://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank">OpenStreetMap Tile Servers</a></li>
-<li>National Geograpic Map Tiles generated via ArcGIS Web Map Service</li>
-<li>NASA/ESRI Map Tiles generated via ArcGIS Web Map Service</li>
-</ul>
-<div class="mapToolTitles">Overlay Data Source</div>
-<ul>
-<li>Swisstopo, VFR Chart, Airfields and Drone Restrictions layers generated via official <a href="https://www.geo.admin.ch/en/geo-services/geo-services/portrayal-services-web-mapping/web-map-tiling-services-wmts.html" target="_blank">Swiss Federal Web Map Services</a></li>
-<li>Airspace layers from <a href="https://www.openaip.net/" target="_blank">openAIP.net</a></li>
-<li>Airspace layer Switzerland from ON-D</li>
-<li>Rainviewer from <a href="https://github.com/mwasil/Leaflet.Rainviewer" target="_blank">mwasil</a></li>
-</ul>
-<div class="mapToolTitles">POI Data Source</div>
-<ul>
-<li>Place names and coordinates via <a href="https://developers.google.com/maps/documentation/javascript/places target="_blank">google Maps JavaScript API</a></li>
-<li>Location indicators and coordinates from <a href="https://ourairports.com/data/" target="_blank">ourairports.com</a></li>
-<li>Navaid indicators and coordinates from <a href="https://ourairports.com/data/" target="_blank">ourairports.com</a></li>
-<li>Waypoints and coordinates from <a href="https://www.ead.eurocontrol.int/cms-eadbasic/opencms/en/login/ead-basic/" target="_blank">EAD Basic</a></li>
-</ul>
-<div class="mapToolTitles">Legal</div>
-<ul>
-<li>Written from scratch by weberml</li>
-<li>CSV conversion software created by weberml</li>
-</ul>
-<div class="techstack">
-<img title="HTML5 - Hypertext Markup Language" src="https://img.icons8.com/color/48/000000/html-5--v1.png"/>
-<img title="CSS3 - Cascading Style Sheets" src="https://img.icons8.com/color/48/000000/css3.png"/>
-<img title="JS - JavaScript" src="https://img.icons8.com/color/48/000000/javascript--v1.png"/>
-<img title="Pyhton 3.9" src="https://img.icons8.com/color/48/000000/python--v1.png"/>
-</div>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
-
-
-
-
-
-</div>
-<div id="mapHalf">
-<div id="mapid"></div>
-<div id="cursorTooltip"></div>
-<div id="mapOptionsBar">
-<button class="mapOptions" id="clearMarker" title="Clear Markers"></button>
-<button class="mapOptions"  id="clearPopups" title="Clear Popups"></button>
-<button class="mapOptions"  id="clearLine" title="Clear Lines"></button>
-<button class="mapOptions"  id="toggleTopo" title="Toggle Swiss Topo Layer">swisstopo</button>
-<button class="mapOptions"  id="toggleVFR" title="Toggle Swiss VFR Chart Layer">VFR Chart</button>
-<button class="mapOptions"  id="toggleDrone" title="Toggle Swiss Drone Restriction Layer">Drone Areas</button>
-<button class="mapOptions"  id="toggleFields" title="Toggle Swiss Airfields and Hospital Landing Sites">Airfields</button>
-<button class="mapOptions"  id="focusSwitzerland" title="Focus Switzerland"></button>
-<button class="mapOptions"  id="focusEurope" title="Focus Europe"></button>
-<button class="mapOptions"  id="focusWorld" title="Focus World"></button>
-
-</div>
-<div id="mapDistanceBar">
-  <div id="timeInputContainer">
-  <div id="timeLabel">Speed:</div>
-  <div id="timeInput"><input id="speedInput"></div>
-</div>
-  <table>
-    <thead>
-      <tr>
-        <th>DEP</th>
-        <th>DIST</th>
-        <th>DEST</th>
-        <th>TOTAL</th>
-        <th>TIME</th>
-      </tr>
-    </thead>
-    <tbody id="distTable"></tbody>
-    
-  </table>
-</div>
-</div>
-
-</div>
-
 </body>
