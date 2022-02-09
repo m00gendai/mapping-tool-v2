@@ -174,14 +174,16 @@ window.onload = function(){
     
     queryEvents.forEach(queryEvent => {
         document.getElementById("mapAllContainer").addEventListener(queryEvent, function(e) {
-            document.getElementById("mapLoci").value = ""
-            document.getElementById("mapPlace").value = ""
-            document.getElementById("mapNavaid").value = ""
-            document.getElementById("mapRep").value = ""
-            document.getElementById("mapCoords").value = ""
-            clearMarkers()
-            const deconstructedRoute = routeDeconstructor()
-            renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], e)
+            if(e.key == "Enter" || (e.type == "click" && e.target.className == "queryButtons")){
+                document.getElementById("mapLoci").value = ""
+                document.getElementById("mapPlace").value = ""
+                document.getElementById("mapNavaid").value = ""
+                document.getElementById("mapRep").value = ""
+                document.getElementById("mapCoords").value = ""
+                clearMarkers()
+                const deconstructedRoute = routeDeconstructor()
+                renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], e)
+            }
         })
         
         document.getElementById("mapLociContainer").addEventListener(queryEvent, function(e) {
