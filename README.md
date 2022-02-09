@@ -76,6 +76,8 @@ This tool allows you to query flight plan route data and plot it to a map.
 	* Tooltips do not display ICAO 4-letter-code of Airspace, only Airspace name (this is due to data delivery)
 * Navaid search:
 	* If multiple Navaids with the same Ident exist, the tool plots them all as it cannot detect from context which would be the correct one to plot
+* Waypoint search:
+	* There are guards in place for geographical location names with five letters; its checked if a five letter word is included in the Waypoint database. This can lead to conflicts if both an actual location and an actual waypoint are named the same
 	
 ### Known Bugs ###
 
