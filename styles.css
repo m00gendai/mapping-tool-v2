@@ -4,6 +4,7 @@ code{
     padding: 0 0.2rem 0 0.2rem;
     font-size: 0.9rem;
 }
+
 body{
     margin: 0;
     height: 100%;
@@ -13,170 +14,115 @@ body{
     left: 0;
     font-family: "Helvetica";
 }
+
 #mapperContainer{
     display: flex;
     height: 100%;
 }
-#mapNavaidContainer,#mapPlaceContainer, #mapCoordsContainer, #mapLociContainer, #mapRepContainer, #mapAllContainer{
-display: flex;
-width: 100%;
-margin: 0 0 1rem 0;
-}
-#mapPlace, #mapNavaid, #mapRep{
 
+.mapContainers{
+    display: flex;
+    width: 100%;
+    margin: 0 0 1rem 0;
 }
+
 #mapAll{
-	min-height: 10ch;
+    min-height: 10ch;
 }
+
 .queryBoxes{
     width: 70%;
     min-height: 6ch;
     resize: vertical;
 }
+
 .queryButtons{
     width: 30%;
 }
-#mapPlaceDrop, #mapNavaidDrop, #mapRepDrop, #mapPlace, #mapNavaid, #mapRep{
-width: 70%;
-}
-
 
 #toolHalf{
-width: 25%;
-height: 100%;
+    width: 25%;
+    height: 100%;
 
 }
+
 #mapHalf{
-width:75%;
-height: 100%;
-margin: 0;
-position: relative;
+    width:75%;
+    height: 100%;
+    margin: 0;
+    position: relative;
 }
 
 #mapid { 
-	height: 100%; 
+    height: 100%; 
 }
-#mapToolAboutTitle{
-width: 100%;
-background: lightblue;
-display: flex;
-justify-content: center;
-align-items: center;
-padding: 0.2rem;
 
-}
 #mapToolAboutContent{
-
-font-family: "Helvetica";
+    font-family: "Helvetica";
 }
 
-.mapToolTitles{
-text-align: center;
-width: 100%;
-font-weight: bold;
-border-bottom: 1px solid blue;
-border-top: 1px solid blue;
+h4{
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    border-bottom: 1px solid blue;
+    border-top: 1px solid blue;
 }
 
-#nsmindeg,
-#nsminmin,
-#nsminsec,
-#ewmindeg,
-#ewminmin,
-#ewminsec,
-#nsmindecdeg,
-#ewmindecdeg
-
-{
+.coordinatesSinglePairs{
 	width: 5ch;
 	font-size: 1rem;
 	padding: 0.2rem;
 	text-align: center;
 }
-#ewmindecmin,
-#nsmindecmin{
+
+.coordinatesDecimalMin{
 	width: 11ch;
 	font-size: 1rem;
 	padding: 0.2rem;
 	text-align: center;
 }
-#nsdec,
-#ewdec{
+
+.coordinatesDecimalDeg{
 	width: 17ch;
 	font-size: 1rem;
 	padding: 0.2rem;
 	text-align: center;
 }
-#ns,
-#ew,
-#ns2,
-#ew2,
-#ns3,
-#ew3{
-	width: 5ch;
-	font-size: 1rem;
-	padding: 0.2rem;
-	text-align: center;
+
+.inputCoordinateConversionContainer{
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	margin: 0 0 2rem 0;
+    font-family: monospace;
 }
 
-.inputMinContainer{
-	display: flex;
-	flex-wrap: wrap;
-	width: 100%;
-	margin: 0 0 2rem 0;
-    	font-family: monospace;
-}
-.inputMinContainerInner {
-    width: 60%;
-}
-#mincalc,
-#deccalc,
-#mindeccalc{
-width: 40%;
-}
-.inputDecContainer{
-	display: flex;
-	flex-wrap: wrap;
-	width: 100%;
-	margin: 0 0 2rem 0;
-    	font-family: monospace;
-}
-.inputDecContainerInner {
-    width: 60%;
-}
-.inputMinDecContainer{
-	display: flex;
-	flex-wrap: wrap;
-	width: 100%;
-	margin: 0 0 2rem 0;
-    	font-family: monospace;
-}
-.inputMinDecContainerInner {
+.inputCoordinateConversionContainerInner {
     width: 60%;
 }
 
-#result,
-#result1,
-#result2{
+.coordinateConversionButton{
+    width: 40%;
+}
+
+.coordresult{
 	color: white;
 	font-family: monospace;
 	font-size: 1rem;
 	width: 98%;
 	background: green;
     display: flex;
-margin: 1rem 0 0 0;
+    margin: 1rem 0 0 0;
 	align-items: center;
 }
+
 #mapOptionsBar{
-position: absolute;
-bottom: 0;
-
-
-left: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
     transform: translate(-50%, 0);
-width: 90%;
-
-
+    width: 90%;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(1rem, 1fr));
 	grid-column-gap: 1rem;
@@ -184,57 +130,66 @@ width: 90%;
 	margin: 0 0 1rem 0;
     z-index: 2000000000;
 }
+
 #cursorTooltip  {
     display:none;
     position: absolute;
-bottom: 10%;
-background-color: rgba(0,0,0,0.6);
-color: white;
-left: 5%;
-
-
-z-index: 2000000000;
+    bottom: 10%;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    left: 5%;
+    z-index: 2000000000;
 }
 
 .mapOptions{
-padding: 5%;
-background-size: contain;
-background-repeat: no-repeat;
-background-position: center;
-background-origin: content-box;
-background-color: rgba(0,0,0,0.6);
-color: white;
-font-weight: bolder;
-text-shadow: 2px 1px black, -2px -1px black, 2px -1px black, -2px 1px black;
-letter-spacing: 2px;
+    padding: 5%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-origin: content-box;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    font-weight: bolder;
+    text-shadow: 2px 1px black, -2px -1px black, 2px -1px black, -2px 1px black;
+    letter-spacing: 2px;
 }
+
 #clearMarker{
-background-image: url("./Assets/location.png");
+    background-image: url("./Assets/location.png");
 }
+
 #clearPopups{
-background-image: url("./Assets/fired.png");
+    background-image: url("./Assets/fired.png");
 }
+
 #clearLine{
-background-image: url("./Assets/eraser.png");
+    background-image: url("./Assets/eraser.png");
 }
+
 #focusSwitzerland{
-background-image: url("./Assets/switzerland.png");
+    background-image: url("./Assets/switzerland.png");
 }
+
 #focusEurope{
-background-image: url("./Assets/european-union.png");
+    background-image: url("./Assets/european-union.png");
 }
+
 #focusWorld{
-background-image: url("./Assets/globe.png");
+    background-image: url("./Assets/globe.png");
 }
+
 #toggleTopo{
     background-image: url("./Assets/layers.png");
 }
+
 #toggleVFR{
-        background-image: url("./Assets/layers.png");
+    background-image: url("./Assets/layers.png");
 }
+
 #toggleDrone{
-        background-image: url("./Assets/layers.png");
+    background-image: url("./Assets/layers.png");
 }
+
 #toggleFields{
     background-image: url("./Assets/layers.png");
 }
@@ -261,18 +216,22 @@ background-image: url("./Assets/globe.png");
 	border-collapse: collapse;
 	table-layout: fixed; 
 }
+
 #timeInputContainer {
 	display: flex;
 }
+
 #mapDistanceBar table td{
 	text-align: center;
 }
+
 #tabContainer {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	background: green;
 }
+
 #tabRow{
 	position: relative;
 	width: 100%;
@@ -280,49 +239,48 @@ background-image: url("./Assets/globe.png");
 	background: white;
 	display: flex;
 	align-items: center;
-
 }
+
 #tabContentContainer{
 	width: 100%;
     height: 95%;
 	position: relative;
-background:linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
+    background:linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
 	display: flex;
 	justify-content: center;
 	align-items: center;
-box-shadow: inset 0px 0px 5px 0px silver;
-
+    box-shadow: inset 0px 0px 5px 0px silver;
 }
+
 #tabContent{
-direction: rtl;
+    direction: rtl;
 	position: relative;
 	width: 100%;
 	height: 95%;
-background:linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
-overflow-y:scroll;
-display: flex;
-justify-content: center;
+    background:linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
+    overflow-y:scroll;
+    display: flex;
+    justify-content: center;
 	align-items: center;
 }
-#tabContentInner{
-direction: ltr;
-width: 95%;
-height: 100%;
-}
-.tabTitle {
 
+#tabContentInner{
+    direction: ltr;
+    width: 95%;
+    height: 100%;
+}
+
+.tabTitle {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-height: 100%;
-/*border-left: 1px solid black;*/
-/*border-top: 1px solid black;*/
-/*border-right: 1px solid black;*/
+    height: 100%;
 	width: auto;
 	z-index: 10;
 	padding: 0 0.5rem 0 0.5rem;
     font-family: "helvetica";
 }
+
 .tabTitle:hover{
     cursor: pointer;
 }
@@ -330,12 +288,12 @@ height: 100%;
 #mapChoiceTileContainer{
 	width: 100%;
 	height: 50em;
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	
 }
+
 #mapChoiceTileContainerInner{
 	width: 95%;
 	height: 95%;
@@ -344,18 +302,8 @@ height: 100%;
 	grid-auto-rows: 20%;
 	grid-gap: 1rem;
 }
+
 .mapTileDiv:hover{
     outline: 5px solid blue;
     cursor: pointer;
-
-}
-
-.techstack{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
-    grid-gap: 1rem;
-    width: 100%;
-}
-.techstack img{
-    margin: auto;
 }
