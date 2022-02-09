@@ -329,7 +329,7 @@ height: 100%;
 
 #mapChoiceTileContainer{
 	width: 100%;
-	height: 100%;
+	height: 50em;
 
 	display: flex;
 	align-items: center;
@@ -359,6 +359,3 @@ height: 100%;
 .techstack img{
     margin: auto;
 }
-
-
-
