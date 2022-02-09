@@ -23,7 +23,7 @@ let rte = document.getElementById("mapAll").value.toUpperCase()
 console.log("Input string: " + rte)
 //spliceRte(rte) NO Idea why this is even here
 let foundNavaids = checkNavaids(rte, mappedNavaids)
-let foundWaypoints = checkWaypoints(rte)
+let foundWaypoints = checkWaypoints(rte, mappedWaypoints)
 let foundLocis = checkLocis(rte, mappedAirports)
 let foundOther = checkOther(rte, foundNavaids, foundWaypoints, foundLocis, mappedWaypoints)
 let foundCoordinates = checkCoordinates(rte)
@@ -72,19 +72,25 @@ for(let i=0;i<lociMatch.length;i++){
 }
 
 
-function checkWaypoints(rte){
+function checkWaypoints(rte, mappedWaypoints){
+    let waypointArray = []
+    mappedWaypoints.forEach(waypoint => {
+        waypointArray.push(waypoint[0])
+    })
+    console.log(waypointArray)
 let waypointMatch = rte.match(/\b([A-Z]){5}\b/g)
 console.log("Waypoint Matches : " + waypointMatch)
 let waypoints = []
 if(waypointMatch){
+    for (let i = 0; i < waypointMatch.length; i++) {
+        if(waypointArray.includes(waypointMatch[i])){
+            waypoints.push(waypointMatch[i])
+        }
+    }
 
-for (let i = 0; i < waypointMatch.length; i++) {
 
-  waypoints.push(waypointMatch[i])
 }
 console.log("5 letter words: " + waypoints)
-
-}
 return waypoints
 }
 
