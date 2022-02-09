@@ -8,6 +8,9 @@ window.onload = function(){
     googleMapsAPIScript.setAttribute("async", "")
     googleMapsAPIScript.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}&libraries=places&`
     document.getElementsByTagName("head")[0].appendChild(googleMapsAPIScript)
+    const currentDate = new Date()
+    const currentYear = currentDate.getFullYear()
+    document.getElementById("currentYear").innerText = currentYear
     
 // R E N D E R   T O O L B O X E S / T A B S
     
@@ -170,6 +173,17 @@ window.onload = function(){
     const queryEvents = ["click", "keypress"]
     
     queryEvents.forEach(queryEvent => {
+        document.getElementById("mapAllContainer").addEventListener(queryEvent, function(e) {
+            document.getElementById("mapLoci").value = ""
+            document.getElementById("mapPlace").value = ""
+            document.getElementById("mapNavaid").value = ""
+            document.getElementById("mapRep").value = ""
+            document.getElementById("mapCoords").value = ""
+            clearMarkers()
+            const deconstructedRoute = routeDeconstructor()
+            renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], e)
+        })
+        
         document.getElementById("mapLociContainer").addEventListener(queryEvent, function(e) {
             renderLoci(e)
         })
@@ -724,17 +738,6 @@ window.onload = function(){
     }
 
     mapStylesContent()
-
-    document.getElementById("mapAllButton").addEventListener("click", function(e){
-        document.getElementById("mapLoci").value = ""
-        document.getElementById("mapPlace").value = ""
-        document.getElementById("mapNavaid").value = ""
-        document.getElementById("mapRep").value = ""
-        document.getElementById("mapCoords").value = ""
-        clearMarkers()
-        const deconstructedRoute = routeDeconstructor()
-        renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], e)
-    })
 
     function renderRoute(navaids, locis, waypoints, otherWords, coordAll, e){
         // console.log(navaids, locis, waypoints, otherWords, coordAll, e)
