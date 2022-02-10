@@ -303,7 +303,26 @@ h4{
 	grid-gap: 1rem;
 }
 
+.mapTileDiv{
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    box-shadow: 2px 2px 2px 0px silver, -2px -2px 2px 0px silver;
+    position: relative;
+}
+
 .mapTileDiv:hover{
     outline: 5px solid blue;
     cursor: pointer;
+}
+
+.mapTileDivInner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    color: white;
+    background: rgba(0,0,0,0.6);
+    padding: 0.5rem;
 }
