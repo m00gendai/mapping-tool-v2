@@ -77,7 +77,7 @@ This tool allows you to query flight plan route data and plot it to a map.
 * Navaid search:
 	* If multiple Navaids with the same Ident exist, the tool plots them all as it cannot detect from context which would be the correct one to plot
 * Waypoint search:
-	* There are guards in place for geographical location names with five letters; its checked if a five letter word is included in the Waypoint database. This can lead to conflicts if both an actual location and an actual waypoint are named the same
+	* There are guards in place for geographical location names with five letters. A five letter word is checked against the waypoint database and a database of known location/waypoint name hybrids. In case of a location/waypoint hybrid (example: EVIAN - Waypoint in Japan and village in France), precedence is given to the waypoint, with an alert notifying a possible location with the same name (i.e., the waypoint EVIAN in Japan gets plotted, and an alert notifies you about a location with the same name)
 	
 ### Known Bugs ###
 
