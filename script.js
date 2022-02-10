@@ -1,7 +1,7 @@
 import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace } from "/queryFunctions.js"
 import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
-import { MAPS_API_KEY } from "/googleAPIs.js"
+import { MAPS_API_KEY, MAPTILER_API_KEY } from "/googleAPIs.js"
 
 window.onload = function(){
     const googleMapsAPIScript = document.createElement("script")
@@ -252,19 +252,23 @@ window.onload = function(){
     // Leaflet map instance
     const map = L.map('mapid').setView([46.80, 8.22], 8) // midpoint switzerland
     // Map Tile Layers
-    const googleHybrid = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
-    const googleMap = 'http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
-    const openStandard = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png' 
-    const openTopo = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
+    const googleHybrid = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' // not used but kept for reference
+    const googleMap = 'http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}' // not used but kept for reference
+    const openStandard = `https://api.maptiler.com/maps/osm-standard/{z}/{x}/{y}@2x.jpg?key=${MAPTILER_API_KEY}` // direct OSM Tile Server link for reference https://tile.openstreetmap.org/{z}/{x}/{y}.png
+    const openTopo = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png' // not used but kept for reference
     const natGeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}'
     const nasaEsri = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.jpg'
+    const maptilerBright = `https://api.maptiler.com/maps/bright/{z}/{x}/{y}@2x.png?key=${MAPTILER_API_KEY}`
+    const maptilerHybrid = `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}`
+    const maptilerSwisstopoVivid = `https://api.maptiler.com/maps/ch-swisstopo-lbm-vivid/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`
     // Overlay Tile Layers
-    const swisstopo = 'https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg'
+    const swisstopo = "https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg" // not used but kept for reference
     const vfrChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.vbs.milairspacechart/default/current/3857/{z}/{x}/{y}.png'
     const droneChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.einschraenkungen-drohnen/default/current/3857/{z}/{x}/{y}.png'
     const airfieldChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.flugplaetze-heliports/default/current/3857/{z}/{x}/{y}.png'
     const mountainfieldChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.gebirgslandeplaetze/default/current/3857/{z}/{x}/{y}.png'
     const hospChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.spitallandeplaetze/default/current/3857/{z}/{x}/{y}.png'
+    const hillshades = `https://api.maptiler.com/tiles/hillshade/{z}/{x}/{y}.webp?key=${MAPTILER_API_KEY}`
     // Variable initialisers
     
     let layerControl
@@ -275,7 +279,6 @@ window.onload = function(){
     let topoToggle = 0
     let vfrToggle = 0
     let droneToggle = 0
-    let fieldsToggle = 0
     let overlayArray = []
     
 // L A Y E R   R E N D E R E R S
@@ -314,10 +317,10 @@ window.onload = function(){
 
     document.getElementById("toggleTopo").addEventListener("click", function(){
         if(topoToggle == 0){
-            createOverlay(map, swisstopo, null)
+            createOverlay(map, hillshades, null)
             topoToggle = 1
         } else if (topoToggle == 1){
-            removeOverlays(swisstopo)
+            removeOverlays(hillshades)
             topoToggle = 0
         }
     })
@@ -341,18 +344,10 @@ window.onload = function(){
             droneToggle = 0
         }
     })
+    
+    
 
-    document.getElementById("toggleFields").addEventListener("click", function(){
-        if(fieldsToggle == 0){
-            createOverlay(map, airfieldChart, null)
-            fieldsToggle = 1
-        } else if (fieldsToggle == 1){
-            removeOverlays(airfieldChart)
-            fieldsToggle = 0
-        }
-    })
-
-    createLayer(map, googleMap, null)
+    createLayer(map, maptilerBright, null)
 
     const LD_FIR = L.geoJSON(Croatia, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
@@ -651,20 +646,20 @@ window.onload = function(){
     function mapStylesContent(){
         const mapTileChoices = [
             {
-            title: "Google Maps Standard",
-            image: "./Assets/gmapsstd.jpg"
+            title: "Basic",
+            image: "./Assets/maptilerBasic.jpg"
             },
             {
-            title: "Google Maps Hybrid",
-            image: "./Assets/gmapshbd.jpg"
+            title: "Satellite",
+            image: "./Assets/maptilerSatellite.jpg"
             },
             {
-            title: "Open Street Maps Standard",
-            image: "./Assets/osmstd.jpg"
+            title: "Open Street Maps",
+            image: "./Assets/maptilerOSM.jpg"
             },
             {
-            title: "Open Street Maps Topographical",
-            image: "./Assets/osmtop.jpg"
+            title: "swisstopo",
+            image: "./Assets/maptilerSwisstopo.jpg"
             },
             {
             title: "National Geographic",
@@ -678,63 +673,36 @@ window.onload = function(){
         for(let i=0;i<Object.keys(mapTileChoices).length;i++){
             let mapTileDiv = document.createElement("div")
             document.getElementById("mapChoiceTileContainerInner").appendChild(mapTileDiv)
-            let id = "mapTileDiv" + i
-            mapTileDiv.id = id
+            mapTileDiv.id = `mapTileDiv${i}`
             mapTileDiv.className = "mapTileDiv"
-            mapTileDiv.style.height = "100%"
-            mapTileDiv.style.backgroundImage = "url('" + mapTileChoices[i].image + "')"
-            mapTileDiv.style.backgroundPosition ="center"
-            mapTileDiv.style.backgroundSize = "cover"
-            mapTileDiv.style.boxShadow ="2px 2px 2px 0px silver, -2px -2px 2px 0px silver"
-            mapTileDiv.style.position = "relative"
+            mapTileDiv.style.backgroundImage = `url("${mapTileChoices[i].image}")`
             let mapTileDivInner = document.createElement("div")
-            let innerId = "mapTileDivInner" + i
-            mapTileDivInner.id = innerId
+            mapTileDivInner.id =  `mapTileDivInner${i}`
             mapTileDivInner.className = "mapTileDivInner"
             document.getElementById(mapTileDiv.id).appendChild(mapTileDivInner)
             mapTileDivInner.innerText = mapTileChoices[i].title
-            mapTileDivInner.style.position = "absolute"
-            mapTileDivInner.style.top = "50%"
-            mapTileDivInner.style.left = "50%"
-            mapTileDivInner.style.transform = "translate(-50%,-50%)"
-            mapTileDivInner.style.textAlign = "center"
-            mapTileDivInner.style.color ="white"
-            mapTileDivInner.style.background ="rgba(0,0,0,0.6)"
-            mapTileDivInner.style.padding = "0.5rem"
             document.getElementById(mapTileDiv.id).addEventListener("click", function(){
                 switch(mapTileChoices[i].title) {
-                    case "Google Maps Hybrid":
-                        map.removeControl(layerControl)
-                        map.removeControl(rainViewer)
-                        createLayer(map, googleHybrid)
+                    case "Satellite":
+                        createLayer(map, maptilerHybrid)
                         break;
-                    case "Google Maps Standard":
-                        map.removeControl(layerControl)
-                        map.removeControl(rainViewer)
-                        createLayer(map, googleMap)
+                    case "Basic":
+                        createLayer(map, maptilerBright)
                         break;
-                    case "Open Street Maps Standard":
-                        map.removeControl(layerControl)
-                        map.removeControl(rainViewer)
+                    case "Open Street Maps":
                         createLayer(map, openStandard)
                         break;
-                    case "Open Street Maps Topographical":
-                        map.removeControl(layerControl)
-                        map.removeControl(rainViewer)
-                        createLayer(map, openTopo)
+                    case "swisstopo":
+                        createLayer(map, maptilerSwisstopoVivid)
                         break;
                     case "National Geographic":
-                        map.removeControl(layerControl)
-                        map.removeControl(rainViewer)
                         createLayer(map, natGeo)
                         break;
                     case "NASA / ESRI":
-                        map.removeControl(layerControl)
-                        map.removeControl(rainViewer)
                         createLayer(map, nasaEsri)
                         break;
                     default:
-                        createLayer(map, googleMap)
+                        createLayer(map, maptilerBright)
                 }
             })
         }
