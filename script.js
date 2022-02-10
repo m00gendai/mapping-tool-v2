@@ -362,7 +362,7 @@ window.onload = function(){
     })
     /*const LD_CTR = L.geoJSON(Croatia, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
-    })*/
+    })
     const ED_FIR = L.geoJSON(Germany, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
@@ -381,10 +381,10 @@ window.onload = function(){
     const EB_CTR = L.geoJSON(Belgium, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
-    const LF_FIR = L.geoJSON(France, featureFIR).bindTooltip(function (layer) {
+    /* const LF_FIR = L.geoJSON(France, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
-    /*const LF_TMA = L.geoJSON(France, featureTMA).bindTooltip(function (layer) {
+    const LF_TMA = L.geoJSON(France, featureTMA).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
     const LF_CTR = L.geoJSON(France, featureCTR).bindTooltip(function (layer) {
@@ -398,7 +398,7 @@ window.onload = function(){
     })
     const LI_CTR = L.geoJSON(Italy, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
-    })*/
+    })
     const LE_FIR = L.geoJSON(Spain, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
@@ -430,19 +430,19 @@ window.onload = function(){
         // "LD FIR Croatia": LD_FIR,
         "LD TMA Croatia": LD_TMA, 
         // "LD CTR Croatia": LD_CTR,
-        "ED FIR Germany": ED_FIR,
+        //"ED FIR Germany": ED_FIR,
         // "ED TMA Germany": ED_TMA, 
         // "ED CTR Germany": ED_CTR,
         "EB FIR Belgium": EB_FIR,
         "EB TMA Belgium": EB_TMA, 
         "EB CTR Belgium": EB_CTR,
-        "LF FIR France": LF_FIR,
+        //"LF FIR France": LF_FIR,
         // "LF TMA France": LF_TMA, 
         // "LF CTR France": LF_CTR,
         "LI FIR Italy": LI_FIR,
         // "LI TMA Italy": LI_TMA, 
         // "LI CTR Italy": LI_CTR,
-        "LE FIR Spain": LE_FIR,
+        //"LE FIR Spain": LE_FIR,
         // "LE TMA Spain": LE_TMA, 
         // "LE CTR Spain": LE_CTR,
         "LY FIR Serbia": LY_FIR,
@@ -452,7 +452,8 @@ window.onload = function(){
 
     layerControl = L.control.layers(null, overlays)
     layerControl.addTo(map);
-
+    LS_SUBFIR.addTo(map)
+    
     rainViewer = L.control.rainviewer({ 
         position: 'bottomleft',
         nextButtonText: '>',
