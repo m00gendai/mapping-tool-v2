@@ -90,16 +90,19 @@ import { convertRepCoordinates, calcDegToDec } from "/coordinateConversions.js"
         const newNavaids = navaids.map(data => {return [data.ident, data.name, data.type, data.frequency_khz,   data.longitude_deg, data.latitude_deg, data.iso_country]})
         const newNavaidCodes = newNavaids.map(code => {return code[0]})
         if (!navaidField.includes(" ")) {
+            let sameIdent = []
             if(!newNavaidCodes.includes(navaidField.toUpperCase())){
                 alert(`Navaid ${navaidField.toUpperCase()} not found`)
                 return
             }
             for(const navaid of newNavaids){
                 if(navaidField.toUpperCase() == navaid[0]){
-                    return [navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`]
+                    sameIdent.push([navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`])
+                    //return [navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`]
                     //addMarker(navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`)
                 }
             }
+            return sameIdent
         } else {
             let multiNavs = []
             const multiAids = navaidField.toUpperCase().split(" ")
