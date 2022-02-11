@@ -83,6 +83,38 @@ window.onload = function(){
         })
     })
     
+    
+    const airportIcon = L.icon({
+        iconUrl: './Assets/marker_airport.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    });
+    const locationIcon = L.icon({
+        iconUrl: './Assets/marker_location.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    });
+    const navaidIcon = L.icon({
+        iconUrl: './Assets/marker_navaid.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    });
+    const waypointIcon = L.icon({
+        iconUrl: './Assets/marker_waypoint.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    });
+    const coordinateIcon = L.icon({
+        iconUrl: './Assets/marker_coordinate.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    });
+    
 // S E A R C H   O N   M A P   E V E N T   F U N C T I O N S
     
     function renderLoci(e){
@@ -93,10 +125,10 @@ window.onload = function(){
                 return
             }
             if(!Array.isArray(returnedLocis[0])){ // Multiple Locis are returned as a multidimensional Array so this simply checks if the first Item of the returned array is also an array and if not, its a single Loci
-                addMarker(returnedLocis[0], returnedLocis[1], returnedLocis[2])
+                addMarker(returnedLocis[0], returnedLocis[1], returnedLocis[2], "LOCI")
             } else {
                 returnedLocis.forEach(returnedLoci => {
-                    addMarker(returnedLoci[0], returnedLoci[1], returnedLoci[2])
+                    addMarker(returnedLoci[0], returnedLoci[1], returnedLoci[2], "LOCI")
                 })
             }
         }
@@ -111,10 +143,10 @@ window.onload = function(){
                     return
                 }
                 if(!Array.isArray(returnedPlaces[0])){ 
-                    addMarker(returnedPlaces[0], returnedPlaces[1], returnedPlaces[2])
+                    addMarker(returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location")
                 } else {
                     returnedPlaces.forEach(returnedPlace => {
-                        addMarker(returnedPlace[0], returnedPlace[1], returnedPlace[2])
+                        addMarker(returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location")
                     })
                 }
             },1000)
@@ -129,10 +161,10 @@ window.onload = function(){
                 return
             }
             if(!Array.isArray(returnedNavaids[0])){ 
-                addMarker(returnedNavaids[0], returnedNavaids[1], returnedNavaids[2])
+                addMarker(returnedNavaids[0], returnedNavaids[1], returnedNavaids[2], "NAVAID")
             } else {
                 returnedNavaids.forEach(returnedNavaid => {
-                    addMarker(returnedNavaid[0], returnedNavaid[1], returnedNavaid[2])
+                    addMarker(returnedNavaid[0], returnedNavaid[1], returnedNavaid[2], "NAVAID")
                 })
             }
         }
@@ -146,10 +178,10 @@ window.onload = function(){
                 return
             }
             if(!Array.isArray(returnedReps[0])){ 
-                addMarker(returnedReps[0], returnedReps[1], returnedReps[2])
+                addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "WAYPOINT")
             } else {
                 returnedReps.forEach(returnedRep => {
-                    addMarker(returnedRep[0], returnedRep[1], returnedRep[2])
+                    addMarker(returnedRep[0], returnedRep[1], returnedRep[2], "WAYPOINT")
                 })
             }
         }
@@ -163,7 +195,7 @@ window.onload = function(){
                 return
             }
             returnedCoords.forEach(returnedCoord => {
-                addMarker(returnedCoord[0], returnedCoord[1], returnedCoord[2])
+                addMarker(returnedCoord[0], returnedCoord[1], returnedCoord[2], "COORDINATE")
             })
         }
     }
@@ -476,7 +508,8 @@ window.onload = function(){
     let markerDistanceArray = []
     let corners = []
     let total = 0
-    function addMarker(ns, ew, title) { // adds a marker to the map based on the coordinates passed in from the airport query or the calculation results
+    
+    function addMarker(ns, ew, title, type) { // adds a marker to the map based on the coordinates passed in from the airport query or the calculation results
         let content
         if(title == undefined){
             content = "Lat: " + ns + " Long: " + ew
@@ -484,7 +517,22 @@ window.onload = function(){
             content = title
 		}
         const new_popup = L.popup({"autoClose": false});
-        const marker = new L.marker([ns, ew]) // create a new marker
+        let marker = new L.marker([ns, ew]) // create a new marker
+        if(type == "LOCI"){
+            marker = new L.marker([ns, ew], {icon: airportIcon}) // create a new marker
+        } 
+        else if(type =="Location"){
+            marker = new L.marker([ns, ew], {icon: locationIcon}) // create a new marker
+        } 
+        else if(type =="NAVAID"){
+            marker = new L.marker([ns, ew], {icon: navaidIcon}) // create a new marker
+        } 
+        else if(type =="WAYPOINT"){
+            marker = new L.marker([ns, ew], {icon: waypointIcon}) // create a new marker
+        } 
+        else if(type =="COORDINATE"){
+            marker = new L.marker([ns, ew], {icon: coordinateIcon}) // create a new marker
+        } 
         marker.addTo(map) // add it to the map
         marker.bindPopup(new_popup).openPopup();
         marker._popup.setContent(content)
