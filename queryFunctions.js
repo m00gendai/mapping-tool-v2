@@ -1,4 +1,6 @@
 import { convertRepCoordinates, calcDegToDec } from "/coordinateConversions.js"
+import { LatLon } from 'https://cdn.jsdelivr.net/npm/geodesy@2/utm.js'
+
 
 // Q U E R Y   A I R P O R T   L O C I S
 
@@ -215,3 +217,42 @@ import { convertRepCoordinates, calcDegToDec } from "/coordinateConversions.js"
         return returnCoordinates
     }
 
+    // Q U E R Y   B E A R I N G   D I S T A N C E   F R O M   P O I N T
+    
+    export function placeBrgDist(){ //TODO: Find a way to convert 360° azimuth to 180/-180 bearing
+        const BrgDistValue = document.getElementById("mapBrgDist").value
+        if(BrgDistValue == ""){
+            return
+        }
+        const mappedNavaidsLatLng = navaids.map(navaid => {return [navaid.ident, navaid.latitude_deg, navaid.longitude_deg]})
+        const brgDistArray = BrgDistValue.split(/\s+/g) // s+ is one or more whitespace characters
+        let newMarkerArray = []
+        brgDistArray.forEach(brgDist => {
+            if(brgDist.match(/\b([a-zA-Z]){3}[0-9]{3}[0-9]{3}\b/g)){ 
+                const navaid = brgDist.substring(0,3).toUpperCase()
+                const bearing = parseInt(brgDist.substring(3,6))-180
+                const distanceNM = parseInt(brgDist.substring(6,9))
+                const distanceKM = (distanceNM*1.852)/1000
+                const sin = Math.sin(turf.degreesToRadians(bearing))
+                const cos = Math.cos(turf.degreesToRadians(bearing))
+                console.log(sin)
+                const departure = distanceKM*sin
+                const latitude = distanceKM*cos
+                console.log(departure, latitude)
+                for(const mappedNavaid of mappedNavaidsLatLng){
+                    if(mappedNavaid[0] == navaid){
+                        const point = turf.point([parseFloat(mappedNavaid[1]), parseFloat(mappedNavaid[2])]);
+                        const latLongP = new LatLon(mappedNavaid[1], mappedNavaid[2]);
+                        const utmCoord = latLongP.toUtm();
+                        console.log(utmCoord.toString()); 
+                        const options = {units: 'kilometers'};
+                        const destination = turf.destination(point, distanceKM, -135, options);
+                        const newMarkerLat = destination.geometry.coordinates[0]
+                        const newMarkerLng = destination.geometry.coordinates[1]
+                        newMarkerArray.push([`${navaid}${bearing}${distanceNM}`, newMarkerLat, newMarkerLng])
+                    }
+                }
+            }
+        })
+        console.log(newMarkerArray)
+    }
