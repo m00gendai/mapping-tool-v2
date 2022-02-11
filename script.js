@@ -208,7 +208,7 @@ window.onload = function(){
                 return
             }
             returnedBrgDists.forEach(returnedBrgDist => {
-                addMarker(returnedBrgDist[0], returnedBrgDist[1], returnedBrgDist[2], "COORDINATE")
+                addMarker(returnedBrgDist[1], returnedBrgDist[2], returnedBrgDist[0], "COORDINATE")
             })
         }
     }
@@ -775,7 +775,7 @@ window.onload = function(){
 
     mapStylesContent()
 
-    function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDistNavaid, e){
+    function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDist, e){
         // console.log(navaids, locis, waypoints, otherWords, coordAll, e)
         if(navaids.length > 0){
             navaids = new Set(navaids)
@@ -816,7 +816,13 @@ window.onload = function(){
             document.getElementById("mapCoords").value = coordAll
             renderCoord(e)
         }
-        if(brgDistNavaid.length > 0){
+        if(brgDist.length > 0){
+            brgDist = new Set(brgDist)
+            brgDist = Array.from(brgDist)
+            brgDist = brgDist.toString()
+            brgDist = brgDist.replaceAll(",", " ")
+            document.getElementById("mapBrgDist").value = brgDist
+            renderBrgDist(e)
         }
     }
 
