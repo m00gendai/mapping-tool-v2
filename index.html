@@ -9,6 +9,8 @@
     <script src="googleAPIs.js" type="module" async></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.js"></script>
+    <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/geodesy@2/utm.js" type="module"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9XTDGNPBLY"></script>
     <script>
@@ -64,6 +66,10 @@
                                 <div id="mapCoordsContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapCoords" placeholder="4620N00733E 470126N0080129E"></textarea>
                                     <button class="queryButtons" id="mapCoordsButton">Search Coordinates</button>
+                                </div>
+                                <div id="mapBrgDistContainer" class="mapContainers">
+                                    <textarea class="queryBoxes" id="mapBrgDist" placeholder="TRA180010 SOSON135075"></textarea>
+                                    <button class="queryButtons" id="mapBrgDistButton">Search Bearing/Distance from Point</button>
                                 </div>
                                 <mark>Not to be used for navigation purposes!</mark>
                                 <br>
