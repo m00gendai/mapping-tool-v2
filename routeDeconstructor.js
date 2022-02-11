@@ -6,14 +6,16 @@ export function routeDeconstructor(){
     const mappedAirports = airports.map(airport => {return airport.gps_code})
     const mappedWaypoints = waypointsICAO.map(waypoint => {return waypoint.Identification})
     const mappedNavaids = navaids.map(navaid => {return navaid.ident})
+    const mappedNavaidsLatLng = navaids.map(navaid => {return [navaid.ident, navaid.latitude_deg, navaid.longitude_deg]})
     const rte = document.getElementById("mapAll").value.toUpperCase()
     console.log(`Input string: ${rte}`)
     const foundNavaids = checkNavaids(rte, mappedNavaids)
     const foundWaypoints = checkWaypoints(rte, mappedWaypoints)
+    const foundBearingDistanceNavaids = checkBearingDistanceNavaid(rte, mappedNavaidsLatLng)
     const foundLocis = checkLocis(rte, mappedAirports)
     const foundOther = checkOther(rte, foundNavaids, foundWaypoints, foundLocis, mappedWaypoints)
     const foundCoordinates = checkCoordinates(rte)
-    return [foundNavaids, foundLocis, foundWaypoints, foundOther, foundCoordinates]
+    return [foundNavaids, foundLocis, foundWaypoints, foundOther, foundCoordinates, foundBearingDistanceNavaids]
 }
 
 function checkNavaids(rte, mappedNavaids){
@@ -29,6 +31,31 @@ function checkNavaids(rte, mappedNavaids){
         console.log(`3 letter navaids: ${navaids}`) // without IFR/VFR/DCT
     }
     return navaids
+}
+
+function checkBearingDistanceNavaid(rte, mappedNavaidsLatLng){
+    const brgDistMatchNavaid = rte.match(/\b([A-Z]){3}[0-9]{3}[0-9]{3}\b/g)
+    console.log(`Navaid Bearing Distance Matches: ${brgDistMatchNavaid}`)
+    let bearingsNavaids = []
+    if(brgDistMatchNavaid){
+        for(const bearingDistance of brgDistMatchNavaid){
+            for(const mappedNavaid of mappedNavaidsLatLng){
+                if(mappedNavaid[0] == bearingDistance.substring(0,3)){
+                    const navaid = bearingDistance.substring(0,3)
+                    const bearing = parseInt(bearingDistance.substring(3,6))
+                    const distance = parseInt(bearingDistance.substring(6,9))*1.852
+                    const point = turf.point([parseFloat(mappedNavaid[1]), parseFloat(mappedNavaid[2])]);
+                    const options = {units: 'kilometers'};
+                    const destination = turf.destination(point, distance, bearing, options);
+                    const newMarkerLat = destination.geometry.coordinates[0]
+                    const newMarkerLng = destination.geometry.coordinates[1]
+                    console.log([`${navaid}${bearing}${bearingDistance.substring(6,9)}`, newMarkerLat, newMarkerLng])
+                    bearingsNavaids.push([`${navaid}${bearing}${bearingDistance.substring(6,9)}`, newMarkerLat, newMarkerLng])
+                }
+            }
+        }
+    }
+    return bearingsNavaids
 }
 
 function checkLocis(rte, mappedAirports){
