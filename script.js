@@ -114,6 +114,18 @@ window.onload = function(){
         iconAnchor: [19, 38],
         popupAnchor: [0, -42],
     });
+    const bearingDistinateIcon = L.icon({
+        iconUrl: './Assets/marker_brgdist.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    });
+    const lfnIcon = L.icon({
+        iconUrl: './Assets/marker_lfn.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    });
     
 // S E A R C H   O N   M A P   E V E N T   F U N C T I O N S
     
@@ -208,7 +220,7 @@ window.onload = function(){
                 return
             }
             returnedBrgDists.forEach(returnedBrgDist => {
-                addMarker(returnedBrgDist[1], returnedBrgDist[2], returnedBrgDist[0], "COORDINATE")
+                addMarker(returnedBrgDist[1], returnedBrgDist[2], returnedBrgDist[0], "BRGDIST")
             })
         }
     }
@@ -549,6 +561,12 @@ window.onload = function(){
         } 
         else if(type =="COORDINATE"){
             marker = new L.marker([ns, ew], {icon: coordinateIcon}) // create a new marker
+        } 
+        else if(type =="BRGDIST"){
+            marker = new L.marker([ns, ew], {icon: bearingDistinateIcon}) // create a new marker
+        } 
+        else if(type =="LFN"){
+            marker = new L.marker([ns, ew], {icon: lfnIcon}) // create a new marker
         } 
         marker.addTo(map) // add it to the map
         marker.bindPopup(new_popup).openPopup();
