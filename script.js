@@ -1,4 +1,4 @@
-import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace } from "/queryFunctions.js"
+import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist } from "/queryFunctions.js"
 import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
 import { MAPS_API_KEY, MAPTILER_API_KEY } from "/googleAPIs.js"
@@ -200,6 +200,19 @@ window.onload = function(){
         }
     }
     
+    function renderBrgDist(e){
+        if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
+            e.preventDefault()
+            const returnedBrgDists = placeBrgDist()
+            if(returnedBrgDists == undefined || returnedBrgDists.length == 0){
+                return
+            }
+            returnedBrgDists.forEach(returnedBrgDist => {
+                addMarker(returnedBrgDist[0], returnedBrgDist[1], returnedBrgDist[2], "COORDINATE")
+            })
+        }
+    }
+    
 // S E A R C H   O N   M A P   E V E N T   H A N D L E R S
     
     const queryEvents = ["click", "keypress"]
@@ -214,7 +227,7 @@ window.onload = function(){
                 document.getElementById("mapCoords").value = ""
                 clearMarkers()
                 const deconstructedRoute = routeDeconstructor()
-                renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], e)
+                renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], deconstructedRoute[5], e)
             }
         })
         
@@ -236,6 +249,10 @@ window.onload = function(){
         
         document.getElementById("mapCoordsContainer").addEventListener(queryEvent, function(e) {
             renderCoord(e)
+        })
+        
+        document.getElementById("mapBrgDistContainer").addEventListener(queryEvent, function(e) {
+            renderBrgDist(e)
         })
     })
     
@@ -758,7 +775,7 @@ window.onload = function(){
 
     mapStylesContent()
 
-    function renderRoute(navaids, locis, waypoints, otherWords, coordAll, e){
+    function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDistNavaid, e){
         // console.log(navaids, locis, waypoints, otherWords, coordAll, e)
         if(navaids.length > 0){
             navaids = new Set(navaids)
@@ -798,6 +815,8 @@ window.onload = function(){
             coordAll = coordAll.replaceAll(",", " ")
             document.getElementById("mapCoords").value = coordAll
             renderCoord(e)
+        }
+        if(brgDistNavaid.length > 0){
         }
     }
 
