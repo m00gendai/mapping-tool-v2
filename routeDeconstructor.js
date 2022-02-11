@@ -85,7 +85,8 @@ function checkWaypoints(rte, mappedWaypoints){
     return waypoints
 }
 
-function checkOther(rte, navaids, waypoints, locis, mappedWaypoints){
+function checkOther(rte, navaids, waypoints, locis){
+    rte = _.deburr(rte)
     const otherMatch = rte.match(/\b([A-Z]){3,}\b/g)
     let otherWords = []
     let checkArray = []
