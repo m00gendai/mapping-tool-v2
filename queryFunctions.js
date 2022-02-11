@@ -1,5 +1,6 @@
 import { convertRepCoordinates, calcDegToDec } from "/coordinateConversions.js"
-import { LatLon } from 'https://cdn.jsdelivr.net/npm/geodesy@2/utm.js'
+
+import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellipsoidal-vincenty.js'
 
 
 // Q U E R Y   A I R P O R T   L O C I S
@@ -217,7 +218,7 @@ import { LatLon } from 'https://cdn.jsdelivr.net/npm/geodesy@2/utm.js'
         return returnCoordinates
     }
 
-    // Q U E R Y   B E A R I N G   D I S T A N C E   F R O M   P O I N T
+    // Q U E R Y   B E A R I N G   D I S T A N C E   F R O M   P L A C E
     
     export function placeBrgDist(){ //TODO: Find a way to convert 360° azimuth to 180/-180 bearing
         const BrgDistValue = document.getElementById("mapBrgDist").value
@@ -225,34 +226,44 @@ import { LatLon } from 'https://cdn.jsdelivr.net/npm/geodesy@2/utm.js'
             return
         }
         const mappedNavaidsLatLng = navaids.map(navaid => {return [navaid.ident, navaid.latitude_deg, navaid.longitude_deg]})
+        const mappedWaypointsLatLng = waypointsICAO.map(waypoint => {return [waypoint.Identification, waypoint.Latitude, waypoint.Longitude]})
         const brgDistArray = BrgDistValue.split(/\s+/g) // s+ is one or more whitespace characters
         let newMarkerArray = []
         brgDistArray.forEach(brgDist => {
             if(brgDist.match(/\b([a-zA-Z]){3}[0-9]{3}[0-9]{3}\b/g)){ 
                 const navaid = brgDist.substring(0,3).toUpperCase()
-                const bearing = parseInt(brgDist.substring(3,6))-180
+                const bearing = parseInt(brgDist.substring(3,6))
                 const distanceNM = parseInt(brgDist.substring(6,9))
-                const distanceKM = (distanceNM*1.852)/1000
-                const sin = Math.sin(turf.degreesToRadians(bearing))
-                const cos = Math.cos(turf.degreesToRadians(bearing))
-                console.log(sin)
-                const departure = distanceKM*sin
-                const latitude = distanceKM*cos
-                console.log(departure, latitude)
+                const distanceM = (distanceNM*1.852)*1000
                 for(const mappedNavaid of mappedNavaidsLatLng){
                     if(mappedNavaid[0] == navaid){
-                        const point = turf.point([parseFloat(mappedNavaid[1]), parseFloat(mappedNavaid[2])]);
-                        const latLongP = new LatLon(mappedNavaid[1], mappedNavaid[2]);
-                        const utmCoord = latLongP.toUtm();
-                        console.log(utmCoord.toString()); 
-                        const options = {units: 'kilometers'};
-                        const destination = turf.destination(point, distanceKM, -135, options);
-                        const newMarkerLat = destination.geometry.coordinates[0]
-                        const newMarkerLng = destination.geometry.coordinates[1]
-                        newMarkerArray.push([`${navaid}${bearing}${distanceNM}`, newMarkerLat, newMarkerLng])
+                        const p1 = new LatLon(mappedNavaid[1], mappedNavaid[2])
+                        const p2 = p1.destinationPoint(distanceM, bearing)
+                        newMarkerArray.push([`${navaid}${brgDist.substring(3,6)}${brgDist.substring(6,9)}`, p2._lat, p2._lon])
+                    }
+                }
+            }
+            if(brgDist.match(/\b([a-zA-Z]){5}[0-9]{3}[0-9]{3}\b/g)){ 
+                const waypoint = brgDist.substring(0,5).toUpperCase()
+                const bearing = parseInt(brgDist.substring(5,8))
+                const distanceNM = parseInt(brgDist.substring(8,11))
+                const distanceM = (distanceNM*1.852)*1000
+                for(const mappedWaypoint of mappedWaypointsLatLng){
+                    if(mappedWaypoint[0] == waypoint){
+                        if(mappedWaypoint[1].includes(".")){
+                            mappedWaypoint[1] = mappedWaypoint[1].replace(/([.][0-9]*[^NESW])/, "")
+                        }
+                        if(mappedWaypoint[2].includes(".")){
+                            mappedWaypoint[2] = mappedWaypoint[2].replace(/([.][0-9]*[^NESW])/, "")
+                        }
+                        const convertedRepCoordinates = convertRepCoordinates(mappedWaypoint[1], mappedWaypoint[2])
+                        const p1 = new LatLon(convertedRepCoordinates[0], convertedRepCoordinates[1])
+                        const p2 = p1.destinationPoint(distanceM, bearing)
+                        newMarkerArray.push([`${waypoint}${brgDist.substring(5,8)}${brgDist.substring(8,11)}`, p2._lat, p2._lon])
                     }
                 }
             }
         })
         console.log(newMarkerArray)
+        return newMarkerArray
     }
