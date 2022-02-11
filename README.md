@@ -83,6 +83,8 @@ This tool essentially allows you to query flight plan route data and plot it to 
 * Waypoint search:
 	* LFN Waypoints not yet covered
 	* There are guards in place for geographical location names with five letters. A five letter word is checked against the waypoint database and a database of known location/waypoint name hybrids. In case of a location/waypoint hybrid (example: EVIAN - Waypoint in Japan and village in France), precedence is given to the waypoint, with an alert notifying a possible location with the same name (i.e., the waypoint EVIAN in Japan gets plotted, and an alert notifies you about a location with the same name)
+* Query all: 
+	* Special characters like umlauts, accented vocals etc are first deburred to Latin-1 for the deconstructor function to work. This can lead to erroneous plots in edge cases.
 * General:
 	* VFR Reporting Points are not supported
 	* Airport/VFR Reporting Point combinations are not detected
