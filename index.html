@@ -71,6 +71,13 @@
                                 </div>
                                 <mark>Not to be used for navigation purposes!</mark>
                                 <br>
+                                <h4>Search entire Route</h4>
+                                Copy the entire route of a FPL in here including DEP and DEST. An extremely complicated and advanced algorithm will automatically detect LOCIs, Places, Navaids, Waypoints, Bearing/Distance from Navaid/Waypoint and Coordinates and plot them.<br>
+                                <br>
+                                <code>-LSZA0700</code><br>
+                                <code>-N0160VFR W LUINO BRISSAGO</code><br>
+                                <code>-LSZL0030</code>
+                                <br>
                                 <h4>Search Loci:</h4>
                                 <ul>
                                     <li>Worldwide ICAO Location Indicator search</li>
@@ -98,7 +105,7 @@
                                 <br>
                                 <h4>Search Waypoints:</h4>
                                 <ul>
-                                    <li>European (IFPZ) Waypoint (5 letter) search</li>
+                                    <li>Worldwide Waypoint (5 letter) search</li>
                                     <li>Multiple Waypoints separated by space</li>
                                     <li>Case insensitive.</li>
                                 </ul>
@@ -109,19 +116,22 @@
                                     <li>Coordinate search</li>
                                     <li>Single or multiple</li>
                                     <li>Case insensitive</li>
-                                    <li>Plotted coordinates will be displayed as decimal coordinates</li>
+                                    <li>Plotted coordinates will be displayed as WGS84 (as queried) and decimal coordinates</li>
                                 </ul>
                                 Format either <code>4701N00745E</code> or <code>470140N0074530E</code>.<br>
                                 Mixed format allowed <code>{nnnn}N|S{nnnnn}E|W</code> or <code>{nnnnnn}N|S{nnnnnnn}E|W</code><br>
                                 Ignores anything else, so <code>4701N00745E/n0150F090 DCT SPR DCT 471233n0080125e</code> is valid and only the coordinates will be plotted.<br>
                                 <br>
-                                <h4>Search entire Route (experimental):</h4>
-                                <br>
-                                Copy the entire route of a FPL in here including DEP and DEST. An extremely complicated and advanced algorithm will automatically detect LOCIs, Places, Navaids, Waypoints and Coordinates and plot them.<br>
-                                <br>
-                                <code>-LSZA0700</code><br>
-                                <code>-N0160VFR W LUINO BRISSAGO</code><br>
-                                <code>-LSZL0030</code>
+                                <h4>Search Bearing/Distance from Point:</h4>
+                                <ul>
+                                    <li>Bearing in Degrees (0-360)</li>
+                                    <li>Distance in Nautical Miles (0-999)</li>
+                                    <li>Either from Navaid or Waypoint</li>
+                                    <li>Case insensitive</li>
+                                    <li>Single or multiple</li>
+                                </ul>
+                                Format either <code>{NAV}{BRG}{DIST}</code> or <code>{WAYPT}{BRG}{DIST}</code>.<br>
+                                <code>TRA123050</code> for 50 Nautical Miles, 123° from TRA or <code>soson007226 Ramok226007</code> for 7 Nautical Miles, 226° from SOSON / 226 Nautical Miles, 7° from RAMOK.
                                 <br>
                                 <hr>
                             </section>
@@ -218,27 +228,21 @@
                                     </ul>
                                     <h4>Base Map Data Source</h4>
                                     <ul>
-                                        <li>Base map via <a href="https://www.maptiler.com/" target="_blank">maptiler</a></li>
-                                        <li>Satellite map via <a href="https://www.maptiler.com/" target="_blank">maptiler</a></li>
-                                        <li>Open Street Map <a href="https://www.maptiler.com/" target="_blank">maptiler</a></li>
-                                        <li>swisstopo map via <a href="https://www.maptiler.com/" target="_blank">maptiler</a></li>
-                                        <li>National Geograpic map via ArcGIS Web Map Service</li>
-                                        <li>NASA/ESRI map via ArcGIS Web Map Service</li>
+                                        <li>Base, Satellite, Open Street and swisstopo map via <a href="https://www.maptiler.com/" target="_blank">maptiler</a></li>
+                                        <li>National Geograpic and NASA/ESRI map via ArcGIS Web Map Service</li>
                                     </ul>
                                     <h4>Overlay Data Source</h4>
                                     <ul>
                                         <li>Hill Shading via <a href="https://www.maptiler.com/" target="_blank">maptiler</a></li>
-                                        <li>Swiss VFR Chart via <a href="https://www.geo.admin.ch/en/geo-services/geo-services/portrayal-services-web-mapping/web-map-tiling-services-wmts.html" target="_blank">swisstopo</a></li>
-                                        <li>Swiss Drone Restriction Areas via <a href="https://www.geo.admin.ch/en/geo-services/geo-services/portrayal-services-web-mapping/web-map-tiling-services-wmts.html" target="_blank">swisstopo</a></li>
+                                        <li>Swiss VFR Chart and Drone Areas via <a href="https://www.geo.admin.ch/en/geo-services/geo-services/portrayal-services-web-mapping/web-map-tiling-services-wmts.html" target="_blank">swisstopo</a></li>
                                         <li>Airspace layers via <a href="https://www.openaip.net/" target="_blank">openAIP.net</a></li>
-                                        <li>Airspace layer Switzerland from ON-D</li>
+                                        <li>Airspace layer Switzerland from <a href="https://www.skyguide.ch/services/aeronautical-information-management" target="_blanK">skyguide AIM Services</a></li>
                                         <li>Rainviewer from <a href="https://github.com/mwasil/Leaflet.Rainviewer" target="_blank">mwasil</a></li>
                                     </ul>
                                     <h4>POI Data Source</h4>
                                     <ul>
                                         <li>Place names and coordinates via <a href="https://developers.google.com/maps/documentation/javascript/places" target="_blank">google Maps JavaScript API</a></li>
-                                        <li>Location indicators and coordinates from <a href="https://ourairports.com/data/" target="_blank">ourairports.com</a></li>
-                                        <li>Navaid indicators and coordinates from <a href="https://ourairports.com/data/" target="_blank">ourairports.com</a></li>
+                                        <li>ICAO Location and Navaid indicators and coordinates from <a href="https://ourairports.com/data/" target="_blank">ourairports.com</a></li>
                                         <li>Waypoints and coordinates from <a href="https://www.ead.eurocontrol.int/cms-eadbasic/opencms/en/login/ead-basic/" target="_blank">EAD Basic</a></li>
                                     </ul>
                                     <h4>Attributions</h4>
