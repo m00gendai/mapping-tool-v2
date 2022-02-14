@@ -30,10 +30,14 @@ window.onload = function(){
         content: "baseMaps",
         visible: false
         },
-
         {
         title: "About",
         content: "about",
+        visible: false
+        },
+        {
+        title: "Plot Circle",
+        content: "circle",
         visible: false
         },
     ]
@@ -544,6 +548,7 @@ window.onload = function(){
     let markerDistanceArray = []
     let corners = []
     let total = 0
+    let measurelines = []
     
     function addMarker(ns, ew, title, type) { // adds a marker to the map based on the coordinates passed in from the airport query or the calculation results
         let content
@@ -848,9 +853,38 @@ window.onload = function(){
             renderBrgDist(e)
         }
     }
-
+    
+    let centerPoint
+    let group = L.layerGroup([])
     function onMapClick(e) {
         document.getElementById("cursorTooltip").innerText = `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`
+        if(centerPoint != undefined && document.getElementById("speedForCircle").value != ""){
+        let currentPoint = L.latLng(e.latlng.lat, e.latlng.lng)
+        let distbetween = centerPoint.distanceTo(currentPoint)
+        let distbetweenNM = (distbetween*0.000539957).toFixed(2) + " NM"
+        let time = (Math.ceil((distbetween*0.000539957)/100*60))
+        document.getElementById("timeOfCircle").innerText = `${time} min`
+        if(time > 59){
+            let hours = time/60
+            let rhours = Math.floor(hours)
+            let minutes = (hours - rhours)*60
+            let rminutes = Math.floor(minutes)
+            document.getElementById("timeOfCircle").innerText = `${rhours} h ${rminutes} min`
+        }
+        map.on('polylinemeasure:add', e => { 
+            group.eachLayer(function(layer) {
+                group.removeLayer(layer)
+            })
+            let circle = L.circle([centerPoint.lat, centerPoint.lng], {radius: distbetween})
+            group.addLayer(circle).addTo(map);
+        });
+        map.on('polylinemeasure:clear', e => {
+            group.eachLayer(function(layer) {
+                group.removeLayer(layer)
+            })
+            centerPoint = null
+        });
+        }
     }
 
     map.addEventListener("mousemove", function(e){
@@ -864,5 +898,100 @@ window.onload = function(){
     map.addEventListener("mouseout", function(e){
         document.getElementById("cursorTooltip").style.display="none"
     })
-
+    
+    document.getElementById("mapid").addEventListener("contextmenu", function(e){
+        e.preventDefault()
+    })
+    
+    map.addEventListener("contextmenu", function(e){
+        const centerPoint = [e.latlng.lat.toFixed(6), e.latlng.lng.toFixed(6)]
+        map.addEventListener("mousemove", function(ev, centerPoint){
+            console.log([ev.latlng.lat.toFixed(6), ev.latlng.lng.toFixed(6)])
+        })
+    })
+    
+    const drawLineOptions = {
+        position: 'topleft',            // Position to show the control. Values: 'topright', 'topleft', 'bottomright', 'bottomleft'
+        unit: 'nauticalmiles',             // Default unit the distances are displayed in. Values: 'kilometres', 'landmiles', 'nauticalmiles'
+        useSubunits: true,              // Use subunits (metres/feet) in tooltips if distances are less than 1 kilometre/landmile
+        clearMeasurementsOnStop: true,  // Clear all measurements when Measure Control is switched off
+        showBearings: true,            // Whether bearings are displayed within the tooltips
+        bearingTextIn: 'In',            // language dependend label for inbound bearings
+        bearingTextOut: 'Out',          // language dependend label for outbound bearings
+        tooltipTextFinish: 'Click to <b>finish line</b><br>',
+        tooltipTextDelete: 'Press SHIFT-key and click to <b>delete point</b>',
+        tooltipTextMove: 'Click and drag to <b>move point</b><br>',
+        tooltipTextResume: '<br>Press CTRL-key and click to <b>resume line</b>',
+        tooltipTextAdd: 'Press CTRL-key and click to <b>add point</b>',
+                                        // language dependend labels for point's tooltips
+        measureControlTitleOn: 'Turn on PolylineMeasure',   // Title for the Measure Control going to be switched on
+        measureControlTitleOff: 'Turn off PolylineMeasure', // Title for the Measure Control going to be switched off
+        measureControlLabel: '&#8614;', // Label of the Measure Control (Unicode symbols are possible)
+        measureControlClasses: [],      // Classes to apply to the Measure Control
+        showClearControl: true,        // Show a control to clear all the measurements
+        clearControlTitle: 'Clear Measurements', // Title text to show on the Clear Control
+        clearControlLabel: '&times',    // Label of the Clear Control (Unicode symbols are possible)
+        clearControlClasses: [],        // Classes to apply to Clear Control
+        showUnitControl: false,         // Show a control to change the units of measurements
+        unitControlUnits: ["kilometres", "landmiles", "nauticalmiles"],
+                                        // measurement units being cycled through by using the Unit Control
+        unitControlTitle: {             // Title texts to show on the Unit Control
+            text: 'Change Units',
+            kilometres: 'kilometres',
+            landmiles: 'land miles',
+            nauticalmiles: 'nautical miles'
+        },
+        unitControlLabel: {             // Unit symbols to show in the Unit Control and measurement labels
+            metres: 'm',
+            kilometres: 'km',
+            feet: 'ft',
+            landmiles: 'mi',
+            nauticalmiles: 'nm'
+        },
+        unitControlClasses: [],         // Classes to apply to the Unit Control
+        tempLine: {                     // Styling settings for the temporary dashed line
+            color: '#00f',              // Dashed line color
+            weight: 2                   // Dashed line weight
+        },          
+        fixedLine: {                    // Styling for the solid line
+            color: '#006',              // Solid line color
+            weight: 2                   // Solid line weight
+        },
+        startCircle: {                  // Style settings for circle marker indicating the starting point of the polyline
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#0f0',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+        intermedCircle: {               // Style settings for all circle markers between startCircle and endCircle
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#ff0',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+        currentCircle: {                // Style settings for circle marker indicating the latest point of the polyline during drawing a line
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#f0f',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+        endCircle: {                    // Style settings for circle marker indicating the last point of the polyline
+            color: '#000',              // Color of the border of the circle
+            weight: 1,                  // Weight of the circle
+            fillColor: '#f00',          // Fill color of the circle
+            fillOpacity: 1,             // Fill opacity of the circle
+            radius: 3                   // Radius of the circle
+        },
+    };
+    
+    L.control.polylineMeasure(drawLineOptions).addTo(map);
+    map.on('polylinemeasure:start', currentLine => {
+        setTimeout(function(){
+            centerPoint = L.latLng(currentLine.circleCoords[0].lat, currentLine.circleCoords[0].lng)
+        }, 100)
+    })
+ 
 }
