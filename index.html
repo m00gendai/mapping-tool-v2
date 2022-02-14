@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9XTDGNPBLY"></script>
     <script>
@@ -30,6 +31,7 @@
     <link rel="icon" type="image/x-icon" href="./Assets/favicon.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.css"/>
+    <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
 </head>
 <body>
     <div id="map"></div>
@@ -211,6 +213,22 @@
                                     </div>
                                 </div>
                                 <hr>
+                            </section>
+                            <section id="circle">
+                                <div id="speedContainer">
+                                <strong>Feature still in development</strong>
+                                <ol>
+                                <li>Enter speed in knots</li>
+                                <li>Plot a line with the &#8614; control</li>
+                                <li>Time is shown</li>
+                                <li>On click at desired time, a circle of the coverage area is displayed</li>
+                                <li><kbd>Esc</kbd> cancels the current operation</li>
+                                </ol>
+                                <label for="speedForCircle">Speed in Knots:</label><input id="speedForCircle" placeholder="100">
+                                </div>
+                                <div id="speedTimeContainer">
+                                    Time: <span id="timeOfCircle"></span>
+                                </div>
                             </section>
                             <section id="baseMaps">
                                 <div id="mapChoiceTileContainer">
