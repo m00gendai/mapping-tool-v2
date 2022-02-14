@@ -317,8 +317,8 @@ window.onload = function(){
     const googleMap = 'http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}' // not used but kept for reference
     const openStandard = `https://api.maptiler.com/maps/osm-standard/{z}/{x}/{y}@2x.jpg?key=${MAPTILER_API_KEY}` // direct OSM Tile Server link for reference https://tile.openstreetmap.org/{z}/{x}/{y}.png
     const openTopo = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png' // not used but kept for reference
-    const natGeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}'
-    const nasaEsri = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.jpg'
+    const natGeo = 'https://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/WMTS/tile/1.0.0/NatGeo_World_Map/{}/{}/{z}/{y}/{x}.jpg'
+    const nasaEsri = 'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/WMTS/tile/1.0.0/World_Imagery/{}/{}/{z}/{y}/{x}.jpg'
     const maptilerBright = `https://api.maptiler.com/maps/bright/{z}/{x}/{y}@2x.png?key=${MAPTILER_API_KEY}`
     const maptilerHybrid = `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}`
     const maptilerSwisstopoVivid = `https://api.maptiler.com/maps/ch-swisstopo-lbm-vivid/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`
@@ -344,13 +344,23 @@ window.onload = function(){
     
 // L A Y E R   R E N D E R E R S
 
-    function createLayer(map, choice, geojson) { // this loads the map into view
+    function createLayer(map, choice, resolution, atrribution) { // this loads the map into view
         if(tileLayer != null){
             map.removeLayer(tileLayer);
         }
-        tileLayer = L.tileLayer((choice), {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'})
+        if(resolution == 512){
+            tileLayer = L.tileLayer((choice), {
+                attribution: atrribution,
+                tileSize: 512,
+                zoomOffset: -1
+            })
+        }
+        else{
+            tileLayer = L.tileLayer((choice), {
+                attribution: atrribution
+            })
+        }
         tileLayer.addTo(map)
-        //L.geoJSON(swissFIR).addTo(map);
     }
 
     function createOverlay(map, choice, geojson){
@@ -407,9 +417,6 @@ window.onload = function(){
     })
     
     
-
-    createLayer(map, maptilerBright, null)
-
     const LD_FIR = L.geoJSON(Croatia, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
@@ -724,35 +731,53 @@ window.onload = function(){
         // set map focus to world, midpoint coordinate Ukraine
     })
 
-
-
-    function mapStylesContent(){
-        const mapTileChoices = [
+    const mapTileChoices = [
             {
             title: "Basic",
-            image: "./Assets/maptilerBasic.jpg"
+            image: "./Assets/maptilerBasic.jpg",
+            map: maptilerBright,
+            resolution: 512,
+            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`
             },
             {
             title: "Satellite",
-            image: "./Assets/maptilerSatellite.jpg"
+            image: "./Assets/maptilerSatellite.jpg",
+            map: maptilerHybrid,
+            resolution: 512,
+            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`
             },
             {
             title: "Open Street Maps",
-            image: "./Assets/maptilerOSM.jpg"
+            image: "./Assets/maptilerOSM.jpg",
+            map: openStandard,
+            resolution: 512,
+            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`
             },
             {
             title: "swisstopo",
-            image: "./Assets/maptilerSwisstopo.jpg"
+            image: "./Assets/maptilerSwisstopo.jpg",
+            map: maptilerSwisstopoVivid,
+            resolution: 512,
+            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a> © swisstopo <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a> <a href="https://www.swisstopo.admin.ch/en/home.html" target="_blank">&copy; swisstopo</a>`
             },
             {
             title: "National Geographic",
-            image: "./Assets/natgeo.jpg"
+            image: "./Assets/natgeo.jpg",
+            map: natGeo,
+            resolution: 256,
+            attribution: `<a href="https://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" target="_blank">&copy; National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.</a>`
             },
             {
             title: "NASA / ESRI",
-            image: "./Assets/nasa.jpg"
+            image: "./Assets/nasa.jpg",
+            map: nasaEsri,
+            resolution: 256,
+            attribution: `<a href="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" target="_blank">&copy; Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community</a>`
             },
         ]
+
+
+    function mapStylesContent(){
         for(let i=0;i<Object.keys(mapTileChoices).length;i++){
             let mapTileDiv = document.createElement("div")
             document.getElementById("mapChoiceTileContainerInner").appendChild(mapTileDiv)
@@ -765,33 +790,13 @@ window.onload = function(){
             document.getElementById(mapTileDiv.id).appendChild(mapTileDivInner)
             mapTileDivInner.innerText = mapTileChoices[i].title
             document.getElementById(mapTileDiv.id).addEventListener("click", function(){
-                switch(mapTileChoices[i].title) {
-                    case "Satellite":
-                        createLayer(map, maptilerHybrid)
-                        break;
-                    case "Basic":
-                        createLayer(map, maptilerBright)
-                        break;
-                    case "Open Street Maps":
-                        createLayer(map, openStandard)
-                        break;
-                    case "swisstopo":
-                        createLayer(map, maptilerSwisstopoVivid)
-                        break;
-                    case "National Geographic":
-                        createLayer(map, natGeo)
-                        break;
-                    case "NASA / ESRI":
-                        createLayer(map, nasaEsri)
-                        break;
-                    default:
-                        createLayer(map, maptilerBright)
-                }
+                createLayer(map, mapTileChoices[i].map, mapTileChoices[i].resolution, mapTileChoices[i].attribution)
             })
         }
     }
 
     mapStylesContent()
+    createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
 
     function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDist, e){
         // console.log(navaids, locis, waypoints, otherWords, coordAll, e)
@@ -861,4 +866,3 @@ window.onload = function(){
     })
 
 }
-
