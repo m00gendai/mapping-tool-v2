@@ -71,9 +71,11 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 ### Map View Features ###
 
 #### Top Left ####
-* Zoom
-* Plot Measurement Line
-* Clear Measurement Line
+* Zoom Controls
+* Measurement Controls
+	* Plot Measurement Line
+	* Clear Measurement Line
+* RainViewer
 
 #### Top Right ####
 
@@ -83,9 +85,6 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 	* EBBU & ELLX FIR, TMA and CTR
 	* LIMM/LIRR/LIBB FIR
 	* LYBA FIR, TMA and CTR
-
-#### Bottom Left ####
-* RainViewer
 
 #### Bottom Block ####
 * Clear markers
