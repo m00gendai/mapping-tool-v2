@@ -56,7 +56,7 @@ export function calcDegToDec(nsdeg, nsmin, nssec, ewdeg, ewmin, ewsec, nsSel, ew
 }
 
 // function to convert DECIMAL to DEG MIN SEC
-    function calcDecToDeg(nsdec, ewdec, ns2Sel, ew2Sel) {
+    export function calcDecToDeg(nsdec, ewdec, ns2Sel, ew2Sel) {
         let decArray = []; // initialises coordinate array to be returned
         let nsdecDiv = Math.floor(nsdec) // gets degrees by ignoring decimal points of the input value
         const nsminDiv = Math.floor((60 * (nsdec - nsdecDiv))) // gets minutes by subtracting input value by floored degrees and multiplying by 60
