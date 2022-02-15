@@ -57,6 +57,8 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 * ArcGIS ESRI National Geographic
 * ArcGIS ESRI NASA Satellite
 
+#### Plot Circle ####
+
 #### About ####
 * General Information
 * Coordinate Precision
@@ -65,8 +67,6 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 * POI Data Source
 * Attributions
 * Legal
-*
-#### Plot Circle ####
 
 ### Map View Features ###
 
@@ -128,6 +128,7 @@ Special characters like umlauts, accented vocals etc are first deburred to Latin
 #### General ####
 * VFR Reporting Points are not supported
 * Airport/VFR Reporting Point combinations are not detected
+* Application is intended for fullscreen use, responsive design is not a requirement. While it is planned to be implemented, it has a very low priority.
 	
 ## Known Bugs ##
 
