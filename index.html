@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
+    <script src="https://kit.fontawesome.com/369620f5d0.js" crossorigin="anonymous"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9XTDGNPBLY"></script>
     <script>
@@ -45,34 +46,33 @@
                             <section id="searchOnMap">
                                 <div id="mapAllContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapAll" placeholder="-LSZA0700&#10;-N0160VFR W LUINO BRISSAGO&#10;-LSZL0030"></textarea>
-                                    <button class="queryButtons" id="mapAllButton">Search entire Route</button>
+                                    <button class="queryButtons" id="mapAllButton">Entire Route</button>
                                 </div>
                                 <div id="mapLociContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapLoci" placeholder="LSZH LSGG KJFK"></textarea>
-                                    <button class="queryButtons" id="mapLociButton">Search Loci</button>
+                                    <button class="queryButtons" id="mapLociButton">Loci</button>
                                 </div>
                                 <div id="mapPlaceContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapPlace" placeholder="Hallau,Reichenbach im Kandertal,Hinwil"></textarea>
-                                    <button class="queryButtons" id="mapPlaceButton">Search Place</button>
+                                    <button class="queryButtons" id="mapPlaceButton">Place</button>
                                 </div>
                                 <div id="mapNavaidContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapNavaid" placeholder="ZUE TRA KLO"></textarea>
-                                    <button class="queryButtons" id="mapNavaidButton">Search Navaid</button>
+                                    <button class="queryButtons" id="mapNavaidButton">Navaid</button>
                                 </div>
                                  <div id="mapRepContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapRep" placeholder="RINLI RAMOK MILPA"></textarea>
-                                    <button class="queryButtons" id="mapRepButton">Search Waypoint</button>
+                                    <button class="queryButtons" id="mapRepButton">Waypoint</button>
                                 </div>
                                 <div id="mapCoordsContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapCoords" placeholder="4620N00733E 470126N0080129E"></textarea>
-                                    <button class="queryButtons" id="mapCoordsButton">Search Coordinates</button>
+                                    <button class="queryButtons" id="mapCoordsButton">Coordinates</button>
                                 </div>
                                 <div id="mapBrgDistContainer" class="mapContainers">
                                     <textarea class="queryBoxes" id="mapBrgDist" placeholder="TRA180010 SOSON135075"></textarea>
-                                    <button class="queryButtons" id="mapBrgDistButton">Search Bearing/Distance from Point</button>
+                                    <button class="queryButtons" id="mapBrgDistButton">Bearing/<wbr>Distance from Point</button>
                                 </div>
                                 <mark>Not to be used for navigation purposes!</mark>
-                                <br>
                                 <h4>Search entire Route</h4>
                                 Copy the entire route of a FPL in here including DEP and DEST. An extremely complicated and advanced algorithm will automatically detect LOCIs, Places, Navaids, Waypoints, Bearing/Distance from Navaid/Waypoint and Coordinates and plot them.<br>
                                 <br>
@@ -139,6 +139,7 @@
                             </section>
                             <section id="coordinateConversion">
                                 <div class="inputContainer">
+                                Convert Coordinates from one format to the other and plot the result on the map
                                     <h4>DEG / MIN / SEC to Decimal DEG </h4>
                                     <br>
                                     <div class="inputCoordinateConversionContainer">
@@ -215,20 +216,34 @@
                                 <hr>
                             </section>
                             <section id="circle">
-                                <div id="speedContainer">
-                                <strong>Feature still in development</strong>
+                                <div id="speedContainer" class="plotCircleInputs">
+                                    <label for="speedForCircle">Speed in Knots:</label><input id="speedForCircle" placeholder="100">
+                                </div>
+                                <div id="speedTimeContainer" class="plotCircleInputs">
+                                    <label for="timeOfCircle">Time for Distance:</label><span id="timeOfCircle"></span>
+                                </div>
+                                <h4>Plot Distance</h4>
                                 <ol>
-                                <li>Enter speed in knots</li>
-                                <li>Plot a line with the &#8614; control</li>
-                                <li>Time is shown</li>
-                                <li>On click at desired time, a circle of the coverage area is displayed</li>
-                                <li><kbd>Esc</kbd> cancels the current operation</li>
+                                    <li>Plot a line with the &#8614; control</li>
+                                    <li>Bearing and Distance are displayed</li>
+                                        <ul>
+                                            <li>If speed (in Knots) is entered, the time for the distance is displayed</li>
+                                        </ul>
                                 </ol>
-                                <label for="speedForCircle">Speed in Knots:</label><input id="speedForCircle" placeholder="100">
-                                </div>
-                                <div id="speedTimeContainer">
-                                    Time: <span id="timeOfCircle"></span>
-                                </div>
+                                The line accounts for the curvature of the earth.<br>
+                                Multiple lines with intermediate points can be plotted.<br>
+                                Press <kbd>ESC</kbd> once to cancel the current operation, twice to cancel line plotting.
+                                <br>
+                                <h4>Plot Circle</h4>
+                                <ol>
+                                    <li>Enter speed (in Knots)</li>
+                                    <li>Plot a line with the &#8614; control</li>
+                                    <li>On click at the desired time, a circle of the coverage area is displayed</li>
+                                </ol>
+                                The line and circle account for the curvature of the earth.<br>
+                                Only one circle at a time can be plotted, its suggested to start a new line on a blank canvas for a new circle.<br>
+                                Press <kbd>ESC</kbd> once to cancel the current operation, twice to cancel line plotting.
+                                <br>
                             </section>
                             <section id="baseMaps">
                                 <div id="mapChoiceTileContainer">
@@ -238,6 +253,12 @@
                             </section>
                             <section id="about">
                                 <div id="mapToolAboutContent">
+                                    AIM Mapping Tool is an open source application developed as a supplementary tool for AIM Services Switzerland, specifically to aid in plotting VFR flight plan routes.
+                                    Although it features official Swiss federal map and Eurocontrol data, it is not an official application and thus shall not be used for navigational purposes.
+                                    <br><br>
+                                    A complete documentation can be found in the <a href="https://github.com/m00gendai/mapping-tool-v2" target="_blank">github repository.</a>
+                                    <br><br>
+                                    A changelog, detailing progress, bugtracking, planned features etc can be found on <a href="https://trello.com/b/yzfLBL7h/aim-mapping-tool" target="_blank">Trello.</a><br>
                                     <h4>Coordinate Precision</h4>
                                     <ul>
                                         <li>Coordinate conversion based on WGS84 coordinates</li>
@@ -270,7 +291,6 @@
                                     <h4>Legal</h4>
                                         &copy; 2021-<span id="currentYear"></span> <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a> for AIM Services Switzerland<br>
                                         Source code on <a href="https://github.com/m00gendai/mapping-tool-v2" target="_blank">github</a><br>
-                                        Changelog on <a href="https://trello.com/b/yzfLBL7h/aim-mapping-tool" target="_blank">Trello</a><br>
                                     <br>
                                 </div>
                                 <hr>
