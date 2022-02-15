@@ -1,5 +1,5 @@
 import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist } from "/queryFunctions.js"
-import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec } from "/coordinateConversions.js"
+import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDecToDeg } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
 import { MAPS_API_KEY, MAPTILER_API_KEY } from "/googleAPIs.js"
 
@@ -16,29 +16,34 @@ window.onload = function(){
     
     const tabFlags = [
         {
-        title: "Search on Map",
+        title: `<i class="fa-solid fa-magnifying-glass-location"></i>`,
         content: "searchOnMap",
-        visible: true
+        visible: true,
+        hover: "Search on Map"
         },
         {
-        title: "Coordinate Conversions",
+        title: `<i class="fa-solid fa-calculator"></i>`,
         content: "coordinateConversion",
-        visible: false
+        visible: false,
+        hover: "Coordinate Conversions"
         },
         {
-        title: "Map Styles",
+        title: `<i class="fa-solid fa-map"></i>`,
         content: "baseMaps",
-        visible: false
+        visible: false,
+        hover: "Map Styles"
         },
         {
-        title: "About",
-        content: "about",
-        visible: false
-        },
-        {
-        title: "Plot Circle",
+        title: `<i class="fa-solid fa-compass-drafting"></i>`,
         content: "circle",
-        visible: false
+        visible: false,
+        hover: "Plot Circle"
+        },
+        {
+        title: `<i class="fa-solid fa-question"></i>`,
+        content: "about",
+        visible: false,
+        hover: "About"
         },
     ]
     
@@ -47,8 +52,11 @@ window.onload = function(){
             const divTab = document.createElement("div")
             divTab.className = "tabTitle"
             divTab.id = `tabTitle${index}`
-            divTab.innerText = flag.title
+            divTab.innerHTML = flag.title
             document.getElementById("tabRow").appendChild(divTab)
+            divTab.addEventListener("mouseover", function(){
+                divTab.setAttribute("title", flag.hover)
+            })
         })
     }
             
@@ -331,13 +339,10 @@ window.onload = function(){
     const vfrChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.vbs.milairspacechart/default/current/3857/{z}/{x}/{y}.png'
     const droneChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.einschraenkungen-drohnen/default/current/3857/{z}/{x}/{y}.png'
     const airfieldChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.flugplaetze-heliports/default/current/3857/{z}/{x}/{y}.png'
-    const mountainfieldChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.gebirgslandeplaetze/default/current/3857/{z}/{x}/{y}.png'
-    const hospChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.spitallandeplaetze/default/current/3857/{z}/{x}/{y}.png'
     const hillshades = `https://api.maptiler.com/tiles/hillshade/{z}/{x}/{y}.webp?key=${MAPTILER_API_KEY}`
     // Variable initialisers
     
     let layerControl
-    let rainViewer
     let tileLayer = null
     let overlay
     // Overlay toggle state initialisers
@@ -520,18 +525,6 @@ window.onload = function(){
     layerControl = L.control.layers(null, overlays)
     layerControl.addTo(map);
     LS_SUBFIR.addTo(map)
-    
-    rainViewer = L.control.rainviewer({ 
-        position: 'bottomleft',
-        nextButtonText: '>',
-        playStopButtonText: 'Play/Stop',
-        prevButtonText: '<',
-        positionSliderLabelText: "Hour:",
-        opacitySliderLabelText: "Opacity:",
-        animationInterval: 500,
-        opacity: 0.5
-    })
-    rainViewer.addTo(map);
 
     document.getElementById("clearPopups").addEventListener("click", function(){
         let popupCount = document.querySelectorAll(".leaflet-popup-close-button")
@@ -857,7 +850,10 @@ window.onload = function(){
     let centerPoint
     let group = L.layerGroup([])
     function onMapClick(e) {
-        document.getElementById("cursorTooltip").innerText = `${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`
+        let decimalDegrees = [e.latlng.lat.toFixed(6), e.latlng.lng.toFixed(6)]
+        let wgsDegrees = calcDecToDeg(e.latlng.lat.toFixed(6) > 0 ? e.latlng.lat.toFixed(6) : Math.abs(e.latlng.lat.toFixed(6)), e.latlng.lng.toFixed(6) > 0 ? e.latlng.lng.toFixed(6) : Math.abs(e.latlng.lng.toFixed(6)), e.latlng.lat.toFixed(6) > 0 ? "N" : "S", e.latlng.lng.toFixed(6) > 0 ? "E" : "W")
+        document.getElementById("cursorTooltip").innerText = `${decimalDegrees.join(", ")}\n${wgsDegrees[0]}${e.latlng.lat.toFixed(6) > 0 ? "N" : "S"}, ${wgsDegrees[1]}${e.latlng.lng.toFixed(6) > 0 ? "E" : "W"}`
+        
         if(centerPoint != undefined && document.getElementById("speedForCircle").value != ""){
         let currentPoint = L.latLng(e.latlng.lat, e.latlng.lng)
         let distbetween = centerPoint.distanceTo(currentPoint)
@@ -897,17 +893,6 @@ window.onload = function(){
     
     map.addEventListener("mouseout", function(e){
         document.getElementById("cursorTooltip").style.display="none"
-    })
-    
-    document.getElementById("mapid").addEventListener("contextmenu", function(e){
-        e.preventDefault()
-    })
-    
-    map.addEventListener("contextmenu", function(e){
-        const centerPoint = [e.latlng.lat.toFixed(6), e.latlng.lng.toFixed(6)]
-        map.addEventListener("mousemove", function(ev, centerPoint){
-            console.log([ev.latlng.lat.toFixed(6), ev.latlng.lng.toFixed(6)])
-        })
     })
     
     const drawLineOptions = {
@@ -993,5 +978,17 @@ window.onload = function(){
             centerPoint = L.latLng(currentLine.circleCoords[0].lat, currentLine.circleCoords[0].lng)
         }, 100)
     })
+    
+    const rainViewer = L.control.rainviewer({ 
+        position: 'topleft',
+        nextButtonText: '>',
+        playStopButtonText: 'Play/Stop',
+        prevButtonText: '<',
+        positionSliderLabelText: "Hour:",
+        opacitySliderLabelText: "Opacity:",
+        animationInterval: 500,
+        opacity: 0.5
+    })
+    rainViewer.addTo(map);
  
 }
