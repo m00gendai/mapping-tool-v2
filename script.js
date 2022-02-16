@@ -37,7 +37,7 @@ window.onload = function(){
         title: `<i class="fa-solid fa-compass-drafting"></i>`,
         content: "circle",
         visible: false,
-        hover: "Plot Circle"
+        hover: "Measurements"
         },
         {
         title: `<i class="fa-solid fa-question"></i>`,
@@ -541,7 +541,9 @@ window.onload = function(){
     let markerDistanceArray = []
     let corners = []
     let total = 0
+    let totalArray = []
     let measurelines = []
+    let speedTimeSecondsArray = []
     
     function addMarker(ns, ew, title, type) { // adds a marker to the map based on the coordinates passed in from the airport query or the calculation results
         let content
@@ -605,7 +607,9 @@ window.onload = function(){
                 let j= markerDistanceArray.length
                 total = parseFloat((distbetween*0.000539957))
                 total = total.toFixed(2)
-                distanceBar(markLatLong[0]._popup._content, distbetweenNM, markLatLong[1]._popup._content, total)
+                totalArray.push(total)
+                let reducedTotal = totalArray.reduce((previousValue, currentValue) => { return (parseFloat(previousValue) + parseFloat(currentValue)).toFixed(2) } )
+                distanceBar(markLatLong[1]._popup._content, distbetweenNM, markLatLong[0]._popup._content, total, reducedTotal)
                 polyline = L.polyline([markLatLong[0].getLatLng(), markLatLong[1].getLatLng()],{ // drwas a line between the clicked and the last clicked marker
                     color: 'red'
                 }).addTo(map);
@@ -616,33 +620,43 @@ window.onload = function(){
         })
     }
 
-    function distanceBar(dep, dist, dest, total){
+    function distanceBar(dep, dist, dest, total, reducedTotal){
+        const date = new Date()
         let distBar = document.getElementById("mapDistanceBar")
         let distTable = document.getElementById("distTable")
         distBar.style.display = "block"
-        let fmTD = document.createElement("td")
-        let distTD = document.createElement("td")
-        let toTD = document.createElement("td")
-        let totalTD = document.createElement("td")
-        let timeTD = document.createElement("td")
         let row = distTable.insertRow(0)
+        let fmTD = document.createElement("td")
         row.appendChild(fmTD)
+        let distTD = document.createElement("td")
         row.appendChild(distTD)
+        let toTD = document.createElement("td")
         row.appendChild(toTD)
-        row.appendChild(totalTD)
+        let timeTD = document.createElement("td")
         row.appendChild(timeTD)
+        let totalTD = document.createElement("td")
+        row.appendChild(totalTD)
+        let total1TD = document.createElement("td")
+        row.appendChild(total1TD) 
         fmTD.innerText = dep.substr(0,4)
-        distTD.innerText = parseFloat(dist).toFixed(2)
+        distTD.innerText = `${parseFloat(dist).toFixed(2)}NM`
         toTD.innerText = dest.substr(0,4)
-        totalTD.innerText = total + "NM"
+        totalTD.innerText = reducedTotal + "NM"
         document.getElementById("speedInput").addEventListener("keypress", function(e){
             if(e.key == "Enter"){
                 e.preventDefault()
                 let acftSpeed = parseInt(document.getElementById("speedInput").value)
                 if (document.getElementById("speedInput").value != ""){
-                    timeTD.innerText = speedTimeCalc(total, parseFloat(acftSpeed))
+                    let speedTimeSeconds = speedTimeCalc(total, parseFloat(acftSpeed))
+                    speedTimeSecondsArray.push(speedTimeSeconds)
+                    let speedTime = secondsToTime(speedTimeSeconds)
+                    timeTD.innerText = speedTime
+                    let totalSpeedTime = speedTimeSecondsArray.reduce((previousValue, currentValue) => { return parseFloat(previousValue) + parseFloat(currentValue) } )
+                    let totalSpeedTimeConverted = secondsToTime(totalSpeedTime)
+                    total1TD.innerText = totalSpeedTimeConverted
                 } else if(document.getElementById("speedInput").value == ""){
                     timeTD.innerText = ""
+                    
                 }
             }
         })
@@ -652,42 +666,19 @@ window.onload = function(){
         let dist = parseFloat(total)
         let speed = parseFloat(acftSpeed)
         let time = parseFloat((dist/speed).toFixed(6)) // decimal hours
-        let hours
-        let minutes
-        let seconds
-        if (time >= 1.000000){
-            hours = parseInt(time)
-        } else {
-            hours = 0
-        }
-        minutes = parseInt(((time-hours)*60))
-        if (minutes < 10){
-        }
-        seconds = parseInt(((((time-hours)*60)-minutes)*60))
-        if (seconds < 10){
-        }
-
-        if(hours == 0){
-            hours = "00"
-        } else if(hours < 10){
-            hours = "0" + hours
-        }
-        if(minutes == 0){
-            minutes = "00"
-        } else if(minutes < 10){
-            minutes = "0" + minutes
-        }
-        if(seconds == 0){
-            seconds = "00"
-        } else if(seconds < 10){
-            seconds = "0" + seconds
-        }
-        time = hours.toString() + ":" + minutes.toString() + ":" + seconds.toString()
-        return time
+        let totalSeconds = time*3600
+        return totalSeconds
     }
     document.getElementById("clearMarker").addEventListener("click", function() {
         clearMarkers()
     })
+    
+    function secondsToTime(speedTimeSeconds){
+        let hours = parseInt((speedTimeSeconds/3600))
+        let minutes = parseInt(((speedTimeSeconds/3600)-hours)*60)
+        let seconds = parseInt(((((speedTimeSeconds/3600)-hours)*60)-minutes)*60)
+        return (`${hours}:${minutes}:${seconds}`)
+    }
 
     function clearMarkers(){
         for (let i = 0; i < markerArray.length; i++) { // checks how many markers are on the map
@@ -705,6 +696,15 @@ window.onload = function(){
     }
 
     document.getElementById("clearLine").addEventListener("click", function() {
+        clearLines()
+    })
+    
+    document.getElementById("clearAll").addEventListener("click", function() {
+        clearMarkers()
+        clearLines()
+    })
+    
+    function clearLines(){
         for (let i = 0; i < polylines.length; i++) { // checks how many lines are on the map
             polylines[i].remove(map) // removes them from the map. not sure which one is doing it exactly so better two than none
             map.removeLayer(polylines[i]);
@@ -712,9 +712,9 @@ window.onload = function(){
         // these clear various arrays  so it wont display any lines all again after a new click
         polylines = []
         latLong = []
-        latLongs = []
         markLatLong = []
-    })
+
+    }
 
     document.getElementById("focusSwitzerland").addEventListener("click", function() {
         map.setView([46.80, 8.22], 8); // set map focus to switerland, midpoint coordinate switzerland
