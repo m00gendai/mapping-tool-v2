@@ -234,7 +234,7 @@
                                 Multiple lines with intermediate points can be plotted.<br>
                                 Press <kbd>ESC</kbd> once to cancel the current operation, twice to cancel line plotting.
                                 <br>
-                                <h4>Plot Circle</h4>
+                                <h4>Plot Coverage Area</h4>
                                 <ol>
                                     <li>Enter speed (in Knots)</li>
                                     <li>Plot a line with the &#8614; control</li>
@@ -243,7 +243,12 @@
                                 The line and circle account for the curvature of the earth.<br>
                                 Only one circle at a time can be plotted, its suggested to start a new line on a blank canvas for a new circle.<br>
                                 Press <kbd>ESC</kbd> once to cancel the current operation, twice to cancel line plotting.
-                                <br>
+                                <h4>Measure Distance and Time between Markers</h4>
+                                Doubleclick a marker, then doubleclick another to show a line between them.<br>
+                                In the opened dialog window, the distance in Nautical Miles is displayed.<br>
+                                Enter a speed in Knots to see the time needed for the distance.<br>
+                                Click more markers to extend the line.<br>
+                                Distance and time will be displayed between the current and last marker as well as the total distance and time from the starting marker to the current one.
                             </section>
                             <section id="baseMaps">
                                 <div id="mapChoiceTileContainer">
@@ -287,6 +292,8 @@
                                     <h4>Attributions</h4>
                                         favicon by <a href="https://www.flaticon.com/free-icons/globe" target="_blank" title="globe icons">vectorsmarket15 - Flaticon</a><br>
                                         Markers by <a href="https://www.flaticon.com/packs/location-59" title="Location Pack">Freepik - Flaticon</a><br>
+                                        Marker remove & Line remove by <a href="https://www.flaticon.com/packs/location-55" title="Location Pack">Freepik - Flaticon</a></br>
+                                        Popup remove by <a href="https://www.flaticon.com/packs/web-essentials-3" title="Web Essentials Pack">Freepik - Flaticon</a></br>
                                     <br>
                                     <h4>Legal</h4>
                                         &copy; 2021-<span id="currentYear"></span> <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a> for AIM Services Switzerland<br>
@@ -307,6 +314,7 @@
                 <button class="mapOptions" id="clearMarker" title="Clear Markers"></button>
                 <button class="mapOptions"  id="clearPopups" title="Clear Popups"></button>
                 <button class="mapOptions"  id="clearLine" title="Clear Lines"></button>
+                <button class="mapOptions"  id="clearAll" title="Clear All"></button>
                 <button class="mapOptions"  id="toggleTopo" title="Toggle hill shading">Hill Shading</button>
                 <button class="mapOptions"  id="toggleVFR" title="Toggle Swiss VFR Chart Layer">VFR Chart</button>
                 <button class="mapOptions"  id="toggleDrone" title="Toggle Swiss Drone Restriction Layer">Drone Areas</button>
@@ -316,9 +324,9 @@
             </article>
             <article id="mapDistanceBar">
                 <section id="timeInputContainer">
-                    <div id="timeLabel">Speed:</div>
+                    <div id="timeLabel">Speed in Knots:</div>
                     <div id="timeInput">
-                        <input id="speedInput">
+                        <input id="speedInput" placeholder="100">
                     </div>
                 </section>
                 <table>
@@ -327,8 +335,9 @@
                             <th>DEP</th>
                             <th>DIST</th>
                             <th>DEST</th>
-                            <th>TOTAL</th>
                             <th>TIME</th>
+                            <th>TOTAL DIST</th>
+                            <th>TOTAL TIME</th>
                         </tr>
                     </thead>
                     <tbody id="distTable"></tbody>
@@ -349,5 +358,6 @@
     <script src="./Data/LY_JSON.js" async></script>
     <script src="./Data/LS_JSON.js" async></script>
     <script src="./Data/LS_SUB_JSON.js" async></script>
+    <script src="./Data/ad_afr.js" async></script>
 </body>
 </html>
