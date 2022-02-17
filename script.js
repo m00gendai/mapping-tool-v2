@@ -395,7 +395,7 @@ window.onload = function(){
         }
     }
 
-    document.getElementById("toggleTopo").addEventListener("click", function(){
+   /* document.getElementById("toggleTopo").addEventListener("click", function(){
         if(topoToggle == 0){
             createOverlay(map, hillshades, null)
             topoToggle = 1
@@ -403,8 +403,8 @@ window.onload = function(){
             removeOverlays(hillshades)
             topoToggle = 0
         }
-    })
-    
+    }) */
+     
     document.getElementById("toggleVFR").addEventListener("click", function(){
         if(vfrToggle == 0){
             createOverlay(map, vfrChart, null)
