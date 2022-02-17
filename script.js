@@ -327,13 +327,13 @@ window.onload = function(){
     // Map Tile Layers
     const googleHybrid = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' // not used but kept for reference
     const googleMap = 'http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}' // not used but kept for reference
-    const openStandard = `https://api.maptiler.com/maps/osm-standard/{z}/{x}/{y}@2x.jpg?key=${MAPTILER_API_KEY}` // direct OSM Tile Server link for reference https://tile.openstreetmap.org/{z}/{x}/{y}.png
+    const openStandard = `https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}` // direct OSM Tile Server link for reference https://tile.openstreetmap.org/{z}/{x}/{y}.png
     const openTopo = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png' // not used but kept for reference
     const natGeo = 'https://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/WMTS/tile/1.0.0/NatGeo_World_Map/{}/{}/{z}/{y}/{x}.jpg'
     const nasaEsri = 'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/WMTS/tile/1.0.0/World_Imagery/{}/{}/{z}/{y}/{x}.jpg'
-    const maptilerBright = `https://api.maptiler.com/maps/bright/{z}/{x}/{y}@2x.png?key=${MAPTILER_API_KEY}`
-    const maptilerHybrid = `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}`
-    const maptilerSwisstopoVivid = `https://api.maptiler.com/maps/ch-swisstopo-lbm-vivid/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`
+    const maptilerBright = `https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`
+    const maptilerHybrid = `https://api.maptiler.com/maps/hybrid/256/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}`
+    const maptilerSwisstopoVivid = `https://api.maptiler.com/maps/ch-swisstopo-lbm-vivid/256/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`
     // Overlay Tile Layers
     const swisstopo = "https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg" // not used but kept for reference
     const vfrChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.vbs.milairspacechart/default/current/3857/{z}/{x}/{y}.png'
