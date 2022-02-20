@@ -360,8 +360,8 @@ window.onload = function(){
         if(resolution == 512){
             tileLayer = L.tileLayer((choice), {
                 attribution: atrribution,
-                tileSize: 512,
-                zoomOffset: -1
+             //   tileSize: 512,
+             //   zoomOffset: -1
             })
         }
         else{
