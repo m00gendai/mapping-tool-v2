@@ -98,7 +98,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             data.codeId, 
             data.geoLat.charAt(data.geoLat.length-1) == "N" ? data.geoLat.substring(0, data.geoLat.length-1) : `-${data.geoLat.substring(0, data.geoLat.length-1)}`,  
             data.geoLong.charAt(data.geoLong.length-1) == "E" ? data.geoLong.substring(0, data.geoLong.length-1) : `-${data.geoLong.substring(0, data.geoLong.length-1)}`,
-            data.txtName,
+            data.txtName ? data.txtName : "",
             data.codeType ? data.codeType : "DME or TACAN"]})
         const newNavaidCodes = newNavaids.map(code => {return code[0]})
         if (!navaidField.includes(" ")) {
@@ -109,9 +109,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             }
             for(const navaid of newNavaids){
                 if(navaidField.toUpperCase() == navaid[0]){
-                    sameIdent.push([navaid[1], navaid[2], `${navaid[0]} ${navaid[4]}`])
-                    //return [navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`]
-                    //addMarker(navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`)
+                    sameIdent.push([navaid[1], navaid[2], `${navaid[0]} ${navaid[4]}<br>${navaid[3]}`])
                 }
             }
             return sameIdent
@@ -121,8 +119,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             multiAids.forEach(multiAid => {
                 for(const navaid of newNavaids){
                     if(multiAid.toUpperCase() == navaid[0].toUpperCase()){
-                        multiNavs.push([navaid[1], navaid[2], `${navaid[0]} ${navaid[4]}`])
-                        // addMarker(navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`)
+                        multiNavs.push([navaid[1], navaid[2], `${navaid[0]} ${navaid[4]}<br>${navaid[3]}`])
                     }
                 }
             })
