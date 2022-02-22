@@ -591,10 +591,21 @@ window.onload =  function(){
     }
 
     function distanceBar(dep, dist, dest, total, reducedTotal){
-        const date = new Date()
+        const splitDep = dep.split("<br>")
+        if(dep.includes("Decimal:")){
+            dep = splitDep[1].substring(7,splitDep[1].length)
+        } else {
+            dep = splitDep[0]
+        }
+        const splitDest = dest.split("<br>")
+        if(dest.includes("Decimal:")){
+            dest = splitDest[1].substring(7,splitDest[1].length)
+        } else {
+            dest = splitDest[0]
+        }
         let distBar = document.getElementById("mapDistanceBar")
         let distTable = document.getElementById("distTable")
-        distBar.style.display = "block"
+        distBar.style.display = "flex"
         let row = distTable.insertRow(0)
         let fmTD = document.createElement("td")
         row.appendChild(fmTD)
@@ -608,9 +619,9 @@ window.onload =  function(){
         row.appendChild(totalTD)
         let total1TD = document.createElement("td")
         row.appendChild(total1TD) 
-        fmTD.innerText = dep.substr(0,4)
+        fmTD.innerText = dep
         distTD.innerText = `${parseFloat(dist).toFixed(2)}NM`
-        toTD.innerText = dest.substr(0,4)
+        toTD.innerText = dest
         totalTD.innerText = reducedTotal + "NM"
         document.getElementById("speedInput").addEventListener("keypress", function(e){
             if(e.key == "Enter"){
@@ -629,6 +640,20 @@ window.onload =  function(){
                     
                 }
             }
+        })
+        let expanded = false
+        document.getElementById("expandMapDistanceBar").addEventListener("click", function(){
+            if(!expanded){
+                distBar.style.maxHeight = "90vh"
+                distBar.style.height = "90vh"
+                document.getElementById("expandMapDistanceBar").innerHTML = `<i class="fa-solid fa-chevron-up"></i>`
+            }
+            if(expanded){
+                distBar.style.maxHeight = "8rem"
+                distBar.style.height = "auto"
+                document.getElementById("expandMapDistanceBar").innerHTML = `<i class="fa-solid fa-chevron-down"></i>`
+            }
+            expanded = !expanded
         })
     }
 
