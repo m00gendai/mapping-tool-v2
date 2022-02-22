@@ -1,9 +1,12 @@
 import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist } from "/queryFunctions.js"
 import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDecToDeg } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
-import { MAPS_API_KEY, MAPTILER_API_KEY } from "/googleAPIs.js"
+import { MAPS_API_KEY } from "/keys.js"
+import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, featureFIR, featureTMA } from "/configs.js"
 
-window.onload = function(){
+window.onload =  function(){
+    console.time("start onload")
+
     const googleMapsAPIScript = document.createElement("script")
     googleMapsAPIScript.setAttribute("async", "")
     googleMapsAPIScript.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}&libraries=places&`
@@ -11,41 +14,12 @@ window.onload = function(){
     const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
     document.getElementById("currentYear").innerText = currentYear
+
+    console.log(`Waypoints: ${waypoints.length}`)
+    console.log(`Navaids: ${navaids.length}`)
+    console.log(`Airports: ${airports.length}`)
     
 // R E N D E R   T O O L B O X E S / T A B S
-    
-    const tabFlags = [
-        {
-        title: `<i class="fa-solid fa-magnifying-glass-location"></i>`,
-        content: "searchOnMap",
-        visible: true,
-        hover: "Search on Map"
-        },
-        {
-        title: `<i class="fa-solid fa-calculator"></i>`,
-        content: "coordinateConversion",
-        visible: false,
-        hover: "Coordinate Conversions"
-        },
-        {
-        title: `<i class="fa-solid fa-map"></i>`,
-        content: "baseMaps",
-        visible: false,
-        hover: "Map Styles"
-        },
-        {
-        title: `<i class="fa-solid fa-compass-drafting"></i>`,
-        content: "circle",
-        visible: false,
-        hover: "Measurements"
-        },
-        {
-        title: `<i class="fa-solid fa-question"></i>`,
-        content: "about",
-        visible: false,
-        hover: "About"
-        },
-    ]
     
     function renderTabFlags(){
         tabFlags.forEach((flag, index) => {
@@ -95,50 +69,6 @@ window.onload = function(){
         })
     })
     
-    
-    const airportIcon = L.icon({
-        iconUrl: './Assets/marker_airport.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -42],
-    });
-    const locationIcon = L.icon({
-        iconUrl: './Assets/marker_location.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -42],
-    });
-    const navaidIcon = L.icon({
-        iconUrl: './Assets/marker_navaid.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -42],
-    });
-    const waypointIcon = L.icon({
-        iconUrl: './Assets/marker_waypoint.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -42],
-    });
-    const coordinateIcon = L.icon({
-        iconUrl: './Assets/marker_coordinate.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -42],
-    });
-    const bearingDistinateIcon = L.icon({
-        iconUrl: './Assets/marker_brgdist.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -42],
-    });
-    const lfnIcon = L.icon({
-        iconUrl: './Assets/marker_lfn.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -42],
-    });
-    
 // S E A R C H   O N   M A P   E V E N T   F U N C T I O N S
     
     function renderLoci(e){
@@ -177,10 +107,10 @@ window.onload = function(){
         }
     }
     
-    function renderNavaid(e){
+    async function renderNavaid(e){
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedNavaids = placeNavaid()
+            const returnedNavaids = await placeNavaid()
             if(returnedNavaids == undefined || returnedNavaids.length == 0){
                 return
             }
@@ -194,10 +124,10 @@ window.onload = function(){
         }
     }
     
-    function renderRep(e){
+    async function renderRep(e){
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedReps = placeRep()
+            const returnedReps = await placeRep()
             if(returnedReps == undefined || returnedReps.length == 0){
                 return
             }
@@ -224,10 +154,10 @@ window.onload = function(){
         }
     }
     
-    function renderBrgDist(e){
+    async function renderBrgDist(e){
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedBrgDists = placeBrgDist()
+            const returnedBrgDists = await placeBrgDist()
             if(returnedBrgDists == undefined || returnedBrgDists.length == 0){
                 return
             }
@@ -242,7 +172,7 @@ window.onload = function(){
     const queryEvents = ["click", "keypress"]
     
     queryEvents.forEach(queryEvent => {
-        document.getElementById("mapAllContainer").addEventListener(queryEvent, function(e) {
+        document.getElementById("mapAllContainer").addEventListener(queryEvent, async function(e) {
             if(e.key == "Enter" || (e.type == "click" && e.target.className == "queryButtons")){
                 document.getElementById("mapLoci").value = ""
                 document.getElementById("mapPlace").value = ""
@@ -250,7 +180,7 @@ window.onload = function(){
                 document.getElementById("mapRep").value = ""
                 document.getElementById("mapCoords").value = ""
                 clearMarkers()
-                const deconstructedRoute = routeDeconstructor()
+                const deconstructedRoute = await routeDeconstructor()
                 renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], deconstructedRoute[5], e)
             }
         })
@@ -320,36 +250,35 @@ window.onload = function(){
         addMarker(calculatedCoordinates[0], calculatedCoordinates[1])
     })
 
-// M A P   C O N S T A N T S / I N I T I A L I S E R S
-    
+    const airportIcon = L.icon(customMarkers.airportMarker);
+    const locationIcon = L.icon(customMarkers.locationMarker);
+    const navaidIcon = L.icon(customMarkers.navaidMarker);
+    const waypointIcon = L.icon(customMarkers.waypointMarker);
+    const coordinateIcon = L.icon(customMarkers.coordinateMarker);
+    const bearingDistinateIcon = L.icon(customMarkers.brgDistMarker);
+    const lfnIcon = L.icon(customMarkers.lfnMarker);
+
+     // M A P   C O N S T A N T S / I N I T I A L I S E R S
+
+   
     // Leaflet map instance
     const map = L.map('mapid').setView([46.80, 8.22], 8) // midpoint switzerland
-    // Map Tile Layers
-    const googleHybrid = 'http://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}' // not used but kept for reference
-    const googleMap = 'http://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}' // not used but kept for reference
-    const openStandard = `https://api.maptiler.com/maps/openstreetmap/256/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}` // direct OSM Tile Server link for reference https://tile.openstreetmap.org/{z}/{x}/{y}.png
-    const openTopo = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png' // not used but kept for reference
-    const natGeo = 'https://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/WMTS/tile/1.0.0/NatGeo_World_Map/{}/{}/{z}/{y}/{x}.jpg'
-    const nasaEsri = 'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/WMTS/tile/1.0.0/World_Imagery/{}/{}/{z}/{y}/{x}.jpg'
-    const maptilerBright = `https://api.maptiler.com/maps/bright/256/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`
-    const maptilerHybrid = `https://api.maptiler.com/maps/hybrid/256/{z}/{x}/{y}.jpg?key=${MAPTILER_API_KEY}`
-    const maptilerSwisstopoVivid = `https://api.maptiler.com/maps/ch-swisstopo-lbm-vivid/256/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`
-    // Overlay Tile Layers
-    const swisstopo = "https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg" // not used but kept for reference
-    const vfrChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.vbs.milairspacechart/default/current/3857/{z}/{x}/{y}.png'
-    const droneChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.einschraenkungen-drohnen/default/current/3857/{z}/{x}/{y}.png'
-    const airfieldChart = 'https://wmts20.geo.admin.ch/1.0.0/ch.bazl.flugplaetze-heliports/default/current/3857/{z}/{x}/{y}.png'
-    const hillshades = `https://api.maptiler.com/tiles/hillshade/{z}/{x}/{y}.webp?key=${MAPTILER_API_KEY}`
+   
     // Variable initialisers
-    
     let layerControl
     let tileLayer = null
     let overlay
+
     // Overlay toggle state initialisers
     let topoToggle = 0
     let vfrToggle = 0
     let droneToggle = 0
     let overlayArray = []
+
+        //Initial map load. Switch between test map and prod map respectively on test/push
+        createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        //  createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+
     
 // L A Y E R   R E N D E R E R S
 
@@ -360,8 +289,8 @@ window.onload = function(){
         if(resolution == 512){
             tileLayer = L.tileLayer((choice), {
                 attribution: atrribution,
-             //   tileSize: 512,
-             //   zoomOffset: -1
+               // tileSize: 512,
+              //  zoomOffset: -1
             })
         }
         else{
@@ -374,7 +303,7 @@ window.onload = function(){
 
     function createOverlay(map, choice, geojson){
         let opacity = 1
-        if(choice == droneChart){
+        if(choice == tileLayers.droneChart){
             opacity = 0.5
         }
         overlay = L.tileLayer(choice, {opacity: opacity})
@@ -397,36 +326,36 @@ window.onload = function(){
 
    /* document.getElementById("toggleTopo").addEventListener("click", function(){
         if(topoToggle == 0){
-            createOverlay(map, hillshades, null)
+            createOverlay(map, tileLayers.hillshades, null)
             topoToggle = 1
         } else if (topoToggle == 1){
-            removeOverlays(hillshades)
+            removeOverlays(tileLayers.hillshades)
             topoToggle = 0
         }
     }) */
-     
+    
     document.getElementById("toggleVFR").addEventListener("click", function(){
         if(vfrToggle == 0){
-            createOverlay(map, vfrChart, null)
+            createOverlay(map, tileLayers.vfrChart, null)
             vfrToggle = 1
         } else if (vfrToggle == 1){
-            removeOverlays(vfrChart)
+            removeOverlays(tileLayers.vfrChart)
             vfrToggle = 0
         }
     })
 
     document.getElementById("toggleDrone").addEventListener("click", function(){
         if(droneToggle == 0){
-            createOverlay(map, droneChart, null)
+            createOverlay(map, tileLayers.droneChart, null)
             droneToggle = 1
         } else if (droneToggle == 1){
-            removeOverlays(droneChart)
+            removeOverlays(tileLayers.droneChart)
             droneToggle = 0
         }
     })
+
     
-    
-    const LD_FIR = L.geoJSON(Croatia, featureFIR).bindTooltip(function (layer) {
+   /* const LD_FIR = L.geoJSON(Croatia, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
     const LD_TMA = L.geoJSON(Croatia, featureTMA).bindTooltip(function (layer) {
@@ -443,7 +372,7 @@ window.onload = function(){
     })
     const ED_CTR = L.geoJSON(Germany, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
-    })*/
+    })
     const EB_FIR = L.geoJSON(Belgium, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
@@ -453,7 +382,7 @@ window.onload = function(){
     const EB_CTR = L.geoJSON(Belgium, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
-    /* const LF_FIR = L.geoJSON(France, featureFIR).bindTooltip(function (layer) {
+    const LF_FIR = L.geoJSON(France, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
     const LF_TMA = L.geoJSON(France, featureTMA).bindTooltip(function (layer) {
@@ -461,11 +390,11 @@ window.onload = function(){
     })
     const LF_CTR = L.geoJSON(France, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
-    })*/
+    })
     const LI_FIR = L.geoJSON(Italy, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
-    /*const LI_TMA = L.geoJSON(Italy, featureTMA).bindTooltip(function (layer) {
+    const LI_TMA = L.geoJSON(Italy, featureTMA).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
     const LI_CTR = L.geoJSON(Italy, featureCTR).bindTooltip(function (layer) {
@@ -474,52 +403,58 @@ window.onload = function(){
     const LE_FIR = L.geoJSON(Spain, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
-    /*const LE_TMA = L.geoJSON(Spain, featureTMA).bindTooltip(function (layer) {
+    const LE_TMA = L.geoJSON(Spain, featureTMA).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
     const LE_CTR = L.geoJSON(Spain, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
-    })*/
+    })
     const LY_FIR = L.geoJSON(Serbia, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
-    })
-    const LY_TMA = L.geoJSON(Serbia, featureTMA).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
-    })
-    const LY_CTR = L.geoJSON(Serbia, featureCTR).bindTooltip(function (layer) {
+    })*/
+  //  const LY_TMA = await fetchShapes("LY") 
+   /* const LY_CTR = L.geoJSON(Serbia, featureCTR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
     const LS_FIR = L.geoJSON(Switzerland, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
-    })
+    })*/
     const LS_SUBFIR = L.geoJSON(SwitzerlandSub, featureFIR).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
 
+
+    async function fetchShapes(shape){
+        const country = await fetch(`/Data/${shape}.json`).then(result => result.json())
+        L.geoJSON(country, featureTMA).bindTooltip(async function (layer) {
+            return (layer.feature.properties.name).toString();  
+        })
+    }
+
     const overlays = {
-        "LS FIR Switzerland": LS_FIR,
+       // "LS FIR Switzerland": LS_FIR,
         "LSAG/LSAZ BDRY": LS_SUBFIR,
         // "LD FIR Croatia": LD_FIR,
-        "LD TMA Croatia": LD_TMA, 
+      //  "LD TMA Croatia": LD_TMA, 
         // "LD CTR Croatia": LD_CTR,
         //"ED FIR Germany": ED_FIR,
         // "ED TMA Germany": ED_TMA, 
         // "ED CTR Germany": ED_CTR,
-        "EB FIR Belgium": EB_FIR,
-        "EB TMA Belgium": EB_TMA, 
-        "EB CTR Belgium": EB_CTR,
+     //   "EB FIR Belgium": EB_FIR,
+      //  "EB TMA Belgium": EB_TMA, 
+      //  "EB CTR Belgium": EB_CTR,
         //"LF FIR France": LF_FIR,
         // "LF TMA France": LF_TMA, 
         // "LF CTR France": LF_CTR,
-        "LI FIR Italy": LI_FIR,
+      //  "LI FIR Italy": LI_FIR,
         // "LI TMA Italy": LI_TMA, 
         // "LI CTR Italy": LI_CTR,
         //"LE FIR Spain": LE_FIR,
         // "LE TMA Spain": LE_TMA, 
         // "LE CTR Spain": LE_CTR,
-        "LY FIR Serbia": LY_FIR,
-        "LY TMA Serbia": LY_TMA, 
-        "LY CTR Serbia": LY_CTR,
+      //  "LY FIR Serbia": LY_FIR,
+      //  "LY TMA Serbia": LY_TMA, 
+      //  "LY CTR Serbia": LY_CTR,
     };
 
     layerControl = L.control.layers(null, overlays)
@@ -536,7 +471,9 @@ window.onload = function(){
     let markerArray = []; // initialises array for all the markers
     let markLatLong = [] // this is a hacky array needed for the line drawing between markers
     let polyline // initialises varaible for the line between markers
+    let decorator
     let polylines = [] // initialises array for all the lines
+    let decorators = []
     let latLong = []; // initialises array to hold coordinates of all clicked markers
     let markerDistanceArray = []
     let corners = []
@@ -588,8 +525,14 @@ window.onload = function(){
             let bounds = L.latLngBounds([corners]); // define the map boundaries within those corners...
             map.fitBounds(bounds) //... and set the zoom level to include all corners
         }
-        marker.addEventListener("dblclick", function(e) { //its a bit weird that the event handler for the markers has to be included in the addMarker function but whatever, it doesnt work otherwise
-            markerDistanceArray.push(marker)
+
+        marker.addEventListener("dblclick", function() { //its a bit weird that the event handler for the markers has to be included in the addMarker function but whatever, it doesnt work otherwise
+            drawPolyline(marker)
+        })
+    }
+    
+    function drawPolyline(marker){
+        markerDistanceArray.push(marker)
             console.log(markerDistanceArray)
             let distbetween
             let distbetweenNM
@@ -610,14 +553,23 @@ window.onload = function(){
                 totalArray.push(total)
                 let reducedTotal = totalArray.reduce((previousValue, currentValue) => { return (parseFloat(previousValue) + parseFloat(currentValue)).toFixed(2) } )
                 distanceBar(markLatLong[1]._popup._content, distbetweenNM, markLatLong[0]._popup._content, total, reducedTotal)
-                polyline = L.polyline([markLatLong[0].getLatLng(), markLatLong[1].getLatLng()],{ // drwas a line between the clicked and the last clicked marker
-                    color: 'red'
+                console.log([markLatLong[1].getLatLng()], [markLatLong[0].getLatLng()])
+                polyline = L.Polyline.Arc([markLatLong[1].getLatLng().lat, markLatLong[1].getLatLng().lng], [markLatLong[0].getLatLng().lat,markLatLong[0].getLatLng().lng],{ // drwas a line between the clicked and the last clicked marker
+                    color: 'red',
+                    stroke: true,
+                    vertices: 200
                 }).addTo(map);
+               decorator = L.polylineDecorator(polyline, {
+    patterns: [
+        // defines a pattern of 10px-wide dashes, repeated every 20px on the line
+        {offset: 50, repeat: 50, symbol: L.Symbol.arrowHead({pixelSize: 15, pathOptions: {fillOpacity: 1, weight: 0, color: "red"}})}
+    ]
+}).addTo(map);
                 polylines.push(polyline) // adds the polyline object to the polylines array 
+                decorators.push(decorator)
             } else {
                 markLatLong.push(latLong[0]) // else just push the one thats there
             }
-        })
     }
 
     function distanceBar(dep, dist, dest, total, reducedTotal){
@@ -709,11 +661,14 @@ window.onload = function(){
             polylines[i].remove(map) // removes them from the map. not sure which one is doing it exactly so better two than none
             map.removeLayer(polylines[i]);
         }
+        for(let i = 0; i < decorators.length; i++) {
+            map.removeLayer(decorators[i])
+        }
         // these clear various arrays  so it wont display any lines all again after a new click
         polylines = []
         latLong = []
         markLatLong = []
-
+        decorators = []
     }
 
     document.getElementById("focusSwitzerland").addEventListener("click", function() {
@@ -729,50 +684,7 @@ window.onload = function(){
         // set map focus to world, midpoint coordinate Ukraine
     })
 
-    const mapTileChoices = [
-            {
-            title: "Basic",
-            image: "./Assets/maptilerBasic.jpg",
-            map: maptilerBright,
-            resolution: 512,
-            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`
-            },
-            {
-            title: "Satellite",
-            image: "./Assets/maptilerSatellite.jpg",
-            map: maptilerHybrid,
-            resolution: 512,
-            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`
-            },
-            {
-            title: "Open Street Maps",
-            image: "./Assets/maptilerOSM.jpg",
-            map: openStandard,
-            resolution: 512,
-            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`
-            },
-            {
-            title: "swisstopo",
-            image: "./Assets/maptilerSwisstopo.jpg",
-            map: maptilerSwisstopoVivid,
-            resolution: 512,
-            attribution: `<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a> © swisstopo <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a> <a href="https://www.swisstopo.admin.ch/en/home.html" target="_blank">&copy; swisstopo</a>`
-            },
-            {
-            title: "National Geographic",
-            image: "./Assets/natgeo.jpg",
-            map: natGeo,
-            resolution: 256,
-            attribution: `<a href="https://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer" target="_blank">&copy; National Geographic, Esri, Garmin, HERE, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, increment P Corp.</a>`
-            },
-            {
-            title: "NASA / ESRI",
-            image: "./Assets/nasa.jpg",
-            map: nasaEsri,
-            resolution: 256,
-            attribution: `<a href="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer" target="_blank">&copy; Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community</a>`
-            },
-        ]
+    
 
 
     function mapStylesContent(){
@@ -794,11 +706,12 @@ window.onload = function(){
     }
 
     mapStylesContent()
-    createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+    
+
 
     function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDist, e){
         // console.log(navaids, locis, waypoints, otherWords, coordAll, e)
-        if(navaids.length > 0){
+        if(navaids?.length > 0){
             navaids = new Set(navaids)
             navaids = Array.from(navaids)
             navaids = navaids.toString()
@@ -806,7 +719,7 @@ window.onload = function(){
             document.getElementById("mapNavaid").value = navaids
             renderNavaid(e)
         }
-        if(locis.length > 0){
+        if(locis?.length > 0){
             locis = new Set(locis)
             locis = Array.from(locis)
             locis = locis.toString()
@@ -814,7 +727,7 @@ window.onload = function(){
             document.getElementById("mapLoci").value = locis
             renderLoci(e)
         }
-        if(waypoints.length > 0){
+        if(waypoints?.length > 0){
             waypoints = new Set(waypoints)
             waypoints = Array.from(waypoints)
             waypoints = waypoints.toString()
@@ -822,14 +735,14 @@ window.onload = function(){
             document.getElementById("mapRep").value = waypoints
             renderRep(e)
         }
-        if(otherWords.length > 0){
+        if(otherWords?.length > 0){
             otherWords = new Set(otherWords)
             otherWords = Array.from(otherWords)
             otherWords = otherWords.toString()
             document.getElementById("mapPlace").value = otherWords
             renderPlace(e)
         }
-        if(coordAll.length > 0){
+        if(coordAll?.length > 0){
             coordAll = new Set(coordAll)
             coordAll = Array.from(coordAll)
             coordAll = coordAll.toString()
@@ -837,7 +750,7 @@ window.onload = function(){
             document.getElementById("mapCoords").value = coordAll
             renderCoord(e)
         }
-        if(brgDist.length > 0){
+        if(brgDist?.length > 0){
             brgDist = new Set(brgDist)
             brgDist = Array.from(brgDist)
             brgDist = brgDist.toString()
@@ -895,82 +808,7 @@ window.onload = function(){
         document.getElementById("cursorTooltip").style.display="none"
     })
     
-    const drawLineOptions = {
-        position: 'topleft',            // Position to show the control. Values: 'topright', 'topleft', 'bottomright', 'bottomleft'
-        unit: 'nauticalmiles',             // Default unit the distances are displayed in. Values: 'kilometres', 'landmiles', 'nauticalmiles'
-        useSubunits: true,              // Use subunits (metres/feet) in tooltips if distances are less than 1 kilometre/landmile
-        clearMeasurementsOnStop: true,  // Clear all measurements when Measure Control is switched off
-        showBearings: true,            // Whether bearings are displayed within the tooltips
-        bearingTextIn: 'In',            // language dependend label for inbound bearings
-        bearingTextOut: 'Out',          // language dependend label for outbound bearings
-        tooltipTextFinish: 'Click to <b>finish line</b><br>',
-        tooltipTextDelete: 'Press SHIFT-key and click to <b>delete point</b>',
-        tooltipTextMove: 'Click and drag to <b>move point</b><br>',
-        tooltipTextResume: '<br>Press CTRL-key and click to <b>resume line</b>',
-        tooltipTextAdd: 'Press CTRL-key and click to <b>add point</b>',
-                                        // language dependend labels for point's tooltips
-        measureControlTitleOn: 'Turn on PolylineMeasure',   // Title for the Measure Control going to be switched on
-        measureControlTitleOff: 'Turn off PolylineMeasure', // Title for the Measure Control going to be switched off
-        measureControlLabel: '&#8614;', // Label of the Measure Control (Unicode symbols are possible)
-        measureControlClasses: [],      // Classes to apply to the Measure Control
-        showClearControl: true,        // Show a control to clear all the measurements
-        clearControlTitle: 'Clear Measurements', // Title text to show on the Clear Control
-        clearControlLabel: '&times',    // Label of the Clear Control (Unicode symbols are possible)
-        clearControlClasses: [],        // Classes to apply to Clear Control
-        showUnitControl: false,         // Show a control to change the units of measurements
-        unitControlUnits: ["kilometres", "landmiles", "nauticalmiles"],
-                                        // measurement units being cycled through by using the Unit Control
-        unitControlTitle: {             // Title texts to show on the Unit Control
-            text: 'Change Units',
-            kilometres: 'kilometres',
-            landmiles: 'land miles',
-            nauticalmiles: 'nautical miles'
-        },
-        unitControlLabel: {             // Unit symbols to show in the Unit Control and measurement labels
-            metres: 'm',
-            kilometres: 'km',
-            feet: 'ft',
-            landmiles: 'mi',
-            nauticalmiles: 'nm'
-        },
-        unitControlClasses: [],         // Classes to apply to the Unit Control
-        tempLine: {                     // Styling settings for the temporary dashed line
-            color: '#00f',              // Dashed line color
-            weight: 2                   // Dashed line weight
-        },          
-        fixedLine: {                    // Styling for the solid line
-            color: '#006',              // Solid line color
-            weight: 2                   // Solid line weight
-        },
-        startCircle: {                  // Style settings for circle marker indicating the starting point of the polyline
-            color: '#000',              // Color of the border of the circle
-            weight: 1,                  // Weight of the circle
-            fillColor: '#0f0',          // Fill color of the circle
-            fillOpacity: 1,             // Fill opacity of the circle
-            radius: 3                   // Radius of the circle
-        },
-        intermedCircle: {               // Style settings for all circle markers between startCircle and endCircle
-            color: '#000',              // Color of the border of the circle
-            weight: 1,                  // Weight of the circle
-            fillColor: '#ff0',          // Fill color of the circle
-            fillOpacity: 1,             // Fill opacity of the circle
-            radius: 3                   // Radius of the circle
-        },
-        currentCircle: {                // Style settings for circle marker indicating the latest point of the polyline during drawing a line
-            color: '#000',              // Color of the border of the circle
-            weight: 1,                  // Weight of the circle
-            fillColor: '#f0f',          // Fill color of the circle
-            fillOpacity: 1,             // Fill opacity of the circle
-            radius: 3                   // Radius of the circle
-        },
-        endCircle: {                    // Style settings for circle marker indicating the last point of the polyline
-            color: '#000',              // Color of the border of the circle
-            weight: 1,                  // Weight of the circle
-            fillColor: '#f00',          // Fill color of the circle
-            fillOpacity: 1,             // Fill opacity of the circle
-            radius: 3                   // Radius of the circle
-        },
-    };
+    
     
     L.control.polylineMeasure(drawLineOptions).addTo(map);
     map.on('polylinemeasure:start', currentLine => {
@@ -979,16 +817,26 @@ window.onload = function(){
         }, 100)
     })
     
-    const rainViewer = L.control.rainviewer({ 
-        position: 'topleft',
-        nextButtonText: '>',
-        playStopButtonText: 'Play/Stop',
-        prevButtonText: '<',
-        positionSliderLabelText: "Hour:",
-        opacitySliderLabelText: "Opacity:",
-        animationInterval: 500,
-        opacity: 0.5
-    })
+    const rainViewer = L.control.rainviewer(rainviewerOptions)
     rainViewer.addTo(map);
- 
+    
+    
+    function displayDABSdata(){
+        fetch('KOSIF_20211116_02.kml')
+                    .then(res => res.text())
+                    .then(kmltext => {
+                        // Create new kml overlay
+                        const parser = new DOMParser();
+                        const kml = parser.parseFromString(kmltext, 'text/xml');
+                        const track = new L.KML(kml);
+                        map.addLayer(track);
+
+                        // Adjust map to show the kml
+                        const bounds = track.getBounds();
+                        map.fitBounds(bounds);
+                    });
+    }            
+    
+    console.timeEnd("start onload")
+  
 }
