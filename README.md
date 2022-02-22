@@ -3,6 +3,46 @@
 AIM Mapping Tool is an open source application developed as a supplementary tool for AIM Services Switzerland, specifically to aid in plotting VFR flight plan routes.
 Although it features official Swiss federal map and Eurocontrol data, it is not an official application and thus shall not be used for navigational purposes.
 
+* [Overview](https://github.com/m00gendai/mapping-tool-v2#overview)
+	* [Toolbar Features](https://github.com/m00gendai/mapping-tool-v2#toolbar-features)
+		* [Search on Map](https://github.com/m00gendai/mapping-tool-v2#search-on-map)
+		* [Coordinate Conversion](https://github.com/m00gendai/mapping-tool-v2#coordinate-conversion)
+		* [Map Styles](https://github.com/m00gendai/mapping-tool-v2#map-styles)
+		* [Plot Circle](https://github.com/m00gendai/mapping-tool-v2#plot-circle)
+		* [About](https://github.com/m00gendai/mapping-tool-v2#about)
+	* [Map View Features](https://github.com/m00gendai/mapping-tool-v2#map-view-features)
+		* [Top Left](https://github.com/m00gendai/mapping-tool-v2#top-left)
+		* [Top Right](https://github.com/m00gendai/mapping-tool-v2#top-right)
+		* [Bottom Block](https://github.com/m00gendai/mapping-tool-v2#bottom-block)
+	* [General Features](https://github.com/m00gendai/mapping-tool-v2#general-features)
+		* [Markers & Lines](https://github.com/m00gendai/mapping-tool-v2#markers--lines)
+		* [Current User Position Coordinates](https://github.com/m00gendai/mapping-tool-v2#current-curser-position-coordinates)
+* [Known Limitations](https://github.com/m00gendai/mapping-tool-v2#known-limitations)
+	* [Places](https://github.com/m00gendai/mapping-tool-v2#places)
+	* [Airspace Shapes](https://github.com/m00gendai/mapping-tool-v2#airspace-shapes)
+	* [Navaid Search](https://github.com/m00gendai/mapping-tool-v2#navaid-search)
+	* [Waypoint Search](https://github.com/m00gendai/mapping-tool-v2#waypoint-search)
+	* [Query All](https://github.com/m00gendai/mapping-tool-v2#query-all)
+	* [General](https://github.com/m00gendai/mapping-tool-v2#general)
+* [Known Bugs](https://github.com/m00gendai/mapping-tool-v2#known-bugs)
+* [Planned Features](https://github.com/m00gendai/mapping-tool-v2#planned-features)
+* [Setup](https://github.com/m00gendai/mapping-tool-v2#setup)
+	* [Dependencies](https://github.com/m00gendai/mapping-tool-v2#dependencies)
+	* [Functionality](https://github.com/m00gendai/mapping-tool-v2#functionality)
+		* [Search on Map](https://github.com/m00gendai/mapping-tool-v2#search-on-map-1)
+		* [Search ALL](https://github.com/m00gendai/mapping-tool-v2#search-all)
+		* [Coordinate Conversion](https://github.com/m00gendai/mapping-tool-v2#coordinate-conversion-1)
+* [Data Delivery](https://github.com/m00gendai/mapping-tool-v2#data-delivery)
+* [Data Sources](https://github.com/m00gendai/mapping-tool-v2#data-sources)
+	* [ICAO Location Indicators](https://github.com/m00gendai/mapping-tool-v2#icao-location-indicators)
+	* [ICAO Waypoint/Reporting Point Indicators](https://github.com/m00gendai/mapping-tool-v2#icao-waypointreporting-point-indicators)
+	* [LFN Waypoint/Reporting Point Indicators](https://github.com/m00gendai/mapping-tool-v2#lfn-waypointreporting-point-indicators)
+	* [ICAO Navigation Aid Indicators](https://github.com/m00gendai/mapping-tool-v2#icao-navigation-aid-indicators)
+	* [Place Names](https://github.com/m00gendai/mapping-tool-v2#place-names)
+	* [Airspace Shapes](https://github.com/m00gendai/mapping-tool-v2#airspace-shapes-1)
+* [Contribution Guidelines](https://github.com/m00gendai/mapping-tool-v2#contribution-guidelines)
+* [Who do I talk to?](https://github.com/m00gendai/mapping-tool-v2#who-do-i-talk-to)
+
 ## Overview ##
 
 The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the right.
@@ -101,7 +141,9 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 	* Arrows indicating direction
 	* Account for earth curvature (great circle instead of straight line)
 
-#### Current curser position coordinates in decimal and WGS84 degrees  ####
+#### Current curser position coordinates ####
+* Decimal Degrees
+* WGS84 Degrees Minutes Seconds
 
 ## Known limitations ##
 
@@ -223,17 +265,20 @@ Eurocontrol European AIS Database
 ### ICAO Waypoint/Reporting Point Indicators ###
 Eurocontrol European AIS Database
 
+### LFN Waypoint/Reporting Point Indicators ###
+Eurocontrol European AIS Database
+
 ### ICAO Navigation Aid Indicators ###
 Eurocontrol European AIS Database
 
 ### Place names ###
 google Maps JavaScript API
 
-### Airspace shapes ###
+### Airspace Shapes ###
 * openAIP
 * [skyguide AIM Services](https://www.skyguide.ch/services/aeronautical-information-management)
 
-## Contribution guidelines ##
+## Contribution Guidelines ##
 
 None
 
