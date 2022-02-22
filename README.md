@@ -19,10 +19,10 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 	* Case insensitive
 	* Returns ICAO Waypoint/Reporting Point Ident on map
 * ICAO Navigation Aids (worldwide)
-	* VOR, VOR/DME, DME, TACAN, VORTAC, NDB
+	* VOR, VOR/DME, DME, TACAN, VORTAC
 	* Single or multiple (space separated)
 	* Case insensitive
-	* Returns ICAO Navigation Aid Ident, Type, Name and ISO 3166-1 alpha-2 country code on map
+	* Returns ICAO Navigation Aid Ident and Type on map
 * Geographical locations (worldwide)
 	* Via google Maps JavaScript API
 	* Single or multiple (space separated)
@@ -80,17 +80,13 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 #### Top Right ####
 
 * Toggle Airspace Layers
-	* LSAS FIR and SubFIR boundary (displayed by default)
-	* LDZO TMA
-	* EBBU & ELLX FIR, TMA and CTR
-	* LIMM/LIRR/LIBB FIR
-	* LYBA FIR, TMA and CTR
+	* LSAS SubFIR boundary (displayed by default)
 
 #### Bottom Block ####
 * Clear markers
 * Toggle marker popups
 * Clear marker connection lines
-* Hill Shading Layer
+* Clear all
 * swisstopo VFR ICAO Map 1:500000 Switzerland
 * Swiss Restricted Airspaces for Drones
 * Focus Switzerland Boundary Points
@@ -102,6 +98,8 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 #### Markers & Lines ####
 * Distinct markers for queried location data type
 * Drawable lines between markers
+	* Arrows indicating direction
+	* Account for earth curvature (great circle instead of straight line)
 
 #### Current curser position coordinates in decimal and WGS84 degrees  ####
 
@@ -112,13 +110,16 @@ Subject to google Maps JavaScript API
 
 #### Airspace shapes ####
 * Dependent on data delivery (if and how)
-* Tooltips do not display ICAO 4-letter-code of Airspace, only Airspace name (this is due to data delivery)
 
 #### Navaid search ####
-If multiple Navaids with the same Ident exist, the tool plots them all as it cannot detect from context which would be the correct one to plot
+* If multiple Navaids with the same Ident exist, the tool plots them all as it cannot detect from context which would be the correct one to plot
+* EAD does not provide a report for NDBs, so NDB queries are not possible
+* EAD does not provide a type annotation for DME and TACAN data, and since they are merged, it currently cannot be determined if a navaid is a DME or a TACAN
+* EAD lists a VOR/DME navaid both under VOR and DME reports, so they will be plotted twice; once with VOR annotation, and with DME annotation
 
 #### Waypoint search ####
 * LFN Waypoints not yet covered
+* EAD does not provide a report for South/West hemisphere waypoints, which means there is no waypoint data for South America
 * There are guards in place for geographical location names with five letters. A five letter word is checked against the waypoint database and a database of known location/waypoint name hybrids. In case of a location/waypoint hybrid (example: EVIAN - Waypoint in Japan and village in France), precedence is given to the waypoint, with an alert notifying a possible location with the same name (i.e., the waypoint EVIAN in Japan gets plotted, and an alert notifies you about a location with the same name)
 
 #### Query all #### 
@@ -131,7 +132,7 @@ Special characters like umlauts, accented vocals etc are first deburred to Latin
 	
 ## Known Bugs ##
 
-Character encoding issues (umlauts etc - UTF-8 is not applied everyhwere)
+* When measuring EET between two points, adding a new marker and confirming the speed again also updates the total EET from the first to markers, but should only update total EET including the last marker
 
 ## Planned Features ##
 
@@ -149,6 +150,8 @@ See [Trello](https://trello.com/b/yzfLBL7h/aim-mapping-tool)
 * [leaflet](https://leafletjs.com/)
 	* [Rainviewer from mwasil](https://github.com/mwasil/Leaflet.Rainviewer)
 	* [PolylineMeasure from ppete2](https://github.com/ppete2/Leaflet.PolylineMeasure)
+	* [Arc from mad-gooze](https://github.com/MAD-GooZe/Leaflet.Arc)
+	* [PolylineDecorator from bbecquet](https://github.com/bbecquet/Leaflet.PolylineDecorator)
 * [geodesy (latlon-ellipsoidal-vincenty.js)](http://www.movable-type.co.uk/scripts/geodesy-library.html)
 * [lodash](https://lodash.com/)
 * [Font Awesome 6 Free](https://fontawesome.com/)
@@ -211,17 +214,18 @@ Data is provided via plain JavaScript Objects in dedicated .js files files for:
 * Airspace shapes
 
 These will have to be updated on AIRAC dates. Input data is either CSV, raw text or XML. You will need to convert the input data into usable Objects. 
+[Here](https://github.com/m00gendai/EAD-XML-to-JSON) is a tool that converts EAD XML to JSON and merges them into a justom JavaScript Object for use in the mapping tool.
 
 ## Data Sources ##
 
 ### ICAO Location Indicators ###
-ourairports.com
+Eurocontrol European AIS Database
 
 ### ICAO Waypoint/Reporting Point Indicators ###
 Eurocontrol European AIS Database
 
 ### ICAO Navigation Aid Indicators ###
-ourairports.com
+Eurocontrol European AIS Database
 
 ### Place names ###
 google Maps JavaScript API
