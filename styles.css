@@ -254,6 +254,9 @@ h4{
 	color: white;
 	display: none;
 	z-index: 1000;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
 }
 
 
@@ -263,6 +266,7 @@ h4{
 	width: 100%;
 	border-collapse: collapse;
 	table-layout: fixed; 
+    margin: 0 0 2em 0;
 }
 
 #timeInputContainer {
@@ -271,6 +275,19 @@ h4{
 
 #mapDistanceBar table td{
 	text-align: center;
+}
+
+#expandMapDistanceBar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    bottom:0;
+    transform: translateX(-50%);
+    width: 5em;
+    height: 1em;
+    color: black;
 }
 
 #tabContainer {
