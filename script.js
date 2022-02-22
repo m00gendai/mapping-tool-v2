@@ -117,8 +117,26 @@ window.onload =  function(){
             if(!Array.isArray(returnedNavaids[0])){ 
                 addMarker(returnedNavaids[0], returnedNavaids[1], returnedNavaids[2], "NAVAID")
             } else {
-                returnedNavaids.forEach(returnedNavaid => {
-                    addMarker(returnedNavaid[0], returnedNavaid[1], returnedNavaid[2], "NAVAID")
+                /* This probably very inefficient algorithm checks if there is a VOR and DME with the same coordinates and if so, only displays the VOR and if not, displays the DME/TACAN
+                Its not really pretty and its convoluted but "it works" */
+                const vors = returnedNavaids.filter(returnedNavaid => {return !returnedNavaid[2].includes("DME or TACAN")}) // gets all VORs
+                const dmes = returnedNavaids.filter(returnedNavaid => {return returnedNavaid[2].includes("DME or TACAN")}) // gets all TACANs and DMEs
+                const dme2s = [] // empty array for non unique navaids
+                dmes.forEach(dme => {
+                    vors.forEach(vor => {
+                        if(dme[0] == vor[0] && dme[1] == vor[1]){ // checks if the coordinates for each vor and dme are identical
+                            dme2s.push(dme) // if so, pushes the dme that coordinate-matches with a vor to the dem2s array
+                        }
+                    })
+                })
+                if(dme2s.length != dmes.length){ // if the dme2s array is a different size than dme array, that means there is one or more unique DMEs
+                    dmes.forEach(dme => {
+                        if(!dme2s.includes(dme)) // so for each dme in the dme array, if it is not in the dme2s array (meaning its unique), push it to the vor array
+                        vors.push(dme)
+                    })
+                }
+                vors.forEach(vor => { // and then just plot everything
+                    addMarker(vor[0], vor[1], vor[2], "NAVAID")
                 })
             }
         }
@@ -276,8 +294,8 @@ window.onload =  function(){
     let overlayArray = []
 
         //Initial map load. Switch between test map and prod map respectively on test/push
-        //createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
-          createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        // createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
 
     
 // L A Y E R   R E N D E R E R S
