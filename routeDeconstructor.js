@@ -70,6 +70,7 @@ function checkWaypoints(rte, mappedWaypoints){
     const waypointMatch = rte.match(/\b([A-Z]){5}\b/g)
     const lfnMatch = rte.match(/\b(LS)([0-9]){3}\b/g)
     console.log(`Waypoint Matches : ${waypointMatch}`)
+    console.log(`LFN Matches : ${lfnMatch}`)
     let waypoints = []
     if(waypointMatch){
         for (const matchingWaypoint of waypointMatch) {
@@ -80,11 +81,13 @@ function checkWaypoints(rte, mappedWaypoints){
                 }
             }
         }
+    }
+    if(lfnMatch){
         for (const lfnWaypoint of lfnMatch){
             waypoints.push(lfnWaypoint)
         }
-        console.log(`5 letter words: ${waypoints}`)
     }
+    console.log(`5 letter words: ${waypoints}`)
     return waypoints
 }
 
