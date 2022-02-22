@@ -68,6 +68,7 @@ function checkLocis(rte, mappedAirports){
 
 function checkWaypoints(rte, mappedWaypoints){
     const waypointMatch = rte.match(/\b([A-Z]){5}\b/g)
+    const lfnMatch = rte.match(/\b(LS)([0-9]){3}\b/g)
     console.log(`Waypoint Matches : ${waypointMatch}`)
     let waypoints = []
     if(waypointMatch){
@@ -78,6 +79,9 @@ function checkWaypoints(rte, mappedWaypoints){
                     alert(`Waypoint and Location with same name exists: ${matchingWaypoint}. Please search for location manually.`)
                 }
             }
+        }
+        for (const lfnWaypoint of lfnMatch){
+            waypoints.push(lfnWaypoint)
         }
         console.log(`5 letter words: ${waypoints}`)
     }
