@@ -22,7 +22,7 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 	* VOR, VOR/DME, DME, TACAN, VORTAC
 	* Single or multiple (space separated)
 	* Case insensitive
-	* Returns ICAO Navigation Aid Ident and Type on map
+	* Returns ICAO Navigation Aid Ident, Type and Name on map
 * Geographical locations (worldwide)
 	* Via google Maps JavaScript API
 	* Single or multiple (space separated)
@@ -115,7 +115,6 @@ Subject to google Maps JavaScript API
 * If multiple Navaids with the same Ident exist, the tool plots them all as it cannot detect from context which would be the correct one to plot
 * EAD does not provide a report for NDBs, so NDB queries are not possible
 * EAD does not provide a type annotation for DME and TACAN data, and since they are merged, it currently cannot be determined if a navaid is a DME or a TACAN
-* EAD lists a VOR/DME navaid both under VOR and DME reports, so they will be plotted twice; once with VOR annotation, and with DME annotation
 
 #### Waypoint search ####
 * LFN Waypoints not yet covered
