@@ -1,5 +1,8 @@
-# Sources Folder of Data Directory
-/Data/Sources
+#XML Files
+*.xml
 
-#google API keys
-googleAPIs.js
+#JSON Files
+*.json
+
+#Python Files
+*.py
