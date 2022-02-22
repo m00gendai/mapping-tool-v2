@@ -197,6 +197,7 @@ window.onload =  function(){
                 document.getElementById("mapNavaid").value = ""
                 document.getElementById("mapRep").value = ""
                 document.getElementById("mapCoords").value = ""
+                document.getElementById("mapBrgDist").value = ""
                 clearMarkers()
                 const deconstructedRoute = await routeDeconstructor()
                 renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], deconstructedRoute[5], e)
@@ -294,8 +295,8 @@ window.onload =  function(){
     let overlayArray = []
 
         //Initial map load. Switch between test map and prod map respectively on test/push
-        // createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
-        createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        //  createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
 
     
 // L A Y E R   R E N D E R E R S
@@ -697,6 +698,13 @@ window.onload =  function(){
     document.getElementById("clearAll").addEventListener("click", function() {
         clearMarkers()
         clearLines()
+        document.getElementById("mapLoci").value = ""
+        document.getElementById("mapPlace").value = ""
+        document.getElementById("mapNavaid").value = ""
+        document.getElementById("mapRep").value = ""
+        document.getElementById("mapCoords").value = ""
+        document.getElementById("mapBrgDist").value = ""
+        document.getElementById("mapAll").value = ""
     })
     
     function clearLines(){
