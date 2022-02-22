@@ -3,10 +3,9 @@ const sameNameLocationsWaypoints = [
     ]
 
 export function routeDeconstructor(){
-    const mappedAirports = airports.map(airport => {return airport.gps_code})
-    const mappedWaypoints = waypointsICAO.map(waypoint => {return waypoint.Identification})
-    const mappedNavaids = navaids.map(navaid => {return navaid.ident})
-    const mappedNavaidsLatLng = navaids.map(navaid => {return [navaid.ident, navaid.latitude_deg, navaid.longitude_deg]})
+    const mappedAirports = airports.map(airport => {return airport.codeId})
+    const mappedWaypoints = waypoints.map(waypoint => {return waypoint.codeId})
+    const mappedNavaids = navaids.map(navaid => {return navaid.codeId})
     const rte = document.getElementById("mapAll").value.toUpperCase()
     console.log(`Input string: ${rte}`)
     const foundNavaids = checkNavaids(rte, mappedNavaids)
@@ -113,8 +112,7 @@ function checkOther(rte, navaids, waypoints, locis){
     }
     if(otherMatch){
         for (const match of otherMatch) {
-            console.log(match)
-            if(!checkArray2.includes(match)){
+             if(!checkArray2.includes(match)){
                 otherWords.push(match)
             }
         }
@@ -144,4 +142,3 @@ function checkCoordinates(rte){
     } 
     return coordAll
 }
-
