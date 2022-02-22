@@ -10,7 +10,11 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         if(lociField == ""){
             return // does nothing if input field is empty
         }
-        const newAirports = airports.map(data => {return [data.gps_code, data.longitude_deg, data.latitude_deg, data.name]}) // makes a two dimensional array of airport data
+        const newAirports = airports.map(data => {return [
+            data.codeId, 
+            data.geoLat.charAt(data.geoLat.length-1) == "N" ? data.geoLat.substring(0, data.geoLat.length-1) : `-${data.geoLat.substring(0, data.geoLat.length-1)}`,  
+            data.geoLong.charAt(data.geoLong.length-1) == "E" ? data.geoLong.substring(0, data.geoLong.length-1) : `-${data.geoLong.substring(0, data.geoLong.length-1)}`,
+            data.txtName]}) 
         const newAirportCodes = newAirports.map(code => {return code[0]}) // makes a one dimensional array just with airport codes
         if (!lociField.includes(" ")) { // checks if a single airport is searched
             if(!newAirportCodes.includes(lociField.toUpperCase())){ // checks if the single airport is in the airport code array
@@ -19,7 +23,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             }
             for(const airport of newAirports){ // for every airport data array in the multi dimensional airport data array...
                 if(lociField.toUpperCase() == airport[0]){ //... check if the single airport equals the airport code of the airport data array
-                    return [airport[2], airport[1], `${airport[0]}<br>${airport[3]}`]
+                    return [airport[1], airport[2], `${airport[0]}<br>${airport[3]}`]
                   //  addMarker(airport[2], airport[1], `${airport[0]}<br>${airport[3]}`) // if yes, place a marker
                 }
             }
@@ -29,7 +33,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             multiPorts.forEach(multiPort => { // for every searched loci...
                 for(const airport of newAirports){ // ...and for every airport array of the multi dimensional airport data array...
                     if(multiPort.toUpperCase() == airport[0].toUpperCase()){ // if the searched loci equals the airport code of the airport data array...
-                        multiLocis.push([airport[2], airport[1], `${airport[0]}<br>${airport[3]}`])
+                        multiLocis.push([airport[1], airport[2], `${airport[0]}<br>${airport[3]}`])
                         //addMarker(airport[2], airport[1], `${airport[0]}<br>${airport[3]}`) // ... place a marker for each airport
                     } 
                 }
@@ -90,7 +94,12 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         if(navaidField == ""){
             return
         }
-        const newNavaids = navaids.map(data => {return [data.ident, data.name, data.type, data.frequency_khz,   data.longitude_deg, data.latitude_deg, data.iso_country]})
+        const newNavaids = navaids.map(data => {return [
+            data.codeId, 
+            data.geoLat.charAt(data.geoLat.length-1) == "N" ? data.geoLat.substring(0, data.geoLat.length-1) : `-${data.geoLat.substring(0, data.geoLat.length-1)}`,  
+            data.geoLong.charAt(data.geoLong.length-1) == "E" ? data.geoLong.substring(0, data.geoLong.length-1) : `-${data.geoLong.substring(0, data.geoLong.length-1)}`,
+            data.txtName,
+            data.codeType ? data.codeType : "DME or TACAN"]})
         const newNavaidCodes = newNavaids.map(code => {return code[0]})
         if (!navaidField.includes(" ")) {
             let sameIdent = []
@@ -100,7 +109,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             }
             for(const navaid of newNavaids){
                 if(navaidField.toUpperCase() == navaid[0]){
-                    sameIdent.push([navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`])
+                    sameIdent.push([navaid[1], navaid[2], `${navaid[0]} ${navaid[4]}`])
                     //return [navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`]
                     //addMarker(navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`)
                 }
@@ -112,7 +121,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             multiAids.forEach(multiAid => {
                 for(const navaid of newNavaids){
                     if(multiAid.toUpperCase() == navaid[0].toUpperCase()){
-                        multiNavs.push([navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`])
+                        multiNavs.push([navaid[1], navaid[2], `${navaid[0]} ${navaid[4]}`])
                         // addMarker(navaid[5], navaid[4], `${navaid[0]} ${navaid[2]}<br>${navaid[1]}, ${navaid[6]}`)
                     }
                 }
@@ -132,7 +141,11 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         if(repField == ""){
             return
         }
-        const newReps = waypointsICAO.map(data => {return [data.Identification, data.Latitude, data.Longitude]})
+        const newReps = waypoints.map(data => {return [
+            data.codeId, 
+            data.geoLat.charAt(data.geoLat.length-1) == "N" ? data.geoLat.substring(0, data.geoLat.length-1) : `-${data.geoLat.substring(0, data.geoLat.length-1)}`,  
+            data.geoLong.charAt(data.geoLong.length-1) == "E" ? data.geoLong.substring(0, data.geoLong.length-1) : `-${data.geoLong.substring(0, data.geoLong.length-1)}`,
+            data.txtName]})
         const newRepCodes = newReps.map(code => {return code[0]})
         if (!repField.includes(" ")) {
             if(!newRepCodes.includes(repField.toUpperCase())){
@@ -141,14 +154,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             }
             for(const rep of newReps){
                 if(repField.toUpperCase() == rep[0]){
-                    if(rep[1].includes(".")){
-                        rep[1] = rep[1].replace(/([.][0-9]*[^NESW])/, "")
-                    }
-                    if(rep[2].includes(".")){
-                        rep[2] = rep[2].replace(/([.][0-9]*[^NESW])/, "")
-                    }
-                    const convertedRepCoordinates = convertRepCoordinates(rep[1], rep[2])
-                    return [convertedRepCoordinates[0], convertedRepCoordinates[1], rep[0]]
+                    return [rep[1], rep[2], rep[0]]
                     // addMarker(convertedRepCoordinates[0], convertedRepCoordinates[1], rep[0])
                 }
             }
@@ -158,14 +164,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             multiReps.forEach(multiRep => {
                 for(const rep of newReps){
                     if(multiRep.toUpperCase() == rep[0].toUpperCase()){
-                        if(rep[1].includes(".")){
-                            rep[1] = rep[1].replace(/([.][0-9]+[^NESW])/, "")
-                        }
-                        if(rep[2].includes(".")){
-                            rep[2] = rep[2].replace(/([.][0-9]+[^NESW])/, "")
-                        }
-                        const convertedRepCoordinates = convertRepCoordinates(rep[1], rep[2])
-                        multiWays.push([convertedRepCoordinates[0], convertedRepCoordinates[1], rep[0]])
+                        multiWays.push([rep[1], rep[2], rep[0]])
                         // addMarker(convertedRepCoordinates[0], convertedRepCoordinates[1], rep[0])
                     }
                 }
@@ -225,8 +224,16 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         if(BrgDistValue == ""){
             return
         }
-        const mappedNavaidsLatLng = navaids.map(navaid => {return [navaid.ident, navaid.latitude_deg, navaid.longitude_deg]})
-        const mappedWaypointsLatLng = waypointsICAO.map(waypoint => {return [waypoint.Identification, waypoint.Latitude, waypoint.Longitude]})
+        const mappedNavaidsLatLng = navaids.map(data => {return [
+            data.codeId, 
+            data.geoLat.charAt(data.geoLat.length-1) == "N" ? data.geoLat.substring(0, data.geoLat.length-1) : `-${data.geoLat.substring(0, data.geoLat.length-1)}`,  
+            data.geoLong.charAt(data.geoLong.length-1) == "E" ? data.geoLong.substring(0, data.geoLong.length-1) : `-${data.geoLong.substring(0, data.geoLong.length-1)}`,
+            data.txtName]})
+        const mappedWaypointsLatLng = waypoints.map(data => {return [
+            data.codeId, 
+            data.geoLat.charAt(data.geoLat.length-1) == "N" ? data.geoLat.substring(0, data.geoLat.length-1) : `-${data.geoLat.substring(0, data.geoLat.length-1)}`,  
+            data.geoLong.charAt(data.geoLong.length-1) == "E" ? data.geoLong.substring(0, data.geoLong.length-1) : `-${data.geoLong.substring(0, data.geoLong.length-1)}`,
+            data.txtName]})
         const brgDistArray = BrgDistValue.split(/\s+/g) // s+ is one or more whitespace characters
         let newMarkerArray = []
         brgDistArray.forEach(brgDist => {
@@ -250,20 +257,12 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
                 const distanceM = (distanceNM*1.852)*1000
                 for(const mappedWaypoint of mappedWaypointsLatLng){
                     if(mappedWaypoint[0] == waypoint){
-                        if(mappedWaypoint[1].includes(".")){
-                            mappedWaypoint[1] = mappedWaypoint[1].replace(/([.][0-9]*[^NESW])/, "")
-                        }
-                        if(mappedWaypoint[2].includes(".")){
-                            mappedWaypoint[2] = mappedWaypoint[2].replace(/([.][0-9]*[^NESW])/, "")
-                        }
-                        const convertedRepCoordinates = convertRepCoordinates(mappedWaypoint[1], mappedWaypoint[2])
-                        const p1 = new LatLon(convertedRepCoordinates[0], convertedRepCoordinates[1])
+                        const p1 = new LatLon(mappedWaypoint[1], mappedWaypoint[2])
                         const p2 = p1.destinationPoint(distanceM, bearing)
                         newMarkerArray.push([`${waypoint}${brgDist.substring(5,8)}${brgDist.substring(8,11)}`, p2._lat, p2._lon])
                     }
                 }
             }
         })
-        console.log(newMarkerArray)
         return newMarkerArray
     }
