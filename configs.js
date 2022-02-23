@@ -243,42 +243,8 @@ export const customMarkers = {
     }
 }
 
-export const featureFIR = {
-    style: function(feature) {
-        if (feature.properties.name.includes("FIR")) {
-             return {color: "#4b0082"}; // indigo
-        }
-    },
-	filter: function(feature, layer) {
-	if(feature.properties.name.includes("FIR")){
-        return feature.properties.name;
-		}
-        
-    }
-}
-export const featureTMA = {
-    style: function(feature) {
-        if(feature.properties.name.includes("TMA")) {
-            return {color: "#0000ff"}; // blue
-			} 
-    },
-	filter: function(feature, layer) {
-	if(feature.properties.name.includes("TMA")){
-        return feature.properties.name;
-		}
-        
-    }
-}
-export const featureCTR = {
-    style: function(feature) {
-        if (feature.properties.name.includes("CTR")) {
-             return {color: "#ffa500"}; // orange
-        }
-    },
-	filter: function(feature, layer) {
-	if(feature.properties.name.includes("CTR")){
-        return feature.properties.name;
-		}
-        
-    }
-}
+export const colorFIR = "#4b0082" // indigo
+export const colorTMA = "#0000ff" // blue
+export const colorCTR = "#ffa500" // orange
+export const colorFIC = "#000000" // black
+export const colorPoint = "#000000" // black
