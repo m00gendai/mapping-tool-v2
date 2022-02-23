@@ -120,7 +120,16 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 #### Top Right ####
 
 * Toggle Airspace Layers
-	* LSAS SubFIR boundary (displayed by default)
+	* EB FIR
+	* EB TMA
+	* LD FIR
+	* LD TMA
+	* LS FIR
+	* LS LSAG/LSAZ Boundary (displayed by default)
+	* LI ARO Boundary
+	* LJ VFR Reporting Points
+	* LD FIR
+	* LD TMA
 
 #### Bottom Block ####
 * Clear markers
@@ -275,8 +284,11 @@ Eurocontrol European AIS Database
 google Maps JavaScript API
 
 ### Airspace Shapes ###
-* openAIP
-* [skyguide AIM Services](https://www.skyguide.ch/services/aeronautical-information-management)
+* If not specifically mentioned: [openAip.net](https://openaip.net)
+* LS FIR: [skyguide AIM Services](https://www.skyguide.ch/services/aeronautical-information-management)
+* LSAG/LSAZ Boundary: created myself
+* LI ARO Boundary: created myself
+* LJ VFR Reporting Points: created myself
 
 ## Contribution Guidelines ##
 
