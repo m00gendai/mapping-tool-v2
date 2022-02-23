@@ -2,9 +2,9 @@ import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist
 import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDecToDeg } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
 import { MAPS_API_KEY } from "/keys.js"
-import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, featureFIR, featureTMA } from "/configs.js"
+import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorFIC, colorPoint } from "/configs.js"
 
-window.onload =  function(){
+window.onload = async function(){
     console.time("start onload")
 
     const googleMapsAPIScript = document.createElement("script")
@@ -373,112 +373,72 @@ window.onload =  function(){
         }
     })
 
+    const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}} ).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();
+    })
+    const LS_SUBFIR = L.geoJSON(SwitzerlandSub, {style: {color: colorFIC}} ).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();
+    })
+    const LI_FIC =  L.geoJSON(ItalyFIC, {style: {color: colorFIC}} ).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();
+    })
+    const LJ = L.geoJSON(LJ_VFR_REP, {style: {color: colorPoint}} ).bindTooltip(function (layer) {
+        return (layer.feature.properties.Name).toString();  
+    })
+    const EB_FIR = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
+        if(feature.properties.name.includes("FIR")){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
+    const EB_TMA = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
+        if(feature.properties.name.includes("TMA")){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
+    const LD_FIR = L.geoJSON(Croatia, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.name == "ZAGREB"){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
+    const LD_TMA = L.geoJSON(Croatia, {style: {color: colorTMA}, filter: function(feature, layer) {
+        if(feature.properties.name.includes("TMA")){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
+    const LY_FIR = L.geoJSON(Serbia, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.name.includes("FIR")){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
+    const LY_TMA = L.geoJSON(Serbia, {style: {color: colorTMA}, filter: function(feature, layer) {
+        if(feature.properties.name.includes("TMA")){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
     
-   /* const LD_FIR = L.geoJSON(Croatia, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LD_TMA = L.geoJSON(Croatia, featureTMA).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    /*const LD_CTR = L.geoJSON(Croatia, featureCTR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const ED_FIR = L.geoJSON(Germany, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    /*const ED_TMA = L.geoJSON(Germany, featureTMA).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const ED_CTR = L.geoJSON(Germany, featureCTR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const EB_FIR = L.geoJSON(Belgium, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const EB_TMA = L.geoJSON(Belgium, featureTMA).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const EB_CTR = L.geoJSON(Belgium, featureCTR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LF_FIR = L.geoJSON(France, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LF_TMA = L.geoJSON(France, featureTMA).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LF_CTR = L.geoJSON(France, featureCTR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LI_FIR = L.geoJSON(Italy, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LI_TMA = L.geoJSON(Italy, featureTMA).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LI_CTR = L.geoJSON(Italy, featureCTR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LE_FIR = L.geoJSON(Spain, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LE_TMA = L.geoJSON(Spain, featureTMA).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LE_CTR = L.geoJSON(Spain, featureCTR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LY_FIR = L.geoJSON(Serbia, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })*/
-  //  const LY_TMA = await fetchShapes("LY") 
-   /* const LY_CTR = L.geoJSON(Serbia, featureCTR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-    const LS_FIR = L.geoJSON(Switzerland, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })*/
-    const LS_SUBFIR = L.geoJSON(SwitzerlandSub, featureFIR).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
-    })
-
-
-    async function fetchShapes(shape){
-        const country = await fetch(`/Data/${shape}.json`).then(result => result.json())
-        L.geoJSON(country, featureTMA).bindTooltip(async function (layer) {
-            return (layer.feature.properties.name).toString();  
-        })
-    }
-
     const overlays = {
-       // "LS FIR Switzerland": LS_FIR,
-        "LSAG/LSAZ BDRY": LS_SUBFIR,
-        // "LD FIR Croatia": LD_FIR,
-      //  "LD TMA Croatia": LD_TMA, 
-        // "LD CTR Croatia": LD_CTR,
-        //"ED FIR Germany": ED_FIR,
-        // "ED TMA Germany": ED_TMA, 
-        // "ED CTR Germany": ED_CTR,
-     //   "EB FIR Belgium": EB_FIR,
-      //  "EB TMA Belgium": EB_TMA, 
-      //  "EB CTR Belgium": EB_CTR,
-        //"LF FIR France": LF_FIR,
-        // "LF TMA France": LF_TMA, 
-        // "LF CTR France": LF_CTR,
-      //  "LI FIR Italy": LI_FIR,
-        // "LI TMA Italy": LI_TMA, 
-        // "LI CTR Italy": LI_CTR,
-        //"LE FIR Spain": LE_FIR,
-        // "LE TMA Spain": LE_TMA, 
-        // "LE CTR Spain": LE_CTR,
-      //  "LY FIR Serbia": LY_FIR,
-      //  "LY TMA Serbia": LY_TMA, 
-      //  "LY CTR Serbia": LY_CTR,
+        "EB FIR": EB_FIR,
+        "EB TMA": EB_TMA,
+        "LD FIR": LD_FIR,
+        "LD TMA": LD_TMA,
+        "LS FIR": LS_FIR,
+        "LS LSAG/LSAZ BDRY": LS_SUBFIR,
+        "LI ARO BDRY": LI_FIC,
+        "LJ VFR REP": LJ,
+        "LY FIR": LY_FIR,
+        "LY TMA": LY_TMA
     };
 
     layerControl = L.control.layers(null, overlays)
     layerControl.addTo(map);
     LS_SUBFIR.addTo(map)
+
 
     document.getElementById("clearPopups").addEventListener("click", function(){
         let popupCount = document.querySelectorAll(".leaflet-popup-close-button")
