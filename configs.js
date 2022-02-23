@@ -240,6 +240,12 @@ export const customMarkers = {
         iconSize: [38, 38],
         iconAnchor: [19, 38],
         popupAnchor: [0, -42],
+    },
+    vfrRepMarker: {
+        iconUrl: './Assets/marker_vfrrep.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
     }
 }
 
