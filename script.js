@@ -150,10 +150,20 @@ window.onload = async function(){
                 return
             }
             if(!Array.isArray(returnedReps[0])){ 
-                addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "WAYPOINT")
+                if(returnedReps[2].match(/\b([A-Z]){5}\b/g)){
+                    addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "WAYPOINT")
+                }
+                if(returnedReps[2].match(/\b(LS)([0-9]){3}\b/g)){
+                    addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "LFN")
+                }
             } else {
                 returnedReps.forEach(returnedRep => {
+                    if(returnedRep[2].match(/\b([A-Z]){5}\b/g)){
                     addMarker(returnedRep[0], returnedRep[1], returnedRep[2], "WAYPOINT")
+                    }
+                    if(returnedRep[2].match(/\b(LS)([0-9]){3}\b/g)){
+                        addMarker(returnedRep[0], returnedRep[1], returnedRep[2], "LFN")
+                    }
                 })
             }
         }
@@ -382,7 +392,9 @@ window.onload = async function(){
     const LI_FIC =  L.geoJSON(ItalyFIC, {style: {color: colorFIC}} ).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();
     })
-    const LJ = L.geoJSON(LJ_VFR_REP, {style: {color: colorPoint}} ).bindTooltip(function (layer) {
+    const LJ_VFR_REPS = L.geoJSON(LJ_VFR_REP, {style: {color: colorPoint}, pointToLayer: function(geoJsonPoint, latlng) {
+        return L.marker(latlng, {icon: L.icon(customMarkers.vfrRepMarker)});
+    }} ).bindTooltip(function (layer) {
         return (layer.feature.properties.Name).toString();  
     })
     const EB_FIR = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
@@ -427,12 +439,13 @@ window.onload = async function(){
         "EB TMA": EB_TMA,
         "LD FIR": LD_FIR,
         "LD TMA": LD_TMA,
+        "LI ARO BDRY": LI_FIC,
+        "LJ VFR REP": LJ_VFR_REPS,
         "LS FIR": LS_FIR,
         "LS LSAG/LSAZ BDRY": LS_SUBFIR,
-        "LI ARO BDRY": LI_FIC,
-        "LJ VFR REP": LJ,
         "LY FIR": LY_FIR,
-        "LY TMA": LY_TMA
+        "LY TMA": LY_TMA,
+
     };
 
     layerControl = L.control.layers(null, overlays)
