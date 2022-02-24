@@ -1,5 +1,5 @@
 const sameNameLocationsWaypoints = [
-    "EVIAN"
+    "EVIAN", "ROCHE"
     ]
 
 export function routeDeconstructor(){
