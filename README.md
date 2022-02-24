@@ -136,7 +136,9 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 * Toggle marker popups
 * Clear marker connection lines
 * Clear all
-* swisstopo VFR ICAO Map 1:500000 Switzerland
+* VFR Charts
+	* swisstopo VFR ICAO Map 1:500000 Switzerland
+	* French VFR OACI Map
 * Swiss Restricted Airspaces for Drones
 * Focus Switzerland Boundary Points
 * Focus Europe Boundary Points
@@ -289,6 +291,11 @@ google Maps JavaScript API
 * LSAG/LSAZ Boundary: created myself
 * LI ARO Boundary: created myself
 * LJ VFR Reporting Points: created myself
+
+## Overlays
+* Swiss VFR Chart by [GeoAdmin](https://api3.geo.admin.ch/services/sdiservices.html)
+* French VFR Chart by [IGN](https://geoservices.ign.fr/)
+* Swiss Drone Restrictions by [GeoAdmin](https://api3.geo.admin.ch/services/sdiservices.html)
 
 ## Contribution Guidelines ##
 
