@@ -297,11 +297,11 @@ window.onload = async function(){
     let layerControl
     let tileLayer = null
     let overlay
-
     // Overlay toggle state initialisers
-    let topoToggle = 0
-    let vfrToggle = 0
-    let droneToggle = 0
+    let vfrToggleCH = false
+    let vfrToggleFR = false
+    let droneToggle = false
+    let toggleVFR = false
     let overlayArray = []
 
         //Initial map load. Switch between test map and prod map respectively on test/push
@@ -363,24 +363,22 @@ window.onload = async function(){
         }
     }) */
     
-    document.getElementById("toggleVFR").addEventListener("click", function(){
-        if(vfrToggle == 0){
-            createOverlay(map, tileLayers.vfrChart, null)
-            vfrToggle = 1
-        } else if (vfrToggle == 1){
-            removeOverlays(tileLayers.vfrChart)
-            vfrToggle = 0
-        }
+    document.getElementById("vfrCH").addEventListener("click", function(){
+        !vfrToggleCH ? createOverlay(map, tileLayers.vfrChartCH, null) : removeOverlays(tileLayers.vfrChartCH)
+        vfrToggleCH = !vfrToggleCH
     })
-
+    document.getElementById("vfrFrance").addEventListener("click", function(){
+        !vfrToggleFR ? createOverlay(map, tileLayers.vfrChartFR, null) : removeOverlays(tileLayers.vfrChartFR)
+        vfrToggleFR = !vfrToggleFR
+    })
     document.getElementById("toggleDrone").addEventListener("click", function(){
-        if(droneToggle == 0){
-            createOverlay(map, tileLayers.droneChart, null)
-            droneToggle = 1
-        } else if (droneToggle == 1){
-            removeOverlays(tileLayers.droneChart)
-            droneToggle = 0
-        }
+        !droneToggle ? createOverlay(map, tileLayers.droneChart, null) : removeOverlays(tileLayers.droneChart)
+        droneToggle = !droneToggle
+    })
+    
+    document.getElementById("toggleVFR").addEventListener("click", function(){
+        !toggleVFR ? document.getElementById("vfrContainer").style.display ="flex" : document.getElementById("vfrContainer").style.display ="none"
+        toggleVFR = !toggleVFR
     })
 
     const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}} ).bindTooltip(function (layer) {
