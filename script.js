@@ -300,6 +300,7 @@ window.onload = async function(){
     // Overlay toggle state initialisers
     let vfrToggleCH = false
     let vfrToggleFR = false
+    let vfrToggleDE = false
     let droneToggle = false
     let toggleVFR = false
     let overlayArray = []
@@ -363,12 +364,14 @@ window.onload = async function(){
         }
     }) */
     
-    document.getElementById("vfrCH").addEventListener("click", function(){
+     document.getElementById("vfrCH").addEventListener("click", function(){
         !vfrToggleCH ? createOverlay(map, tileLayers.vfrChartCH, null) : removeOverlays(tileLayers.vfrChartCH)
+        !vfrToggleCH ? document.getElementById("vfrCH").style.color = "lime" : document.getElementById("vfrCH").style.color = "white"
         vfrToggleCH = !vfrToggleCH
     })
     document.getElementById("vfrFrance").addEventListener("click", function(){
         !vfrToggleFR ? createOverlay(map, tileLayers.vfrChartFR, null) : removeOverlays(tileLayers.vfrChartFR)
+        !vfrToggleFR ? document.getElementById("vfrFrance").style.color = "lime" : document.getElementById("vfrFrance").style.color = "white"
         vfrToggleFR = !vfrToggleFR
     })
     document.getElementById("toggleDrone").addEventListener("click", function(){
@@ -379,6 +382,11 @@ window.onload = async function(){
     document.getElementById("toggleVFR").addEventListener("click", function(){
         !toggleVFR ? document.getElementById("vfrContainer").style.display ="flex" : document.getElementById("vfrContainer").style.display ="none"
         toggleVFR = !toggleVFR
+    })
+    document.getElementById("vfrGermany").addEventListener("click", function(){
+        !vfrToggleDE ? createOverlay(map, tileLayers.vfrChartDE, null) : removeOverlays(tileLayers.vfrChartDE)
+        !vfrToggleDE ? document.getElementById("vfrGermany").style.color = "lime" : document.getElementById("vfrGermany").style.color = "white"
+        vfrToggleDE = !vfrToggleDE
     })
 
     const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}} ).bindTooltip(function (layer) {
