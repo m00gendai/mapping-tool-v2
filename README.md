@@ -295,6 +295,7 @@ google Maps JavaScript API
 ## Overlays
 * Swiss VFR Chart by [GeoAdmin](https://api3.geo.admin.ch/services/sdiservices.html)
 * French VFR Chart by [IGN](https://geoservices.ign.fr/)
+* German VFR Chart by [DFS](https://www.dfs.de/dfs_homepage/en/Services/Customer%20Relations/INSPIRE/)
 * Swiss Drone Restrictions by [GeoAdmin](https://api3.geo.admin.ch/services/sdiservices.html)
 
 ## Contribution Guidelines ##
