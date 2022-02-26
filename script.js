@@ -286,6 +286,7 @@ window.onload = async function(){
     const coordinateIcon = L.icon(customMarkers.coordinateMarker);
     const bearingDistinateIcon = L.icon(customMarkers.brgDistMarker);
     const lfnIcon = L.icon(customMarkers.lfnMarker);
+    const customIcon = L.icon(customMarkers.customMarker);
 
      // M A P   C O N S T A N T S / I N I T I A L I S E R S
 
@@ -480,8 +481,9 @@ window.onload = async function(){
     let measurelines = []
     let speedTimeSecondsArray = []
     
-    function addMarker(ns, ew, title, type) { // adds a marker to the map based on the coordinates passed in from the airport query or the calculation results
+    function addMarker(ns, ew, title, type, setBounds) { // adds a marker to the map based on the coordinates passed in from the airport query or the calculation results
         let content
+        console.log(setBounds)
         if(title == undefined){
             content = "Lat: " + ns + " Long: " + ew
 		} else {
@@ -510,20 +512,24 @@ window.onload = async function(){
         else if(type =="LFN"){
             marker = new L.marker([ns, ew], {icon: lfnIcon}) // create a new marker
         } 
+        else if(type =="CUSTOM"){
+            marker = new L.marker([ns, ew], {icon: customIcon}) // create a new marker
+        } 
         marker.addTo(map) // add it to the map
         marker.bindPopup(new_popup).openPopup();
         marker._popup.setContent(content)
         markerArray.push(marker) // push it to the markerArray array
-        map.setView(marker.getLatLng(), 8); // focus the map on the maker
+        if(setBounds == undefined){
+            map.setView(marker.getLatLng(), 8); // focus the map on the maker
+        }
         for(const markerArrayElement of markerArray){
             let corner = [markerArrayElement.getLatLng().lat, markerArrayElement.getLatLng().lng] // defines a corner as the latitude/longitude of indexed marker
             corners.push(corner) // pushes that corner to the corners array
         }
-        if (corners.length > 1) { // if there is more than one corner...
+        if (corners.length > 1 && setBounds == undefined) { // if there is more than one corner...
             let bounds = L.latLngBounds([corners]); // define the map boundaries within those corners...
             map.fitBounds(bounds) //... and set the zoom level to include all corners
-        }
-
+        } 
         marker.addEventListener("dblclick", function() { //its a bit weird that the event handler for the markers has to be included in the addMarker function but whatever, it doesnt work otherwise
             drawPolyline(marker)
         })
@@ -865,7 +871,74 @@ window.onload = async function(){
                         const bounds = track.getBounds();
                         map.fitBounds(bounds);
                     });
-    }            
+    }
+	
+    countryShapes.features.forEach(feature => {
+        const country = L.geoJSON(feature, {style: {color: "#ff0000", opacity: 0, fillOpacity: 0, className: "countryShape"}}).addTo(map);
+        country.addEventListener("contextmenu", function(country){
+            createContextMenu(country)
+        })
+    })
+        
+    const clickEvents = ["click", "contextmenu"]
+    let contextVisible = false
+    clickEvents.forEach(clickEvent => {
+    document.getElementById("mapid").addEventListener(clickEvent, function(e){
+        if(e.target.className != "leftContextText" && e.target.className != "leftContextMenu"&& e.target.className != "leftContextList"){
+            const mapContainerChildElements = document.getElementById("mapid").children
+            for(const mapContainerChildElement of mapContainerChildElements){
+                if(mapContainerChildElement.className == "leftContextMenu"){
+                    if(contextVisible && clickEvent == "contextmenu"){
+                        document.getElementById("mapid").removeChild(mapContainerChildElement)
+                        contextVisible = !contextVisible
+                    }
+                    if(contextVisible && clickEvent == "click"){
+                        document.getElementById("mapid").removeChild(mapContainerChildElement)
+                    }
+                    contextVisible = !contextVisible
+                }
+            }
+        }
+    })
+    })
+    
+    map.addEventListener("contextmenu", function(e){
+        createContextMenu(e)
+    })
+    
+    function createContextMenu(source){
+        const leftClickLat = source.latlng.lat
+        const leftClickLng = source.latlng.lng
+        console.log(leftClickLat, leftClickLng)
+        const contextMenu = document.createElement("div")
+        contextMenu.className = "leftContextMenu"
+        contextMenu.style.top = `${source.containerPoint.y}px`
+        contextMenu.style.left = `${source.containerPoint.x}px`
+        document.getElementById("mapid").appendChild(contextMenu)
+        const ul = document.createElement("ul")
+        ul.className = "leftContextList"
+        contextMenu.appendChild(ul)
+        const liDropPin = document.createElement("li")
+        liDropPin.className="leftContextText"
+        liDropPin.innerHTML = `<i class="fa-solid fa-location-dot"></i> Drop Pin`
+        ul.appendChild(liDropPin)
+        liDropPin.addEventListener("click", function(){
+            addMarker(leftClickLat, leftClickLng, `Custom Marker<br>${leftClickLat.toFixed(6)} ${leftClickLng.toFixed(6)}`, "CUSTOM", false)
+        })
+        if(source.layer){
+            const liAronline = document.createElement("li")
+            liAronline.className = "leftContextText"
+            liAronline.innerHTML = `<i class="fa-solid fa-up-right-from-square"></i> AROnline Master Page for ${source.layer.feature.properties.ADMIN}`
+            ul.appendChild(liAronline)
+            liAronline.addEventListener("click", function(){
+                countryAronlineLink.forEach(link => {
+                    if(link.country.toUpperCase() === source.layer.feature.properties.ADMIN.toUpperCase()){
+                        window.open(`https://aronline.skyguide.corp/addressing/${link.icao.toLowerCase()}`)
+                    }
+                })
+            })
+        }
+    }
     
     console.timeEnd("start onload")
   
