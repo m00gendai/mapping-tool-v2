@@ -168,6 +168,10 @@ h4{
 	position: relative;
 }
 
+.mapOptions:hover{
+    cursor:pointer;
+}
+
 #clearMarker{
     background-image: url("./Assets/placeholder.png");
 }
@@ -418,4 +422,33 @@ transform: translateY(-100%);
     align-items: center;
     text-align: center;
     padding: 1em 0 1em 0;
+}
+
+.leftContextMenu{
+    background-color: #e7eff9;
+background-image: linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
+    position: absolute;
+    z-index: 20000;
+    box-shadow: 2px 2px 10px 0px #8F8F8F;
+    font-size: 1.5em;
+}
+
+.leftContextList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.leftContextText {
+    padding: 0.25em 1em 0.25em 1em;
+}
+.leftContextText .fa-solid{
+    margin: 0 0.5em 0 0;
+}
+.leftContextText:hover{
+    cursor:pointer;
+    background: lightgrey;
+}
+path.leaflet-interactive.countryShape {
+    cursor: crosshair;
+    caret-color: red;
 }
