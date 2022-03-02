@@ -440,10 +440,17 @@ window.onload = async function(){
         }}}).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();  
     })
+    const ED_FIR = L.geoJSON(Germany, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.name.startsWith("ED")){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
     
     const overlays = {
         "EB FIR": EB_FIR,
         "EB TMA": EB_TMA,
+	"ED FIR"_ ED_FIR,
         "LD FIR": LD_FIR,
         "LD TMA": LD_TMA,
         "LI ARO BDRY": LI_FIC,
