@@ -456,6 +456,7 @@ window.onload = async function(){
     const overlays = {
         "EB FIR": EB_FIR,
         "EB TMA": EB_TMA,
+	"EB CTR": EB_CTR,
 	"ED FIR": ED_FIR,
         "LD FIR": LD_FIR,
         "LD TMA": LD_TMA,
