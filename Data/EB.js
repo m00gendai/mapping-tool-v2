@@ -1,7 +1,7 @@
 const Belgium = [{
         "type": "Feature",
         "properties": {
-            "name": "ANTWERP CTR 135.200"
+            "name": "EBAW CTR 135.200"
         },
         "geometry": {
             "type": "Polygon",
@@ -61,7 +61,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "BEAUVECHAIN CTR 121.500"
+            "name": "EBBE CTR 121.500"
         },
         "geometry": {
             "type": "Polygon",
@@ -422,7 +422,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "BRUSSELS CTR 118.600"
+            "name": "EBBR CTR 118.600"
         },
         "geometry": {
             "type": "Polygon",
@@ -984,7 +984,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "Charleroi CTR 121.300"
+            "name": "EBCI CTR 121.300"
         },
         "geometry": {
             "type": "Polygon",
@@ -1237,7 +1237,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "CHIEVRES CTR 121.500"
+            "name": "EBCV CTR 121.500"
         },
         "geometry": {
             "type": "Polygon",
@@ -3958,7 +3958,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "FLORENNES CTR (TWR 125.875)"
+            "name": "EBFS CTR (TWR 125.875)"
         },
         "geometry": {
             "type": "Polygon",
@@ -5404,7 +5404,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "KLEINE BROGEL CTR 1 (TWR 134.1 WHEN ACT)"
+            "name": "EBBL CTR 1 (TWR 134.1 WHEN ACT)"
         },
         "geometry": {
             "type": "Polygon",
@@ -5608,7 +5608,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "KOKSIJDE CTR(OSTEND APP 126.600)"
+            "name": "EBFN CTR(OSTEND APP 126.600)"
         },
         "geometry": {
             "type": "Polygon",
@@ -7239,7 +7239,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "Liege CTR 129.250"
+            "name": "EBLG CTR 129.250"
         },
         "geometry": {
             "type": "Polygon",
@@ -8447,7 +8447,7 @@ const Belgium = [{
     {
         "type": "Feature",
         "properties": {
-            "name": "OOSTENDE CTR 118.175"
+            "name": "EBOS CTR 118.175"
         },
         "geometry": {
             "type": "Polygon",
