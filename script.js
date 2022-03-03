@@ -2,7 +2,7 @@ import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist
 import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDecToDeg } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
 import { MAPS_API_KEY } from "/keys.js"
-import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorFIC, colorPoint } from "/configs.js"
+import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorCTR, colorFIC, colorPoint } from "/configs.js"
 
 window.onload = async function(){
     console.time("start onload")
@@ -412,6 +412,12 @@ window.onload = async function(){
     })
     const EB_TMA = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
         if(feature.properties.name.includes("TMA")){
+            return feature.properties.name;
+        }}}).bindTooltip(function (layer) {
+        return (layer.feature.properties.name).toString();  
+    })
+    const EB_CTR = L.geoJSON(Belgium, {style: {color: colorCTR}, filter: function(feature, layer) {
+        if(feature.properties.name.includes("CTR")){
             return feature.properties.name;
         }}}).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();  
