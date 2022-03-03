@@ -404,7 +404,7 @@ window.onload = async function(){
     }} ).bindTooltip(function (layer) {
         return (layer.feature.properties.Name).toString();  
     })
-    const EB_FIR = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
+    const EB_FIR = L.geoJSON(Belgium, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.name.includes("FIR")){
             return feature.properties.name;
         }}}).bindTooltip(function (layer) {
