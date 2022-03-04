@@ -452,10 +452,11 @@ window.onload = async function(){
         return (layer.feature.properties.name).toString();  
     })
     const ED_FIR = L.geoJSON(Germany, {style: {color: colorFIR}, filter: function(feature, layer) {
-        if(feature.properties.name.startsWith("ED")){
-            return feature.properties.name;
-        }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
+        if(feature.properties.ICAO.startsWith("ED")){
+            return feature.properties.ICAO
+        }
+    }}).bindTooltip(function (layer) {
+        return (layer.feature.properties.ICAO).toString();  
     })
     
     const overlays = {
