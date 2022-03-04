@@ -434,6 +434,11 @@ window.onload = async function(){
         }}}).bindTooltip(function (layer) {
         return (layer.feature.properties.name).toString();  
     })
+    const LD_VFR_REPS = L.geoJSON(LD_VFR_REP, {style: {color: colorPoint}, pointToLayer: function(geoJsonPoint, latlng) {
+        return L.marker(latlng, {icon: L.icon(customMarkers.vfrRepMarker)});
+    }} ).bindTooltip(function (layer) {
+        return (layer.feature.properties.Name).toString();  
+    })
     const LY_FIR = L.geoJSON(Serbia, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.name.includes("FIR")){
             return feature.properties.name;
@@ -460,6 +465,7 @@ window.onload = async function(){
 	"ED FIR": ED_FIR,
         "LD FIR": LD_FIR,
         "LD TMA": LD_TMA,
+	"LD VFR REP:" LD_VFR_REPS,
         "LI ARO BDRY": LI_FIC,
         "LJ VFR REP": LJ_VFR_REPS,
         "LS FIR": LS_FIR,
