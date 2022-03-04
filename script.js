@@ -465,7 +465,7 @@ window.onload = async function(){
 	"ED FIR": ED_FIR,
         "LD FIR": LD_FIR,
         "LD TMA": LD_TMA,
-	"LD VFR REP:" LD_VFR_REPS,
+	"LD VFR REP": LD_VFR_REPS,
         "LI ARO BDRY": LI_FIC,
         "LJ VFR REP": LJ_VFR_REPS,
         "LS FIR": LS_FIR,
