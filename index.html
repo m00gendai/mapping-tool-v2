@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mwasil/Leaflet.Rainviewer/leaflet.rainviewer.css"/>
     <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    
     <script src="script.js" type="module" defer></script>
     <script src="queryFunctions.js" type="module" defer></script>
     <script src="coordinateConversions.js" type="module" defer></script>
@@ -35,12 +36,14 @@
     <script src="./Data/LS_SUBFIR.js" defer></script> 
     <script src="./Data/LI_FIC.js" defer></script> 
     <script src="./Data/LJ_VFR_REP.js" defer></script>
+    <script src="./Data/LD_VFR_REP.js" defer></script>
     <script src="./Data/EB.js" defer></script>
     <script src="./Data/LY.js" defer></script>
     <script src="./Data/LD.js" defer></script>
     <script src="./Data/ED.js" defer></script>
     <script src="./Data/countryShapes.js" defer></script>
     <script src="./Data/countryAronlineLink.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js" defer></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9XTDGNPBLY"></script>
     <script>
@@ -296,11 +299,13 @@
                                     </ul>
                                     <h4>Overlay Data Source</h4>
                                     <ul>
-                                        <li>Hill Shading via <a href="https://www.maptiler.com/" target="_blank">maptiler</a></li>
                                         <li>Swiss VFR Chart and Drone Areas via <a href="https://www.geo.admin.ch/en/geo-services/geo-services/portrayal-services-web-mapping/web-map-tiling-services-wmts.html" target="_blank">swisstopo</a></li>
+                                        <li>French VFR Chart via <a href="https://geoservices.ign.fr/" target="_blank">IGN</a></li>
+                                        <li>German VFR Chart via <a href="https://www.dfs.de/dfs_homepage/en/Services/Customer%20Relations/INSPIRE/" target="_blank">DFS</a></li>
                                         <li>Airspace layers via <a href="https://www.openaip.net/" target="_blank">openAIP.net</a></li>
                                         <li>Airspace layer Switzerland from <a href="https://www.skyguide.ch/services/aeronautical-information-management" target="_blanK">skyguide AIM Services</a></li>
-                                        <li>VFR Reporting Points Slovenia by <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a></li>
+                                        <li>Airspace Layer Germany by <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a></li>
+                                        <li>VFR Reporting Points Slovenia & Croatia by <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a></li>
                                         <li>LSAG/LSAZ Boundary by <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a></li>
                                         <li>Italy ARO Boundary by <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a></li>
                                         <li>Rainviewer from <a href="https://github.com/mwasil/Leaflet.Rainviewer" target="_blank">mwasil</a></li>
