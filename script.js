@@ -390,83 +390,107 @@ window.onload = async function(){
         vfrToggleDE = !vfrToggleDE
     })
 
-    const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}} ).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
+    const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+       return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
-    const LS_SUBFIR = L.geoJSON(SwitzerlandSub, {style: {color: colorFIC}} ).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
+    const LS_SUBFIR = L.geoJSON(SwitzerlandSub, {style: {color: colorFIC}, filter: function(feature, layer) {
+        if(feature.properties.Type == "BDRY"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.Name}` 
     })
-    const LI_FIC =  L.geoJSON(ItalyFIC, {style: {color: colorFIC}} ).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();
+    const LI_FIC = L.geoJSON(ItalyFIC, {style: {color: colorFIC}, filter: function(feature, layer) {
+        if(feature.properties.Type == "BDRY"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.Name}` 
     })
     const LJ_VFR_REPS = L.geoJSON(LJ_VFR_REP, {style: {color: colorPoint}, pointToLayer: function(geoJsonPoint, latlng) {
-        return L.marker(latlng, {icon: L.icon(customMarkers.vfrRepMarker)});
+        return L.marker(latlng, {icon: L.icon(customMarkers.sloveniaMarker)});
     }} ).bindTooltip(function (layer) {
-        return (layer.feature.properties.Name).toString();  
-    })
-    const EB_FIR = L.geoJSON(Belgium, {style: {color: colorFIR}, filter: function(feature, layer) {
-        if(feature.properties.name.includes("FIR")){
-            return feature.properties.name;
-        }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
-    })
-    const EB_TMA = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
-        if(feature.properties.name.includes("TMA")){
-            return feature.properties.name;
-        }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
-    })
-    const EB_CTR = L.geoJSON(Belgium, {style: {color: colorCTR}, filter: function(feature, layer) {
-        if(feature.properties.name.includes("CTR")){
-            return feature.properties.name;
-        }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
-    })
-    const LD_FIR = L.geoJSON(Croatia, {style: {color: colorFIR}, filter: function(feature, layer) {
-        if(feature.properties.name == "ZAGREB"){
-            return feature.properties.name;
-        }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
-    })
-    const LD_TMA = L.geoJSON(Croatia, {style: {color: colorTMA}, filter: function(feature, layer) {
-        if(feature.properties.name.includes("TMA")){
-            return feature.properties.name;
-        }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
+         return `${layer.feature.properties.Name}`  
     })
     const LD_VFR_REPS = L.geoJSON(LD_VFR_REP, {style: {color: colorPoint}, pointToLayer: function(geoJsonPoint, latlng) {
-        return L.marker(latlng, {icon: L.icon(customMarkers.vfrRepMarker)});
+        return L.marker(latlng, {icon: L.icon(customMarkers.croatiaMarker)});
     }} ).bindTooltip(function (layer) {
-        return (layer.feature.properties.Name).toString();  
+         return `${layer.feature.properties.Name}` 
+    })
+    const EB_FIR = L.geoJSON(Belgium, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+    const EB_TMA = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
+        if(feature.properties.Type == "TMA"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+    const EB_CTR = L.geoJSON(Belgium, {style: {color: colorCTR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "CTR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}`  
+    })
+        
+    const LD_FIR = L.geoJSON(Croatia, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+    const LD_TMA = L.geoJSON(Croatia, {style: {color: colorTMA}, filter: function(feature, layer) {
+        if(feature.properties.Type == "TMA"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        const LD_CTR = L.geoJSON(Croatia, {style: {color: colorCTR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "CTR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
     const LY_FIR = L.geoJSON(Serbia, {style: {color: colorFIR}, filter: function(feature, layer) {
-        if(feature.properties.name.includes("FIR")){
-            return feature.properties.name;
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
     const LY_TMA = L.geoJSON(Serbia, {style: {color: colorTMA}, filter: function(feature, layer) {
-        if(feature.properties.name.includes("TMA")){
-            return feature.properties.name;
+       if(feature.properties.Type == "TMA"){
+            return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return (layer.feature.properties.name).toString();  
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
+
     const ED_FIR = L.geoJSON(Germany, {style: {color: colorFIR}, filter: function(feature, layer) {
-        if(feature.properties.ICAO.startsWith("ED")){
-            return feature.properties.ICAO
-        }
-    }}).bindTooltip(function (layer) {
-        return (layer.feature.properties.ICAO).toString();  
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        const LF_FIR = L.geoJSON(France, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
     
     const overlays = {
         "EB FIR": EB_FIR,
         "EB TMA": EB_TMA,
-	"EB CTR": EB_CTR,
-	"ED FIR": ED_FIR,
+        "EB CTR": EB_CTR,
+        "ED FIR": ED_FIR,
         "LD FIR": LD_FIR,
         "LD TMA": LD_TMA,
-	"LD VFR REP": LD_VFR_REPS,
+        "LD CTR": LD_CTR,
+        "LD VFR REP": LD_VFR_REPS,
+        "LF FIR": LF_FIR,
         "LI ARO BDRY": LI_FIC,
         "LJ VFR REP": LJ_VFR_REPS,
         "LS FIR": LS_FIR,
