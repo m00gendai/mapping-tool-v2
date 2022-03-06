@@ -243,14 +243,20 @@ export const customMarkers = {
         iconAnchor: [19, 38],
         popupAnchor: [0, -42],
     },
-    vfrRepMarker: {
-        iconUrl: './Assets/marker_vfrrep.png',
+    customMarker: {
+        iconUrl: './Assets/marker_custom.png',
         iconSize: [38, 38],
         iconAnchor: [19, 38],
         popupAnchor: [0, -42],
     },
-    customMarker: {
-        iconUrl: './Assets/marker_custom.png',
+    sloveniaMarker: {
+        iconUrl: './Assets/slovenia.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -42],
+    },
+    croatiaMarker: {
+        iconUrl: './Assets/croatia.png',
         iconSize: [38, 38],
         iconAnchor: [19, 38],
         popupAnchor: [0, -42],
