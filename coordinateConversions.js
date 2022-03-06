@@ -13,45 +13,30 @@ export function convertRepCoordinates(latitude, longitude){
 // function to convert DEG MIN SEC to DECIMAL
 export function calcDegToDec(nsdeg, nsmin, nssec, ewdeg, ewmin, ewsec, nsSel, ewSel) {
     let degArray = []; // initialises coordinate array to be returned
-    let nsdegDiv // initialises degree value for N or S
-    if (nsSel == "N") {
-        nsdegDiv = parseInt(nsdeg) // if north degree, keep the degree input value
-    } else if (nsSel == "S") {
-        nsdegDiv = parseInt(`-${nsdeg}`) // if south degree, convert it to negative input value
-    }
     if(nsdeg == undefined){
         return
     }
+    let nsdegToDec // initialises variable for the complete decimal value
     const nsminDiv = nsmin / 60 // gets decimal number for N or S minutes
     const nssecDiv = nssec / 3600 // gets decimal number for N or S seconds
-    let ewdegDiv // same as with nsdegDiv but for E or W inputs
-    if (ewSel == "E") {
-        ewdegDiv = parseInt(ewdeg)
-    } else if (ewSel == "W") {
-        ewdegDiv = parseInt(`-${ewdeg}`)
-    }
-    const ewminDiv = ewmin / 60
-    const ewsecDiv = ewsec / 3600
-    let nsdegToDec // initialises variable for the complete decimal value
-    if(nsdegDiv == 0){
-        nsdegDiv = 0.00000001
-    }
-    if (nsdegDiv > 0) { // if degrees are N (positive) or S (negative)...
-        nsdegToDec = nsdegDiv + nsminDiv + nssecDiv //... if positive, add values
-    } else if (nsdegDiv < 0) {
-        nsdegToDec = nsdegDiv - nsminDiv - nssecDiv // if negative, subtract values
+    if (nsSel == "N") {
+        nsdegToDec = parseFloat(nsdeg)+nsminDiv+nssecDiv
+    } 
+    if (nsSel == "S") {
+        nsdegToDec = parseFloat(`-${parseFloat(nsdeg) + nsminDiv + nssecDiv}`)
     }
     let ewdegToDec // same as nsdegToDec
-    if(ewdegDiv == 0){
-        ewdegDiv = 0.00000001
+    const ewminDiv = ewmin / 60
+    const ewsecDiv = ewsec / 3600
+    if (ewSel == "E") {
+        ewdegToDec = parseFloat(ewdeg) + ewminDiv + ewsecDiv
+    } 
+    if (ewSel == "W") {
+        ewdegToDec = parseFloat(`-${parseFloat(ewdeg) + ewminDiv + ewsecDiv}`)
     }
-    if (ewdegDiv > 0) {
-        ewdegToDec = ewdegDiv + ewminDiv + ewsecDiv
-    } else if (ewdegDiv < 0) {
-        ewdegToDec = ewdegDiv - ewminDiv - ewsecDiv
-    }
-    degArray.push(parseFloat(nsdegToDec).toFixed(4)); // push N or S coordinate to array with four decimal points
-    degArray.push(parseFloat(ewdegToDec).toFixed(4)); // push E or W coordinate to array with four decimal points
+    degArray.push(nsdegToDec.toFixed(4)); // push N or S coordinate to array with four decimal points
+    degArray.push(ewdegToDec.toFixed(4)); // push E or W coordinate to array with four decimal points
+    console.log(degArray)
     return degArray // returns array of coordinates
 }
 
