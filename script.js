@@ -398,8 +398,10 @@ window.onload = async function(){
     })
     const LS_SUBFIR = L.geoJSON(SwitzerlandSub, {style: {color: colorFIC}, filter: function(feature, layer) {
         if(feature.properties.Type == "BDRY"){
+		console.log("boundary")
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
+	    console.log("tooltip")
         return `${layer.feature.properties.Name}` 
     })
     const LI_FIC = L.geoJSON(ItalyFIC, {style: {color: colorFIC}, filter: function(feature, layer) {
