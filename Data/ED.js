@@ -2,13 +2,16 @@ const Germany = {
     "type": "FeatureCollection",
     "features": [{
             "type": "Feature",
-            "properties": {
+			"properties": {
                 "ICAO": "EDMM",
-                "name": "München FIR",
+                "Type": "FIR",
+                "Name": "München FIR",
                 "Upper": "FL245",
                 "Lower": "GND",
-                "Unit": "München ACC",
-                "Callsign": "MÜNCHEN RADAR"
+                "Unit": [{
+                    "Name": "München ACC",
+                    "Callsign": "München Radar"
+                }]
             },
             "geometry": {
                 "type": "Polygon",
@@ -793,11 +796,14 @@ const Germany = {
             "type": "Feature",
             "properties": {
                 "ICAO": "EDGG",
-                "name": "Langen FIR",
+                "Type": "FIR",
+                "Name": "Langen FIR",
                 "Upper": "FL245",
                 "Lower": "GND",
-                "Unit": "Langen ACC",
-                "Callsign": "LANGEN RADAR"
+                "Unit": [{
+                    "Name": "Langen ACC",
+                    "Callsign": "Langen Radar"
+                }]
             },
             "geometry": {
                 "type": "Polygon",
@@ -1379,11 +1385,14 @@ const Germany = {
             "type": "Feature",
             "properties": {
                 "ICAO": "EDWW",
-                "name": "Bremen FIR",
+                "Type": "FIR",
+                "Name": "Bremen FIR",
                 "Upper": "FL245",
                 "Lower": "GND",
-                "Unit": "Bremen ACC",
-                "Callsign": "BREMEN RADAR"
+                "Unit": [{
+                    "Name": "Bremen ACC",
+                    "Callsign": "Bremen Radar"
+                }]
             },
             "geometry": {
                 "type": "Polygon",
