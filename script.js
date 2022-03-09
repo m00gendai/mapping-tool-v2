@@ -482,6 +482,12 @@ window.onload = async function(){
         }}}).bindTooltip(function (layer) {
         return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
+	const LI_FIR = L.geoJSON(Italy, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
     
     const overlays = {
         "EB FIR": EB_FIR,
@@ -493,6 +499,7 @@ window.onload = async function(){
         "LD CTR": LD_CTR,
         "LD VFR REP": LD_VFR_REPS,
         "LF FIR": LF_FIR,
+        "LI FIR": LI_FIR,
         "LI ARO BDRY": LI_FIC,
         "LJ VFR REP": LJ_VFR_REPS,
         "LS FIR": LS_FIR,
