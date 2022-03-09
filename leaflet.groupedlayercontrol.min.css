@@ -1,0 +1,39 @@
+.leaflet-control-layers-group-name{
+    font-weight:700;
+
+}
+
+.leaflet-control-layers-group{
+    margin-bottom:.5em
+}
+
+.leaflet-control-layers-scrollbar{
+    overflow-y:scroll;
+    padding-right:10px
+}
+
+.leaflet-control-layers-overlays{
+    display: flex;
+}
+
+.leaflet-control-layers-group{
+    font-family: monospace;
+    color: black;
+    padding: 0 0.5em 0 0.5em;
+}
+.leaflet-control-layers-group:last-child{
+    border: none;
+}
+
+.leaflet-control-layers-group-label{
+    color: white;
+    background: blue;
+    margin-bottom: 0.5em;
+    padding: 0;
+}
+.leaflet-control-layers-group label{
+    position: relative;
+    width: 100%;
+margin: 0 0.5em 0 0.5em;
+
+}
