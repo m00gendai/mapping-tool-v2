@@ -287,8 +287,10 @@ google Maps JavaScript API
 
 ### Airspace Shapes ###
 * If not specifically mentioned: [openAip.net](https://openaip.net)
-* EDMM/EDGG FIR: created myself splicing German country border coordinates with FIR coordinates in German AIP
+* ED FIR: created myself splicing German country border coordinates with FIR coordinates in German AIP
 * LD VFR Reporting Points: created myself extracting from Croatian VFR Chart
+* LF FIR: created myself splicing French country border coordinates with FIR coordinates in French AIP
+* LI FIR: created myself splicing Italian country border coordinates with FIR coordinates in Italian AIP
 * LI ARO Boundary: created myself from Italian FIC coordinates in Italian AIP and guesswork
 * LJ VFR Reporting Points: created myself extracting from Slovenian VFR Chart
 * LS FIR: [skyguide AIM Services](https://www.skyguide.ch/services/aeronautical-information-management)
