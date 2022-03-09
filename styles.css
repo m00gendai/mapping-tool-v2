@@ -44,10 +44,22 @@ mark{
     width: 70%;
     min-height: 6ch;
     resize: vertical;
+    color: black;
+    box-sizing: border-box;
+}
+.queryBoxes::placeholder{
+    font-style: italic;
+}
+.queryBoxes:focus{
+    outline:  none;
+    border: 3px solid blue;
 }
 
 .queryButtons{
     width: 30%;
+}
+.queryButtons:hover{
+    cursor:pointer;
 }
 
 #toolHalf{
