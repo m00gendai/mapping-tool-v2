@@ -489,31 +489,37 @@ window.onload = async function(){
         return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
     
-    const overlays = {
-        "EB FIR": EB_FIR,
-        "EB TMA": EB_TMA,
-        "EB CTR": EB_CTR,
-        "ED FIR": ED_FIR,
-        "LD FIR": LD_FIR,
-        "LD TMA": LD_TMA,
-        "LD CTR": LD_CTR,
-        "LD VFR REP": LD_VFR_REPS,
-        "LF FIR": LF_FIR,
-        "LI FIR": LI_FIR,
-        "LI ARO BDRY": LI_FIC,
-        "LJ VFR REP": LJ_VFR_REPS,
-        "LS FIR": LS_FIR,
-        "LS LSAG/LSAZ BDRY": LS_SUBFIR,
-        "LY FIR": LY_FIR,
-        "LY TMA": LY_TMA,
+    const groupedOverlays = {
+        "Other": {
+            "LI - Italy ARO Boundary": LI_FIC,
+            "LS - LSAG/LSAZ Boundary": LS_SUBFIR
+        },
+        "VFR REP": {
+            "LD - Croatia": LD_VFR_REPS,
+            "LJ - Slovenia": LJ_VFR_REPS
+        },
+        "CTR": {
+            "EB - Belgium & Luxembourg": EB_CTR,
+            "LD - Croatia": LD_CTR
+        },
+        "TMA": {
+            "EB - Belgium & Luxembourg": EB_TMA,
+            "LD - Croatia": LD_TMA,
+            "LY - Serbia": LY_TMA
+        },
+        "FIR": {
+            "EB - Belgium & Luxembourg": EB_FIR,
+            "ED - Germany": ED_FIR,
+            "LD - Croatia": LD_FIR,
+            "LF - France": LF_FIR,
+            "LI - Italy": LI_FIR,
+            "LS - Switzerland": LS_FIR,
+            "LY - Serbia": LY_FIR
+        }
+    }
 
-    };
-
-    layerControl = L.control.layers(null, overlays)
-    layerControl.addTo(map);
+    L.control.groupedLayers(null, groupedOverlays /* overlays */, {groupCheckboxes: true}).addTo(map);
     LS_SUBFIR.addTo(map)
-
-
     document.getElementById("clearPopups").addEventListener("click", function(){
         let popupCount = document.querySelectorAll(".leaflet-popup-close-button")
         popupCount.forEach(popup => {
