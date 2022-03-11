@@ -72,7 +72,8 @@ window.onload = async function(){
     
 // S E A R C H   O N   M A P   E V E N T   F U N C T I O N S
     
-    function renderLoci(e){
+    async function renderLoci(e){
+        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedLocis = placeLoci()
@@ -80,16 +81,18 @@ window.onload = async function(){
                 return
             }
             if(!Array.isArray(returnedLocis[0])){ // Multiple Locis are returned as a multidimensional Array so this simply checks if the first Item of the returned array is also an array and if not, its a single Loci
-                addMarker(returnedLocis[0], returnedLocis[1], returnedLocis[2], "LOCI")
+                arr.push([returnedLocis[0], returnedLocis[1], returnedLocis[2], "LOCI"])
             } else {
                 returnedLocis.forEach(returnedLoci => {
-                    addMarker(returnedLoci[0], returnedLoci[1], returnedLoci[2], "LOCI")
+                    arr.push([returnedLoci[0], returnedLoci[1], returnedLoci[2], "LOCI"])
                 })
             }
         }
+        return arr
     }
     
     async function renderPlace(e){ // TODO: Convert Timeout to sync
+        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedPlaces = placePlace()
@@ -98,24 +101,21 @@ window.onload = async function(){
                     return
                 }
                 if(!Array.isArray(returnedPlaces[0])){ 
-                    addMarker(returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location")
+                    arr.push([returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location"])
                 } else {
                     returnedPlaces.forEach(returnedPlace => {
-                        addMarker(returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location")
+                        arr.push([returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location"])
                     })
                 }
-            },500)
+            },1000)
 
 
         }
-    }
-
-    function wtf(returnedPlaces){
-        console.log("wtf")
-        
+        return arr
     }
     
-    function renderNavaid(e){
+    async function renderNavaid(e){
+        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedNavaids = placeNavaid()
@@ -123,7 +123,7 @@ window.onload = async function(){
                 return
             }
             if(!Array.isArray(returnedNavaids[0])){ 
-                addMarker(returnedNavaids[0], returnedNavaids[1], returnedNavaids[2], "NAVAID")
+                arr.push([returnedNavaids[0], returnedNavaids[1], returnedNavaids[2], "NAVAID"])
             } else {
                 /* This probably very inefficient algorithm checks if there is a VOR and DME with the same coordinates and if so, only displays the VOR and if not, displays the DME/TACAN
                 Its not really pretty and its convoluted but "it works" */
@@ -144,13 +144,15 @@ window.onload = async function(){
                     })
                 }
                 vors.forEach(vor => { // and then just plot everything
-                    addMarker(vor[0], vor[1], vor[2], "NAVAID")
+                    arr.push([vor[0], vor[1], vor[2], "NAVAID"])
                 })
             }
         }
+        return arr
     }
     
-    function renderRep(e){
+    async function renderRep(e){
+        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedReps = placeRep()
@@ -159,25 +161,27 @@ window.onload = async function(){
             }
             if(!Array.isArray(returnedReps[0])){ 
                 if(returnedReps[2].match(/\b([A-Z]){5}\b/g)){
-                    addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "WAYPOINT")
+                    arr.push([returnedReps[0], returnedReps[1], returnedReps[2], "WAYPOINT"])
                 }
                 if(returnedReps[2].match(/\b(LS)([0-9]){3}\b/g)){
-                    addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "LFN")
+                    arr.push([returnedReps[0], returnedReps[1], returnedReps[2], "LFN"])
                 }
             } else {
                 returnedReps.forEach(returnedRep => {
                     if(returnedRep[2].match(/\b([A-Z]){5}\b/g)){
-                    addMarker(returnedRep[0], returnedRep[1], returnedRep[2], "WAYPOINT")
+                    arr.push([returnedRep[0], returnedRep[1], returnedRep[2], "WAYPOINT"])
                     }
                     if(returnedRep[2].match(/\b(LS)([0-9]){3}\b/g)){
-                        addMarker(returnedRep[0], returnedRep[1], returnedRep[2], "LFN")
+                        arr.push([returnedRep[0], returnedRep[1], returnedRep[2], "LFN"])
                     }
                 })
             }
         }
+        return arr
     }
     
-    function renderCoord(e){
+    async function renderCoord(e){
+        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedCoords = placeCoords()
@@ -185,12 +189,14 @@ window.onload = async function(){
                 return
             }
             returnedCoords.forEach(returnedCoord => {
-                addMarker(returnedCoord[0], returnedCoord[1], returnedCoord[2], "COORDINATE")
+                arr.push([returnedCoord[0], returnedCoord[1], returnedCoord[2], "COORDINATE"])
             })
         }
+        return arr
     }
     
-    function renderBrgDist(e){
+    async function renderBrgDist(e){
+        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedBrgDists = placeBrgDist()
@@ -198,9 +204,10 @@ window.onload = async function(){
                 return
             }
             returnedBrgDists.forEach(returnedBrgDist => {
-                addMarker(returnedBrgDist[1], returnedBrgDist[2], returnedBrgDist[0], "BRGDIST")
+                arr.push([returnedBrgDist[1], returnedBrgDist[2], returnedBrgDist[0], "BRGDIST"])
             })
         }
+        return arr
     }
     
 // S E A R C H   O N   M A P   E V E N T   H A N D L E R S
@@ -226,8 +233,14 @@ window.onload = async function(){
             renderLoci(e)
         })
         
-        document.getElementById("mapPlaceContainer").addEventListener(queryEvent, function(e) {
-            renderPlace(e)
+        document.getElementById("mapPlaceContainer").addEventListener(queryEvent, async function(e) {
+
+            const place = await renderPlace(e)
+            setTimeout(function(){
+            place.forEach(plac => {
+                addMarker(plac[0], plac[1], plac[2], plac[3])
+            })
+        },1000)
         })
         
         document.getElementById("mapNavaidContainer").addEventListener(queryEvent, function(e) {
@@ -630,14 +643,14 @@ window.onload = async function(){
         if(setBounds == undefined){
             map.setView(marker.getLatLng(), 8); // focus the map on the maker
         }
-        for(const markerArrayElement of markerArray){
+       /* for(const markerArrayElement of markerArray){
             let corner = [markerArrayElement.getLatLng().lat, markerArrayElement.getLatLng().lng] // defines a corner as the latitude/longitude of indexed marker
             corners.push(corner) // pushes that corner to the corners array
         }
         if (corners.length > 1 && setBounds == undefined) { // if there is more than one corner...
             let bounds = L.latLngBounds([corners]); // define the map boundaries within those corners...
             map.fitBounds(bounds) //... and set the zoom level to include all corners
-        } 
+        } */
         marker.addEventListener("dblclick", function() { //its a bit weird that the event handler for the markers has to be included in the addMarker function but whatever, it doesnt work otherwise
             drawPolyline(marker)
         })
@@ -645,16 +658,13 @@ window.onload = async function(){
     
     function drawPolyline(marker){
         markerDistanceArray.push(marker)
-            console.log(markerDistanceArray)
             let distbetween
             let distbetweenNM
             markLatLong = []
             latLong.push([marker.getLatLng().lat, marker.getLatLng().lng]) // push latitude and longitude of clicked marker to latLong array...
-            console.log(latLong)
             if (markerDistanceArray.length > 1) { // if there is more than one marker in latLongs...
                 let i = markerDistanceArray.length // get the lengts of latLongs (how many markers)...
                 markLatLong.push(markerDistanceArray[i-1], markerDistanceArray[i-2]) //...and push the last two markers to the marklatLong array
-                console.log(markLatLong)
                 let latlng1 = L.latLng(markLatLong[0].getLatLng());
                 let latlng2 =  L.latLng(markLatLong[1].getLatLng());
                 distbetween = latlng1.distanceTo(latlng2)
@@ -665,7 +675,6 @@ window.onload = async function(){
                 totalArray.push(total)
                 let reducedTotal = totalArray.reduce((previousValue, currentValue) => { return (parseFloat(previousValue) + parseFloat(currentValue)).toFixed(2) } )
                 distanceBar(markLatLong[1]._popup._content, distbetweenNM, markLatLong[0]._popup._content, total, reducedTotal)
-                console.log([markLatLong[1].getLatLng()], [markLatLong[0].getLatLng()])
                 polyline = L.Polyline.Arc([markLatLong[1].getLatLng().lat, markLatLong[1].getLatLng().lng], [markLatLong[0].getLatLng().lat,markLatLong[0].getLatLng().lng],{ // drwas a line between the clicked and the last clicked marker
                     color: 'red',
                     stroke: true,
@@ -853,15 +862,15 @@ window.onload = async function(){
     
 
 
-    function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDist, e){
-        // console.log(navaids, locis, waypoints, otherWords, coordAll, e)
+    async function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDist, e){
+        let arr1, arr2, arr3, arr4, arr5, arr6
         if(navaids.length > 0){
             navaids = new Set(navaids)
             navaids = Array.from(navaids)
             navaids = navaids.toString()
             navaids = navaids.replaceAll(",", " ")
             document.getElementById("mapNavaid").value = navaids
-            renderNavaid(e)
+            arr1 = await renderNavaid(e)
         }
         if(locis.length > 0){
             locis = new Set(locis)
@@ -869,7 +878,7 @@ window.onload = async function(){
             locis = locis.toString()
             locis = locis.replaceAll(",", " ")
             document.getElementById("mapLoci").value = locis
-            renderLoci(e)
+            arr2 = await renderLoci(e)
         }
         if(waypoints.length > 0){
             waypoints = new Set(waypoints)
@@ -877,16 +886,15 @@ window.onload = async function(){
             waypoints = waypoints.toString()
             waypoints = waypoints.replaceAll(",", " ")
             document.getElementById("mapRep").value = waypoints
-            renderRep(e)
+            arr3 = await renderRep(e)
         }
-        
         if(coordAll.length > 0){
             coordAll = new Set(coordAll)
             coordAll = Array.from(coordAll)
             coordAll = coordAll.toString()
             coordAll = coordAll.replaceAll(",", " ")
             document.getElementById("mapCoords").value = coordAll
-            renderCoord(e)
+            arr4 = await renderCoord(e)
         }
         if(brgDist.length > 0){
             brgDist = new Set(brgDist)
@@ -894,16 +902,29 @@ window.onload = async function(){
             brgDist = brgDist.toString()
             brgDist = brgDist.replaceAll(",", " ")
             document.getElementById("mapBrgDist").value = brgDist
-            renderBrgDist(e)
+            arr5 = await renderBrgDist(e)
         }
         if(otherWords.length > 0){
             otherWords = new Set(otherWords)
             otherWords = Array.from(otherWords)
             otherWords = otherWords.toString()
             document.getElementById("mapPlace").value = otherWords
-            renderPlace(e)
         }
-        renderPlace(e)
+            /*
+            const waitplace = await renderPlace(e)
+            const arr6 = []
+            setTimeout(function(){
+            waitplace.forEach(plac => {
+                arr6.push([plac[0], plac[1], plac[2], plac[3]])
+            })
+        },1000)
+        }
+        console.log(arr6)
+        console.log(arr1, arr2, arr3, arr4, arr5, arr6)*/
+        const arr = arr1.concat(arr2, arr3, arr4, arr5)
+        arr.forEach(item => {
+            addMarker(item[0], item[1], item[2], item[3])
+        })
     }
     
     let centerPoint
@@ -1019,7 +1040,6 @@ window.onload = async function(){
     function createContextMenu(source){
         const leftClickLat = source.latlng.lat
         const leftClickLng = source.latlng.lng
-        console.log(leftClickLat, leftClickLng)
         const contextMenu = document.createElement("div")
         contextMenu.className = "leftContextMenu"
         contextMenu.style.top = `${source.containerPoint.y}px`
