@@ -242,7 +242,7 @@ window.onload = async function(){
             },1000)
         })
         
-        document.getElementById("mapNavaidContainer").addEventListener(queryEvent, function(e) {
+        document.getElementById("mapNavaidContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderNavaid(e)
             setTimeout(function(){
                 toRender.forEach(item => {
@@ -251,7 +251,7 @@ window.onload = async function(){
             },1000)
         })
         
-        document.getElementById("mapRepContainer").addEventListener(queryEvent, function(e) {
+        document.getElementById("mapRepContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderRep(e)
             setTimeout(function(){
                 toRender.forEach(item => {
@@ -260,7 +260,7 @@ window.onload = async function(){
             },1000)
         })
         
-        document.getElementById("mapCoordsContainer").addEventListener(queryEvent, function(e) {
+        document.getElementById("mapCoordsContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderCoord(e)
             setTimeout(function(){
                 toRender.forEach(item => {
@@ -269,7 +269,7 @@ window.onload = async function(){
             },1000)
         })
         
-        document.getElementById("mapBrgDistContainer").addEventListener(queryEvent, function(e) {
+        document.getElementById("mapBrgDistContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderBrgDist(e)
             setTimeout(function(){
                 toRender.forEach(item => {
