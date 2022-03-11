@@ -72,10 +72,10 @@ window.onload = async function(){
     
 // S E A R C H   O N   M A P   E V E N T   F U N C T I O N S
     
-    function renderLoci(e){
+    async function renderLoci(e){
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedLocis = placeLoci()
+            const returnedLocis = await placeLoci()
             if(returnedLocis == undefined){
                 return
             }
@@ -170,10 +170,10 @@ window.onload = async function(){
         }
     }
     
-    function renderCoord(e){
+    async function renderCoord(e){
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedCoords = placeCoords()
+            const returnedCoords = await placeCoords()
             if(returnedCoords == undefined || returnedCoords.length == 0){
                 return
             }
