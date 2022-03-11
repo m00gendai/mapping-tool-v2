@@ -64,7 +64,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         } else {
             query = placeField.split(",")
         }
-        query.forEach(search => {
+        for(const search of query){
             let request = {
                 query: search,
                 fields: ['name', 'geometry'],
@@ -77,10 +77,10 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
                         multiPlaces.push([result.geometry.location.lat(),result.geometry.location.lng(), result.name])
                     }
                 } else {
-                    unknownPlaces.push([result.name])
+                    unknownPlaces.push([results.name])
                 }
             })
-        })
+        }
         if(unknownPlaces.length > 0){
             alert(`Places ${unknownPlaces.join(" ")} not found`)
         }

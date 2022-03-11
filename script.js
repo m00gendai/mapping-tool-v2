@@ -73,7 +73,6 @@ window.onload = async function(){
 // S E A R C H   O N   M A P   E V E N T   F U N C T I O N S
     
     function renderLoci(e){
-        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedLocis = placeLoci()
@@ -81,39 +80,42 @@ window.onload = async function(){
                 return
             }
             if(!Array.isArray(returnedLocis[0])){ // Multiple Locis are returned as a multidimensional Array so this simply checks if the first Item of the returned array is also an array and if not, its a single Loci
-                arr.push([returnedLocis[0], returnedLocis[1], returnedLocis[2], "LOCI"])
-                //addMarker(returnedLocis[0], returnedLocis[1], returnedLocis[2], "LOCI")
+                addMarker(returnedLocis[0], returnedLocis[1], returnedLocis[2], "LOCI")
             } else {
                 returnedLocis.forEach(returnedLoci => {
-                    arr.push([returnedLoci[0], returnedLoci[1], returnedLoci[2], "LOCI"])
-                   // addMarker(returnedLoci[0], returnedLoci[1], returnedLoci[2], "LOCI")
+                    addMarker(returnedLoci[0], returnedLoci[1], returnedLoci[2], "LOCI")
                 })
             }
-            return arr
         }
     }
     
     async function renderPlace(e){ // TODO: Convert Timeout to sync
-        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedPlaces = await placePlace()
+            const returnedPlaces = placePlace()
+            setTimeout(function(){
                 if(returnedPlaces == undefined || returnedPlaces.length == 0){
                     return
                 }
                 if(!Array.isArray(returnedPlaces[0])){ 
-                   arr.push([returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location"])
+                    addMarker(returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location")
                 } else {
                     returnedPlaces.forEach(returnedPlace => {
-                        arr.push([returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location"])
+                        addMarker(returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location")
                     })
                 }
-                return arr
+            },500)
+
+
         }
+    }
+
+    function wtf(returnedPlaces){
+        console.log("wtf")
+        
     }
     
     function renderNavaid(e){
-        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedNavaids = placeNavaid()
@@ -121,7 +123,7 @@ window.onload = async function(){
                 return
             }
             if(!Array.isArray(returnedNavaids[0])){ 
-                arr.push([returnedNavaids[0], returnedNavaids[1], returnedNavaids[2], "NAVAID"])
+                addMarker(returnedNavaids[0], returnedNavaids[1], returnedNavaids[2], "NAVAID")
             } else {
                 /* This probably very inefficient algorithm checks if there is a VOR and DME with the same coordinates and if so, only displays the VOR and if not, displays the DME/TACAN
                 Its not really pretty and its convoluted but "it works" */
@@ -142,15 +144,13 @@ window.onload = async function(){
                     })
                 }
                 vors.forEach(vor => { // and then just plot everything
-                    arr.push([vor[0], vor[1], vor[2], "NAVAID"])
+                    addMarker(vor[0], vor[1], vor[2], "NAVAID")
                 })
             }
-            return arr
         }
     }
     
     function renderRep(e){
-        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedReps = placeRep()
@@ -159,27 +159,25 @@ window.onload = async function(){
             }
             if(!Array.isArray(returnedReps[0])){ 
                 if(returnedReps[2].match(/\b([A-Z]){5}\b/g)){
-                    arr.push([returnedReps[0], returnedReps[1], returnedReps[2], "WAYPOINT"])
+                    addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "WAYPOINT")
                 }
                 if(returnedReps[2].match(/\b(LS)([0-9]){3}\b/g)){
-                    arr.push([returnedReps[0], returnedReps[1], returnedReps[2], "LFN"])
+                    addMarker(returnedReps[0], returnedReps[1], returnedReps[2], "LFN")
                 }
             } else {
                 returnedReps.forEach(returnedRep => {
                     if(returnedRep[2].match(/\b([A-Z]){5}\b/g)){
-                        arr.push([returnedRep[0], returnedRep[1], returnedRep[2], "WAYPOINT"])
+                    addMarker(returnedRep[0], returnedRep[1], returnedRep[2], "WAYPOINT")
                     }
                     if(returnedRep[2].match(/\b(LS)([0-9]){3}\b/g)){
-                        arr.push([returnedRep[0], returnedRep[1], returnedRep[2], "LFN"])
+                        addMarker(returnedRep[0], returnedRep[1], returnedRep[2], "LFN")
                     }
                 })
             }
-            return arr
         }
     }
     
     function renderCoord(e){
-        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedCoords = placeCoords()
@@ -187,14 +185,12 @@ window.onload = async function(){
                 return
             }
             returnedCoords.forEach(returnedCoord => {
-                arr.push([returnedCoord[0], returnedCoord[1], returnedCoord[2], "COORDINATE"])
+                addMarker(returnedCoord[0], returnedCoord[1], returnedCoord[2], "COORDINATE")
             })
-            return arr
         }
     }
     
     function renderBrgDist(e){
-        const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedBrgDists = placeBrgDist()
@@ -202,9 +198,8 @@ window.onload = async function(){
                 return
             }
             returnedBrgDists.forEach(returnedBrgDist => {
-                arr.push([returnedBrgDist[1], returnedBrgDist[2], returnedBrgDist[0], "BRGDIST"])
+                addMarker(returnedBrgDist[1], returnedBrgDist[2], returnedBrgDist[0], "BRGDIST")
             })
-            return arr
         }
     }
     
@@ -213,7 +208,7 @@ window.onload = async function(){
     const queryEvents = ["click", "keypress"]
     
     queryEvents.forEach(queryEvent => {
-        document.getElementById("mapAllContainer").addEventListener(queryEvent, async function(e) {
+        document.getElementById("mapAllContainer").addEventListener(queryEvent, function(e) {
             if(e.key == "Enter" || (e.type == "click" && e.target.className == "queryButtons")){
                 document.getElementById("mapLoci").value = ""
                 document.getElementById("mapPlace").value = ""
@@ -222,7 +217,7 @@ window.onload = async function(){
                 document.getElementById("mapCoords").value = ""
                 document.getElementById("mapBrgDist").value = ""
                 clearMarkers()
-                const deconstructedRoute = await routeDeconstructor()
+                const deconstructedRoute = routeDeconstructor()
                 renderRoute(deconstructedRoute[0], deconstructedRoute[1], deconstructedRoute[2], deconstructedRoute[3], deconstructedRoute[4], deconstructedRoute[5], e)
             }
         })
@@ -320,8 +315,8 @@ window.onload = async function(){
     let overlayArray = []
 
         //Initial map load. Switch between test map and prod map respectively on test/push
-        createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
-        // createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        // createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
 
     
 // L A Y E R   R E N D E R E R S
@@ -858,83 +853,57 @@ window.onload = async function(){
     
 
 
-    async function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDist, e){
+    function renderRoute(navaids, locis, waypoints, otherWords, coordAll, brgDist, e){
         // console.log(navaids, locis, waypoints, otherWords, coordAll, e)
-        if(navaids?.length > 0){
+        if(navaids.length > 0){
             navaids = new Set(navaids)
             navaids = Array.from(navaids)
             navaids = navaids.toString()
             navaids = navaids.replaceAll(",", " ")
             document.getElementById("mapNavaid").value = navaids
-            const retrieved = await renderNavaid(e)
-            console.log(retrieved)
-            retrieved.forEach(item => {
-                addMarker(item[0], item[1], item[2], item[3], null)
-            })
+            renderNavaid(e)
         }
-        if(locis?.length > 0){
+        if(locis.length > 0){
             locis = new Set(locis)
             locis = Array.from(locis)
             locis = locis.toString()
             locis = locis.replaceAll(",", " ")
             document.getElementById("mapLoci").value = locis
-            const retrieved = await renderLoci(e)
-            console.log(retrieved)
-            retrieved.forEach(item => {
-                addMarker(item[0], item[1], item[2], item[3], null)
-            })
+            renderLoci(e)
         }
-        if(waypoints?.length > 0){
+        if(waypoints.length > 0){
             waypoints = new Set(waypoints)
             waypoints = Array.from(waypoints)
             waypoints = waypoints.toString()
             waypoints = waypoints.replaceAll(",", " ")
             document.getElementById("mapRep").value = waypoints
-            const retrieved = await renderRep(e)
-            console.log(retrieved)
-            retrieved.forEach(item => {
-                addMarker(item[0], item[1], item[2], item[3], null)
-            })
+            renderRep(e)
         }
-        if(otherWords?.length > 0){
-            otherWords = new Set(otherWords)
-            otherWords = Array.from(otherWords)
-            otherWords = otherWords.toString()
-            document.getElementById("mapPlace").value = otherWords
-            const retrieved = await renderPlace(e)
-            console.log(retrieved)
-            try{
-                retrieved.forEach(item => {
-                    addMarker(item[0], item[1], item[2], item[3], null)
-                })
-            } catch(err){
-                console.log(err)
-            }
-        }
-        if(coordAll?.length > 0){
+        
+        if(coordAll.length > 0){
             coordAll = new Set(coordAll)
             coordAll = Array.from(coordAll)
             coordAll = coordAll.toString()
             coordAll = coordAll.replaceAll(",", " ")
             document.getElementById("mapCoords").value = coordAll
-            const retrieved = await renderCoord(e)
-            console.log(retrieved)
-            retrieved.forEach(item => {
-                addMarker(item[0], item[1], item[2], item[3], null)
-            })
+            renderCoord(e)
         }
-        if(brgDist?.length > 0){
+        if(brgDist.length > 0){
             brgDist = new Set(brgDist)
             brgDist = Array.from(brgDist)
             brgDist = brgDist.toString()
             brgDist = brgDist.replaceAll(",", " ")
             document.getElementById("mapBrgDist").value = brgDist
-            const retrieved = await renderBrgDist(e)
-            console.log(retrieved)
-            retrieved.forEach(item => {
-                addMarker(item[0], item[1], item[2], item[3], null)
-            })
+            renderBrgDist(e)
         }
+        if(otherWords.length > 0){
+            otherWords = new Set(otherWords)
+            otherWords = Array.from(otherWords)
+            otherWords = otherWords.toString()
+            document.getElementById("mapPlace").value = otherWords
+            renderPlace(e)
+        }
+        renderPlace(e)
     }
     
     let centerPoint
