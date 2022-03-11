@@ -234,29 +234,48 @@ window.onload = async function(){
         })
         
         document.getElementById("mapPlaceContainer").addEventListener(queryEvent, async function(e) {
-
-            const place = await renderPlace(e)
+            const toRender = await renderPlace(e)
             setTimeout(function(){
-            place.forEach(plac => {
-                addMarker(plac[0], plac[1], plac[2], plac[3])
-            })
-        },1000)
+                toRender.forEach(item => {
+                    addMarker(item[0], item[1], item[2], item[3])
+                })
+            },1000)
         })
         
         document.getElementById("mapNavaidContainer").addEventListener(queryEvent, function(e) {
-            renderNavaid(e)
+            const toRender = await renderNavaid(e)
+            setTimeout(function(){
+                toRender.forEach(item => {
+                    addMarker(item[0], item[1], item[2], item[3])
+                })
+            },1000)
         })
         
         document.getElementById("mapRepContainer").addEventListener(queryEvent, function(e) {
-            renderRep(e)
+            const toRender = await renderRep(e)
+            setTimeout(function(){
+                toRender.forEach(item => {
+                    addMarker(item[0], item[1], item[2], item[3])
+                })
+            },1000)
         })
         
         document.getElementById("mapCoordsContainer").addEventListener(queryEvent, function(e) {
-            renderCoord(e)
+            const toRender = await renderCoord(e)
+            setTimeout(function(){
+                toRender.forEach(item => {
+                    addMarker(item[0], item[1], item[2], item[3])
+                })
+            },1000)
         })
         
         document.getElementById("mapBrgDistContainer").addEventListener(queryEvent, function(e) {
-            renderBrgDist(e)
+            const toRender = await renderBrgDist(e)
+            setTimeout(function(){
+                toRender.forEach(item => {
+                    addMarker(item[0], item[1], item[2], item[3])
+                })
+            },1000)
         })
     })
     
