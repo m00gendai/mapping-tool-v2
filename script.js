@@ -938,11 +938,12 @@ window.onload = async function(){
             })
         },1000)
         }
-        console.log(arr6)
-        console.log(arr1, arr2, arr3, arr4, arr5, arr6)*/
-        const arr = arr1.concat(arr2, arr3, arr4, arr5)
-        arr.forEach(item => {
-            addMarker(item[0], item[1], item[2], item[3])
+        console.log(arr6) */
+        const arr = [arr1, arr2, arr3, arr4, arr5].filter(item => {return Array.isArray(item)})
+        arr.forEach(array => {
+            array.forEach(item => {
+                addMarker(item[0], item[1], item[2], item[3])
+            })
         })
     }
     
