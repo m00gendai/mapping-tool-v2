@@ -75,6 +75,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             let service = new google.maps.places.PlacesService(map);
             service.findPlaceFromQuery(request, function(results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    console.log(results)
                     for(const result of results){
                         multiPlaces.push([result.geometry.location.lat(),result.geometry.location.lng(), result.name])
                     }
