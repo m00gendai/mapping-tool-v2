@@ -89,11 +89,11 @@ window.onload = async function(){
         }
     }
     
-    function renderPlace(e){ // TODO: Convert Timeout to sync
+    async function renderPlace(e){ 
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedPlaces = placePlace()
-            setTimeout(function(){
+            const returnedPlaces = await placePlace()
+
                 if(returnedPlaces == undefined || returnedPlaces.length == 0){
                     return
                 }
@@ -104,7 +104,7 @@ window.onload = async function(){
                         addMarker(returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location")
                     })
                 }
-            },1000)
+           
         }
     }
     
