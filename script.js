@@ -90,6 +90,7 @@ window.onload = async function(){
     }
     
     async function renderPlace(e){ 
+	    console.log("Rendering Place")
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedPlaces = await placePlace()
@@ -97,6 +98,7 @@ window.onload = async function(){
                 if(returnedPlaces == undefined || returnedPlaces.length == 0){
                     return
                 }
+		console.log("There's a valid place")
                 if(!Array.isArray(returnedPlaces[0])){ 
                     addMarker(returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location")
                 } else {
