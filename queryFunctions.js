@@ -73,8 +73,8 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
                 locationBias: {lat: 46.8011, lng: 8.2265}
             }
             let service = new google.maps.places.PlacesService(map);
-            service.findPlaceFromQuery(request, function(results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
+            service.findPlaceFromQuery(request, async function(results, status) {
+                if (status === await google.maps.places.PlacesServiceStatus.OK) {
                     console.log(results)
                     for(const result of results){
                         multiPlaces.push([result.geometry.location.lat(),result.geometry.location.lng(), result.name])
