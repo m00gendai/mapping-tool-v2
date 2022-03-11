@@ -53,6 +53,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         let multiPlaces = []
         let unknownPlaces = []
         const placeField = document.getElementById("mapPlace").value;
+        console.log("Placefield not empty")
         if(placeField == ""){
             return
         }
@@ -64,6 +65,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         } else {
             query = placeField.split(",")
         }
+        console.log(query)
         query.forEach(search => {
             let request = {
                 query: search,
@@ -81,6 +83,8 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
                 }
             })
         })
+        console.log(multiPlaces)
+        console.log(unknownPlaces)
         if(unknownPlaces.length > 0){
             alert(`Places ${unknownPlaces.join(" ")} not found`)
         }
