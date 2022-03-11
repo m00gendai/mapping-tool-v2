@@ -72,10 +72,10 @@ window.onload = async function(){
     
 // S E A R C H   O N   M A P   E V E N T   F U N C T I O N S
     
-    async function renderLoci(e){
+    function renderLoci(e){
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedLocis = await placeLoci()
+            const returnedLocis = placeLoci()
             if(returnedLocis == undefined){
                 return
             }
@@ -89,16 +89,14 @@ window.onload = async function(){
         }
     }
     
-    async function renderPlace(e){ 
-	    console.log("Rendering Place")
+    function renderPlace(e){ // TODO: Convert Timeout to sync
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedPlaces = await placePlace()
-
-                /*if(returnedPlaces == undefined || returnedPlaces.length == 0){
+            const returnedPlaces = placePlace()
+            setTimeout(function(){
+                if(returnedPlaces == undefined || returnedPlaces.length == 0){
                     return
-                }*/
-		console.log("There's a valid place")
+                }
                 if(!Array.isArray(returnedPlaces[0])){ 
                     addMarker(returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location")
                 } else {
@@ -106,7 +104,7 @@ window.onload = async function(){
                         addMarker(returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location")
                     })
                 }
-           
+            },1000)
         }
     }
     
@@ -172,10 +170,10 @@ window.onload = async function(){
         }
     }
     
-    async function renderCoord(e){
+    function renderCoord(e){
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedCoords = await placeCoords()
+            const returnedCoords = placeCoords()
             if(returnedCoords == undefined || returnedCoords.length == 0){
                 return
             }
