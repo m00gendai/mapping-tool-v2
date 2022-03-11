@@ -3,6 +3,7 @@ import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDec
 import { routeDeconstructor } from "/routeDeconstructor.js"
 import { MAPS_API_KEY } from "/keys.js"
 import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorCTR, colorFIC, colorPoint } from "/configs.js"
+import { Iceland, Belgium, Germany, UnitedKingdom, Netherlands, Ireland, Albania, Croatia, LD_VFR_REP, Spain, France, ItalyFIC, Italy, LJ_VFR_REP, Switzerland, SwitzerlandSub, Serbia } from "/Data/airspaces.js"
 
 window.onload = async function(){
     console.time("start onload")
@@ -390,7 +391,7 @@ window.onload = async function(){
         vfrToggleDE = !vfrToggleDE
     })
 
-    const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}, filter: function(feature, layer) {
+   const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
@@ -398,10 +399,8 @@ window.onload = async function(){
     })
     const LS_SUBFIR = L.geoJSON(SwitzerlandSub, {style: {color: colorFIC}, filter: function(feature, layer) {
         if(feature.properties.Type == "BDRY"){
-		console.log("boundary")
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-	    console.log("tooltip")
         return `${layer.feature.properties.Name}` 
     })
     const LI_FIC = L.geoJSON(ItalyFIC, {style: {color: colorFIC}, filter: function(feature, layer) {
@@ -482,13 +481,49 @@ window.onload = async function(){
         }}}).bindTooltip(function (layer) {
         return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
-	const LI_FIR = L.geoJSON(Italy, {style: {color: colorFIR}, filter: function(feature, layer) {
+        const LI_FIR = L.geoJSON(Italy, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
         return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
     })
-    
+        const LE_FIR = L.geoJSON(Spain, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        const EG_FIR = L.geoJSON(UnitedKingdom, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        const EI_FIR = L.geoJSON(Ireland, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        const BI_FIR = L.geoJSON(Iceland, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        const EH_FIR = L.geoJSON(Netherlands, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        const LA_FIR = L.geoJSON(Albania, {style: {color: colorFIR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "FIR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+    })
+        
     const groupedOverlays = {
         "Other": {
             "LI - Italy ARO Boundary": LI_FIC,
@@ -508,18 +543,25 @@ window.onload = async function(){
             "LY - Serbia": LY_TMA
         },
         "FIR": {
+            "BI - Iceland": BI_FIR,
             "EB - Belgium & Luxembourg": EB_FIR,
             "ED - Germany": ED_FIR,
+            "EG - United Kingdom": EG_FIR,
+            "EH - Netherlands": EH_FIR,
+            "EI - Ireland": EI_FIR,
+            "LA - Albania": LA_FIR,
             "LD - Croatia": LD_FIR,
+            "LE - Spain": LE_FIR,
             "LF - France": LF_FIR,
             "LI - Italy": LI_FIR,
             "LS - Switzerland": LS_FIR,
-            "LY - Serbia": LY_FIR
+            "LY - Serbia & Montenegro": LY_FIR
         }
     }
 
     L.control.groupedLayers(null, groupedOverlays /* overlays */, {groupCheckboxes: true}).addTo(map);
     LS_SUBFIR.addTo(map)
+	
     document.getElementById("clearPopups").addEventListener("click", function(){
         let popupCount = document.querySelectorAll(".leaflet-popup-close-button")
         popupCount.forEach(popup => {
