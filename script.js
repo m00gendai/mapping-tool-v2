@@ -95,9 +95,9 @@ window.onload = async function(){
             e.preventDefault()
             const returnedPlaces = await placePlace()
 
-                if(returnedPlaces == undefined || returnedPlaces.length == 0){
+                /*if(returnedPlaces == undefined || returnedPlaces.length == 0){
                     return
-                }
+                }*/
 		console.log("There's a valid place")
                 if(!Array.isArray(returnedPlaces[0])){ 
                     addMarker(returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location")
