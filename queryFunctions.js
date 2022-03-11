@@ -48,7 +48,7 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
     
 // Q U E R Y   P L A C E S
 
-    export function placePlace(){
+    export async function placePlace(){
         let query
         let multiPlaces = []
         let unknownPlaces = []
