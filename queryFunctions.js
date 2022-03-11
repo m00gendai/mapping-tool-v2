@@ -48,12 +48,11 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
     
 // Q U E R Y   P L A C E S
 
-    export async function placePlace(){
+    export function placePlace(){
         let query
         let multiPlaces = []
         let unknownPlaces = []
         const placeField = document.getElementById("mapPlace").value;
-        console.log("Placefield not empty")
         if(placeField == ""){
             return
         }
@@ -65,7 +64,6 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         } else {
             query = placeField.split(",")
         }
-        console.log(query)
         query.forEach(search => {
             let request = {
                 query: search,
@@ -73,9 +71,8 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
                 locationBias: {lat: 46.8011, lng: 8.2265}
             }
             let service = new google.maps.places.PlacesService(map);
-            service.findPlaceFromQuery(request, async function(results, status) {
-                if (status === await google.maps.places.PlacesServiceStatus.OK) {
-                    console.log(results)
+            service.findPlaceFromQuery(request, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
                     for(const result of results){
                         multiPlaces.push([result.geometry.location.lat(),result.geometry.location.lng(), result.name])
                     }
@@ -84,8 +81,6 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
                 }
             })
         })
-        console.log(multiPlaces)
-        console.log(unknownPlaces)
         if(unknownPlaces.length > 0){
             alert(`Places ${unknownPlaces.join(" ")} not found`)
         }
