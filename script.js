@@ -1,17 +1,12 @@
 import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist } from "/queryFunctions.js"
 import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDecToDeg } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
-import { MAPS_API_KEY } from "/keys.js"
 import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorCTR, colorFIC, colorPoint } from "/configs.js"
 import { Iceland, Belgium, Germany, UnitedKingdom, Netherlands, Ireland, Albania, Croatia, LD_VFR_REP, Spain, France, ItalyFIC, Italy, LJ_VFR_REP, Switzerland, SwitzerlandSub, Serbia } from "/Data/airspaces.js"
 
 window.onload = async function(){
     console.time("start onload")
 
-    const googleMapsAPIScript = document.createElement("script")
-    googleMapsAPIScript.setAttribute("async", "")
-    googleMapsAPIScript.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}&libraries=places&`
-    document.getElementsByTagName("head")[0].appendChild(googleMapsAPIScript)
     const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
     document.getElementById("currentYear").innerText = currentYear
@@ -91,22 +86,21 @@ window.onload = async function(){
         return arr
     }
     
-    async function renderPlace(e){ // TODO: Convert Timeout to sync
+    async function renderPlace(e){
         const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
             const returnedPlaces = await placePlace()
-            console.log(returnedPlaces)
-                if(returnedPlaces == undefined || returnedPlaces.length == 0){
-                    return
-                }
-                if(!Array.isArray(returnedPlaces[0])){ 
-                    arr.push([returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location"])
-                } else {
-                    returnedPlaces.forEach(returnedPlace => {
-                        arr.push([returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location"])
-                    })
-                }
+            if(returnedPlaces == undefined || returnedPlaces.length == 0){
+                return
+            }
+            if(!Array.isArray(returnedPlaces[0])){ 
+                arr.push([returnedPlaces[0], returnedPlaces[1], returnedPlaces[2], "Location"])
+            } else {
+                returnedPlaces.forEach(returnedPlace => {
+                    arr.push([returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location"])
+                })
+            }
         }
         return arr
     }
@@ -927,7 +921,6 @@ window.onload = async function(){
             document.getElementById("mapPlace").value = otherWords
             arr6  = await renderPlace(e)
         }
-        console.log(arr6)
         const arr = [arr1, arr2, arr3, arr4, arr5, arr6].filter(item => {return Array.isArray(item)})
         arr.forEach(array => {
             array.forEach(item => {
