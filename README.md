@@ -64,7 +64,7 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 	* Case insensitive
 	* Returns ICAO Navigation Aid Ident, Type and Name on map
 * Geographical locations (worldwide)
-	* Via google Maps JavaScript API
+	* Via Mapbox Search API
 	* Single or multiple (space separated)
 	* Case insensitive
 	* Returns location name on map
@@ -120,16 +120,6 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 #### Top Right ####
 
 * Toggle Airspace Layers
-	* EB FIR
-	* EB TMA
-	* LD FIR
-	* LD TMA
-	* LS FIR
-	* LS LSAG/LSAZ Boundary (displayed by default)
-	* LI ARO Boundary
-	* LJ VFR Reporting Points
-	* LD FIR
-	* LD TMA
 
 #### Bottom Block ####
 * Clear markers
@@ -139,6 +129,7 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 * VFR Charts
 	* swisstopo VFR ICAO Map 1:500000 Switzerland
 	* French VFR OACI Map
+	* DFS German VFR ICAO Chart
 * Swiss Restricted Airspaces for Drones
 * Focus Switzerland Boundary Points
 * Focus Europe Boundary Points
@@ -159,10 +150,10 @@ The AIM Mapping Tool is comprised of a toolbar to the left and a map view to the
 ## Known limitations ##
 
 #### Places ####
-Subject to google Maps JavaScript API
+Subject to Mapbox Search API
 
 #### Airspace shapes ####
-* Dependent on data delivery (if and how)
+* Depending on the provided country border coordinates, Airspaces may overlap or not follow a country border the same
 
 #### Navaid search ####
 * If multiple Navaids with the same Ident exist, the tool plots them all as it cannot detect from context which would be the correct one to plot
@@ -170,7 +161,6 @@ Subject to google Maps JavaScript API
 * EAD does not provide a type annotation for DME and TACAN data, and since they are merged, it currently cannot be determined if a navaid is a DME or a TACAN
 
 #### Waypoint search ####
-* LFN Waypoints not yet covered
 * EAD does not provide a report for South/West hemisphere waypoints, which means there is no waypoint data for South America
 * There are guards in place for geographical location names with five letters. A five letter word is checked against the waypoint database and a database of known location/waypoint name hybrids. In case of a location/waypoint hybrid (example: EVIAN - Waypoint in Japan and village in France), precedence is given to the waypoint, with an alert notifying a possible location with the same name (i.e., the waypoint EVIAN in Japan gets plotted, and an alert notifies you about a location with the same name)
 
@@ -193,8 +183,8 @@ See [Trello](https://trello.com/b/yzfLBL7h/aim-mapping-tool)
 ## Setup ##
 
 * Uses module scripts, so must be served by a webserver. A simple Python http server suffices for localhost testing.
-* Uses the google Maps JavaScript API which is restricted, so you need to provide your own API key in googleAPIs.js
-* Uses the maptiler API which is restricted, so you need to provide your own API key in googleAPIs.js
+* Uses the  Mapbox Search API which is restricted, so you need to provide your own API key in keys.js
+* Uses the maptiler API which is restricted, so you need to provide your own API key in keys.js
 * Uses Font Awesome 6 Kit which is restricted, so you need to provide your own Font Awesome 6 Kit script link in index.html
 
 ### Dependencies ###
@@ -208,11 +198,8 @@ See [Trello](https://trello.com/b/yzfLBL7h/aim-mapping-tool)
 * [geodesy (latlon-ellipsoidal-vincenty.js)](http://www.movable-type.co.uk/scripts/geodesy-library.html)
 * [lodash](https://lodash.com/)
 * [Font Awesome 6 Free](https://fontawesome.com/)
-* google APIs
-	* google Maps JavaScript API
-	* google Places API
-	* google Service Usage API
-* maptiler API
+* Mapbox Search API
+* Maptiler API
 
 ### Functionality ###
 
@@ -284,18 +271,15 @@ Eurocontrol European AIS Database
 Eurocontrol European AIS Database
 
 ### Place names ###
-google Maps JavaScript API
+Mapbox Search API
 
 ### Airspace Shapes ###
-* If not specifically mentioned: [openAip.net](https://openaip.net)
-* ED FIR: created myself splicing German country border coordinates with FIR coordinates in German AIP
-* LD VFR Reporting Points: created myself extracting from Croatian VFR Chart
-* LF FIR: created myself splicing French country border coordinates with FIR coordinates in French AIP
-* LI FIR: created myself splicing Italian country border coordinates with FIR coordinates in Italian AIP
-* LI ARO Boundary: created myself from Italian FIC coordinates in Italian AIP and guesswork
-* LJ VFR Reporting Points: created myself extracting from Slovenian VFR Chart
+* TMA and CTR by [openAip.net](https://openaip.net)
 * LS FIR: [skyguide AIM Services](https://www.skyguide.ch/services/aeronautical-information-management)
-* LSAG/LSAZ Boundary: created myself from coordinates in Swiss AIP
+* FIRs created myself by splicing boundary coordinates with given coordinates in AIPs
+* LD and LJ VFR Reporting Points created myself based on each country's VFR charts
+* LSAG/LSAZ FIR Boundary created myself from AIP coordinates
+* Milano/Roma ARO Boundary created with AIP Italy and some approximation towards Croatia since no coordiantes whatsoever exists for this
 
 ## Overlays
 * Swiss VFR Chart by [GeoAdmin](https://api3.geo.admin.ch/services/sdiservices.html)
