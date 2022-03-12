@@ -220,54 +220,47 @@ window.onload = async function(){
             }
         })
         
-        document.getElementById("mapLociContainer").addEventListener(queryEvent, function(e) {
-            renderLoci(e)
+        document.getElementById("mapLociContainer").addEventListener(queryEvent, async function(e) {
+            const toRender = await renderLoci(e)
+                toRender.forEach(item => {
+                    addMarker(item[0], item[1], item[2], item[3])
+                })
         })
         
         document.getElementById("mapPlaceContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderPlace(e)
-            setTimeout(function(){
                 toRender.forEach(item => {
                     addMarker(item[0], item[1], item[2], item[3])
                 })
-            },1000)
-        })
+         })
         
         document.getElementById("mapNavaidContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderNavaid(e)
-            setTimeout(function(){
                 toRender.forEach(item => {
                     addMarker(item[0], item[1], item[2], item[3])
                 })
-            },1000)
         })
         
         document.getElementById("mapRepContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderRep(e)
-            setTimeout(function(){
                 toRender.forEach(item => {
                     addMarker(item[0], item[1], item[2], item[3])
                 })
-            },1000)
         })
         
         document.getElementById("mapCoordsContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderCoord(e)
-            setTimeout(function(){
                 toRender.forEach(item => {
                     addMarker(item[0], item[1], item[2], item[3])
                 })
-            },1000)
         })
         
         document.getElementById("mapBrgDistContainer").addEventListener(queryEvent, async function(e) {
             const toRender = await renderBrgDist(e)
-            setTimeout(function(){
-                toRender.forEach(item => {
+                 toRender.forEach(item => {
                     addMarker(item[0], item[1], item[2], item[3])
                 })
-            },1000)
-        })
+         })
     })
     
 // C O O R D I N A T E   C O N V E R S I O N S   H A N D L E R S
