@@ -95,8 +95,8 @@ window.onload = async function(){
         const arr = []
         if((e.key == "Enter" && e.target.type == "textarea") || (e.type == "click" && e.target.type == "submit")){
             e.preventDefault()
-            const returnedPlaces = placePlace()
-            setTimeout(function(){
+            const returnedPlaces = await placePlace()
+            console.log(returnedPlaces)
                 if(returnedPlaces == undefined || returnedPlaces.length == 0){
                     return
                 }
@@ -107,9 +107,6 @@ window.onload = async function(){
                         arr.push([returnedPlace[0], returnedPlace[1], returnedPlace[2], "Location"])
                     })
                 }
-            },1000)
-
-
         }
         return arr
     }
@@ -347,8 +344,8 @@ window.onload = async function(){
     let overlayArray = []
 
         //Initial map load. Switch between test map and prod map respectively on test/push
-        // createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
-        createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        createLayer(map, "https://tile.openstreetmap.org/{z}/{x}/{y}.png", mapTileChoices[0].resolution, mapTileChoices[0].attribution)
+        // createLayer(map, mapTileChoices[0].map, mapTileChoices[0].resolution, mapTileChoices[0].attribution)
 
     
 // L A Y E R   R E N D E R E R S
@@ -928,18 +925,10 @@ window.onload = async function(){
             otherWords = Array.from(otherWords)
             otherWords = otherWords.toString()
             document.getElementById("mapPlace").value = otherWords
+            arr6  = await renderPlace(e)
         }
-            /*
-            const waitplace = await renderPlace(e)
-            const arr6 = []
-            setTimeout(function(){
-            waitplace.forEach(plac => {
-                arr6.push([plac[0], plac[1], plac[2], plac[3]])
-            })
-        },1000)
-        }
-        console.log(arr6) */
-        const arr = [arr1, arr2, arr3, arr4, arr5].filter(item => {return Array.isArray(item)})
+        console.log(arr6)
+        const arr = [arr1, arr2, arr3, arr4, arr5, arr6].filter(item => {return Array.isArray(item)})
         arr.forEach(array => {
             array.forEach(item => {
                 addMarker(item[0], item[1], item[2], item[3])

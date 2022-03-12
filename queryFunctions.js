@@ -1,5 +1,5 @@
 import { convertRepCoordinates, calcDegToDec } from "/coordinateConversions.js"
-
+import {MAPBOX_API_KEY} from "/keys.js"
 import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellipsoidal-vincenty.js'
 
 
@@ -48,41 +48,23 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
     
 // Q U E R Y   P L A C E S
 
-    export function placePlace(){
-        let query
+    export async function placePlace(){
         let multiPlaces = []
-        let unknownPlaces = []
+        let query
         const placeField = document.getElementById("mapPlace").value;
         if(placeField == ""){
             return
         }
-        const centerOfSwitzerland = new google.maps.LatLng(46.8011, 8.2265);
-        const map = new google.maps.Map(
-        document.getElementById('map'), {center: centerOfSwitzerland, zoom: 15});
         if(!placeField.includes(",")){
             query = [placeField]
         } else {
             query = placeField.split(",")
         }
         for(const search of query){
-            let request = {
-                query: search,
-                fields: ['name', 'geometry'],
-                locationBias: {lat: 46.8011, lng: 8.2265}
+            const places = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${search}.json?proximity=8.2318,46.7985&types=place&fuzzyMatch=false&access_token=${MAPBOX_API_KEY}`).then(result => result.json())
+            for(const place of places.features){
+                multiPlaces.push([place.center[1], place.center[0], place.place_name])
             }
-            let service = new google.maps.places.PlacesService(map);
-            service.findPlaceFromQuery(request, function(results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    for(const result of results){
-                        multiPlaces.push([result.geometry.location.lat(),result.geometry.location.lng(), result.name])
-                    }
-                } else {
-                    unknownPlaces.push([results.name])
-                }
-            })
-        }
-        if(unknownPlaces.length > 0){
-            alert(`Places ${unknownPlaces.join(" ")} not found`)
         }
         return multiPlaces
     }
