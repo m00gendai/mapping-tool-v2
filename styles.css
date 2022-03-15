@@ -415,7 +415,7 @@ h4{
     grid-column-gap: 2em;
 }
 
-#vfrContainer{
+#vfrContainer, #droneContainer{
 position: absolute;
 top:0;
 left:0;
@@ -428,14 +428,14 @@ background: rgba(0,0,0,0.6);
 transform: translateY(-100%);
 }
 
-.vfrContainerInner{
+.vfrContainerInner, .droneContainerInner{
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 1em 0 1em 0;
+    width: 100%;
 }
-
 .leftContextMenu{
     background-color: #e7eff9;
 background-image: linear-gradient(45deg, #EEEEEE, #FAF8F9, #FFFFFF);
