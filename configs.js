@@ -268,3 +268,6 @@ export const colorTMA = "#0000ff" // blue
 export const colorCTR = "#ffa500" // orange
 export const colorFIC = "#000000" // black
 export const colorPoint = "#000000" // black
+export const colorDroneSchutzgebiet = "#fac862" // gold-ish
+export const colorDroneSperrgebiet = "#b9638f" // purple-ish
+export const colorDroneCTR = "#5585d9" // lightblue-ish
