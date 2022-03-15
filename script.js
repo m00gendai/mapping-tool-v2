@@ -366,20 +366,9 @@ window.onload = async function(){
         overlayArray.push(overlay)
     }
 
-// O V E R L A Y   T O G G L E R S
-   
-    function removeOverlays(layer){
-        if(overlayArray.length > 0){
-            overlayArray.forEach(overlay => {
-                if(overlay._url == layer){
-                    map.removeLayer(overlay)
-                }
-            })
-            overlayArray = overlayArray.filter(overlay => { return overlay._url != layer })
-        }
-    }
-
-   const droneSchutzgebiet = L.geoJSON(droneRestrictions, {style: {color: colorDroneSchutzgebiet}, filter: function(feature, layer) {
+// D R O N E   A R E A   S H A P E S
+    
+    const droneSchutzgebiet = L.geoJSON(droneRestrictions, {style: {color: colorDroneSchutzgebiet}, filter: function(feature, layer) {
         if(feature.properties.name === "Schutzgebiete"){
             return feature.properties.name;
         }
@@ -403,6 +392,21 @@ window.onload = async function(){
             return `<strong>${layer.feature.properties.Name_EN}</strong><br><p>${layer.feature.properties.Restr_EN}</p><br><p>${layer.feature.properties.Bew_St_EN}</p>`
             },{sticky: true, className: "droneTooltip"})
         
+// O V E R L A Y   T O G G L E R S
+   
+    function removeOverlays(layer){
+        if(overlayArray.length > 0){
+            overlayArray.forEach(overlay => {
+                if(overlay._url == layer){
+                    map.removeLayer(overlay)
+                }
+            })
+            overlayArray = overlayArray.filter(overlay => { return overlay._url != layer })
+        }
+    }
+    
+// V F R   C H A R T   O V E R L A Y S
+
     document.getElementById("vfrCH").addEventListener("click", function(){
         !vfrToggleCH ? createOverlay(map, tileLayers.vfrChartCH, null) : removeOverlays(tileLayers.vfrChartCH)
         !vfrToggleCH ? document.getElementById("vfrCH").style.color = "lime" : document.getElementById("vfrCH").style.color = "white"
@@ -414,20 +418,7 @@ window.onload = async function(){
         !vfrToggleFR ? document.getElementById("vfrFrance").style.color = "lime" : document.getElementById("vfrFrance").style.color = "white"
         vfrToggleFR = !vfrToggleFR
     })
-    
-    document.getElementById("toggleDrone").addEventListener("click", function(){
-        if(!droneToggle){
-            droneSchutzgebiet.addTo(map) 
-            droneCTR.addTo(map) 
-            droneSperrgebiet.addTo(map) 
-        } else {
-            map.removeLayer(droneSchutzgebiet)
-            map.removeLayer(droneCTR)
-            map.removeLayer(droneSperrgebiet)
-        }
-        droneToggle = !droneToggle
-    })
-    
+        
     document.getElementById("toggleVFR").addEventListener("click", function(){
         !toggleVFR ? document.getElementById("vfrContainer").style.display ="flex" : document.getElementById("vfrContainer").style.display ="none"
         toggleVFR = !toggleVFR
@@ -438,6 +429,65 @@ window.onload = async function(){
         !vfrToggleDE ? document.getElementById("vfrGermany").style.color = "lime" : document.getElementById("vfrGermany").style.color = "white"
         vfrToggleDE = !vfrToggleDE
     })
+    
+// D R O N E   A R E A   O V E R L A Y S
+    
+    document.getElementById("toggleDrone").addEventListener("click", function(){
+        !droneToggle ? document.getElementById("droneContainer").style.display ="flex" : document.getElementById("droneContainer").style.display ="none"
+        droneToggle = !droneToggle
+    })
+
+    document.getElementById("droneSchutz").addEventListener("click", function(){
+        !droneSchutzToggle ? droneSchutzgebiet.addTo(map) : map.removeLayer(droneSchutzgebiet)
+        !droneSchutzToggle ? document.getElementById("droneSchutz").style.color = "lime" : document.getElementById("droneSchutz").style.color = "white"
+        droneSchutzToggle = !droneSchutzToggle
+    })
+
+    document.getElementById("droneSperr").addEventListener("click", function(){
+        !droneSperrToggle ? droneSperrgebiet.addTo(map) : map.removeLayer(droneSperrgebiet)
+        !droneSperrToggle ? document.getElementById("droneSperr").style.color = "lime" : document.getElementById("droneSperr").style.color = "white"
+        droneSperrToggle = !droneSperrToggle
+    })
+
+    document.getElementById("droneCTR").addEventListener("click", function(){
+        !droneCTRToggle ? droneCTR.addTo(map) : map.removeLayer(droneCTR)
+        !droneCTRToggle ? document.getElementById("droneCTR").style.color = "lime" : document.getElementById("droneCTR").style.color = "white"
+        droneCTRToggle = !droneCTRToggle
+    })
+        
+    document.getElementById("droneAll").addEventListener("click", function(){
+        if(!droneAllToggle){
+            if(!droneSchutzToggle){
+                droneSchutzgebiet.addTo(map) 
+                document.getElementById("droneSchutz").style.color = "lime"
+                droneSchutzToggle = !droneSchutzToggle
+            }
+            if(!droneCTRToggle){
+                droneCTR.addTo(map) 
+                document.getElementById("droneCTR").style.color = "lime"
+                droneCTRToggle = !droneCTRToggle
+            }
+            if(!droneSperrToggle){
+                droneSperrgebiet.addTo(map) 
+                document.getElementById("droneSperr").style.color = "lime"
+                droneSperrToggle = !droneSperrToggle
+            }
+        }
+        if(droneAllToggle){
+                map.removeLayer(droneSchutzgebiet)
+                document.getElementById("droneSchutz").style.color = "white"
+                droneSchutzToggle = !droneSchutzToggle
+                map.removeLayer(droneCTR) 
+                document.getElementById("droneCTR").style.color = "white"
+                droneCTRToggle = !droneCTRToggle
+                map.removeLayer(droneSperrgebiet) 
+                document.getElementById("droneSperr").style.color = "white"
+                droneSperrToggle = !droneSperrToggle
+        }
+        droneAllToggle = !droneAllToggle
+    })
+    
+// A I R S P A C E   S H A P E S
 
     const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
