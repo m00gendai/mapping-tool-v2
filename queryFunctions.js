@@ -1,5 +1,5 @@
 import { convertRepCoordinates, calcDegToDec } from "/coordinateConversions.js"
-import {MAPBOX_API_KEY} from "/keys.js"
+import {GEOAPIFY_API_KEY} from "/keys.js"
 import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellipsoidal-vincenty.js'
 
 
@@ -61,9 +61,10 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
             query = placeField.split(",")
         }
         for(const search of query){
-            const places = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${search}.json?proximity=8.2318,46.7985&types=place&fuzzyMatch=false&access_token=${MAPBOX_API_KEY}`).then(result => result.json())
+            const places = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${search}&bias=countrycode:ch&apiKey=${MAPBOX_API_KEY}`).then(result => result.json())
             for(const place of places.features){
-                multiPlaces.push([place.center[1], place.center[0], place.place_name])
+                console.log(place.properties)
+                multiPlaces.push([place.geometry.coordinates[1], place.geometry.coordinates[0], `${place.properties.address_line1}<br>${place.properties.address_line2}`])
             }
         }
         return multiPlaces
