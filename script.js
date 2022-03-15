@@ -1,7 +1,7 @@
 import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist } from "/queryFunctions.js"
 import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDecToDeg } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
-import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorCTR, colorFIC, colorPoint } from "/configs.js"
+import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorCTR, colorFIC, colorPoint, colorDroneSchutzgebiet, colorDroneSperrgebiet, colorDroneCTR} from "/configs.js"
 import { Iceland, Belgium, Germany, UnitedKingdom, Netherlands, Ireland, Albania, Croatia, LD_VFR_REP, Spain, France, ItalyFIC, Italy, LJ_VFR_REP, Switzerland, SwitzerlandSub, Serbia } from "/Data/airspaces.js"
 
 window.onload = async function(){
