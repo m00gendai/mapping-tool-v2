@@ -464,3 +464,23 @@ path.leaflet-interactive.countryShape {
     cursor: crosshair;
     caret-color: red;
 }
+
+.leaflet-tooltip {
+    width: 10vw;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   flex-wrap: wrap;
+   height: auto;
+   white-space: normal;
+}
+
+ .droneTooltip {
+   width: 20vw;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   flex-wrap: wrap;
+   height: auto;
+   white-space: normal;
+}
