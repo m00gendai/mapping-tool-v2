@@ -326,7 +326,11 @@ window.onload = async function(){
     let vfrToggleCH = false
     let vfrToggleFR = false
     let vfrToggleDE = false
+    let droneSchutzToggle = false
+    let droneSperrToggle = false
+    let droneCTRToggle = false
     let droneToggle = false
+    let droneAllToggle = false
     let toggleVFR = false
     let overlayArray = []
 
