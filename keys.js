@@ -2,4 +2,4 @@
 
 export const MAPTILER_API_KEY = "NKhHZPzrFz5SSXwqLEH0"
 export const IGN_FRANCE_API_KEY = "tf5vcp9r5dnrjkr4kpdcqvvs"
-export const MAPBOX_API_KEY = "pk.eyJ1IjoibXJ3ZWJlciIsImEiOiJjbDBudGMzdnQwYWZwM2ludHdyZ3IzamllIn0.Jqze21e5SxDEFsfojl-e1Q"
+export const GEOAPIFY_API_KEY = "88cac78cab304f9799b5ec98c358f208"
