@@ -63,8 +63,9 @@ import LatLon, { Dms } from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-ellip
         for(const search of query){
             const places = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${search}&bias=countrycode:ch&apiKey=${GEOAPIFY_API_KEY}`).then(result => result.json())
             for(const place of places.features){
-                console.log(place.properties)
-                multiPlaces.push([place.geometry.coordinates[1], place.geometry.coordinates[0], `${place.properties.address_line1}<br>${place.properties.address_line2}`])
+                if(!(place.properties.result_type === "amenity" && place.properties.street)){
+                    multiPlaces.push([place.geometry.coordinates[1], place.geometry.coordinates[0], `${place.properties.address_line1}<br>${place.properties.address_line2}`])
+                }
             }
         }
         return multiPlaces
