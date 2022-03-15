@@ -379,28 +379,52 @@ window.onload = async function(){
         }
     }
 
-   /* document.getElementById("toggleTopo").addEventListener("click", function(){
-        if(topoToggle == 0){
-            createOverlay(map, tileLayers.hillshades, null)
-            topoToggle = 1
-        } else if (topoToggle == 1){
-            removeOverlays(tileLayers.hillshades)
-            topoToggle = 0
+   const droneSchutzgebiet = L.geoJSON(droneRestrictions, {style: {color: colorDroneSchutzgebiet}, filter: function(feature, layer) {
+        if(feature.properties.name === "Schutzgebiete"){
+            return feature.properties.name;
         }
-    }) */
+    }}).bindTooltip(function (layer) {
+            return `<strong>${layer.feature.properties.Name_EN}</strong><br><p>${layer.feature.properties.Restr_EN}</p><br><p>${layer.feature.properties.Bew_St_EN}</p>`
+            },{sticky: true, className: "droneTooltip"})
     
-     document.getElementById("vfrCH").addEventListener("click", function(){
+    const droneCTR = L.geoJSON(droneRestrictions, {style: {color: colorDroneCTR}, filter: function(feature, layer) {
+        if(feature.properties.name === "CTR"){
+            return feature.properties.name;
+        }
+    }}).bindTooltip(function (layer) {
+            return `<strong>${layer.feature.properties.Name_EN}</strong><br><p>${layer.feature.properties.Restr_EN}</p><br><p>${layer.feature.properties.Bew_St_EN}</p>`
+            },{sticky: true, className: "droneTooltip"})
+    
+    const droneSperrgebiet = L.geoJSON(droneRestrictions, {style: {color: colorDroneSperrgebiet}, filter: function(feature, layer) {
+        if(feature.properties.name === "Sperrgebiete"){
+            return feature.properties.name;
+        }
+    }}).bindTooltip(function (layer) {
+            return `<strong>${layer.feature.properties.Name_EN}</strong><br><p>${layer.feature.properties.Restr_EN}</p><br><p>${layer.feature.properties.Bew_St_EN}</p>`
+            },{sticky: true, className: "droneTooltip"})
+        
+    document.getElementById("vfrCH").addEventListener("click", function(){
         !vfrToggleCH ? createOverlay(map, tileLayers.vfrChartCH, null) : removeOverlays(tileLayers.vfrChartCH)
         !vfrToggleCH ? document.getElementById("vfrCH").style.color = "lime" : document.getElementById("vfrCH").style.color = "white"
         vfrToggleCH = !vfrToggleCH
     })
+    
     document.getElementById("vfrFrance").addEventListener("click", function(){
         !vfrToggleFR ? createOverlay(map, tileLayers.vfrChartFR, null) : removeOverlays(tileLayers.vfrChartFR)
         !vfrToggleFR ? document.getElementById("vfrFrance").style.color = "lime" : document.getElementById("vfrFrance").style.color = "white"
         vfrToggleFR = !vfrToggleFR
     })
+    
     document.getElementById("toggleDrone").addEventListener("click", function(){
-        !droneToggle ? createOverlay(map, tileLayers.droneChart, null) : removeOverlays(tileLayers.droneChart)
+        if(!droneToggle){
+            droneSchutzgebiet.addTo(map) 
+            droneCTR.addTo(map) 
+            droneSperrgebiet.addTo(map) 
+        } else {
+            map.removeLayer(droneSchutzgebiet)
+            map.removeLayer(droneCTR)
+            map.removeLayer(droneSperrgebiet)
+        }
         droneToggle = !droneToggle
     })
     
@@ -408,144 +432,164 @@ window.onload = async function(){
         !toggleVFR ? document.getElementById("vfrContainer").style.display ="flex" : document.getElementById("vfrContainer").style.display ="none"
         toggleVFR = !toggleVFR
     })
+    
     document.getElementById("vfrGermany").addEventListener("click", function(){
         !vfrToggleDE ? createOverlay(map, tileLayers.vfrChartDE, null) : removeOverlays(tileLayers.vfrChartDE)
         !vfrToggleDE ? document.getElementById("vfrGermany").style.color = "lime" : document.getElementById("vfrGermany").style.color = "white"
         vfrToggleDE = !vfrToggleDE
     })
 
-   const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}, filter: function(feature, layer) {
+    const LS_FIR = L.geoJSON(Switzerland, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-       return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
     const LS_SUBFIR = L.geoJSON(SwitzerlandSub, {style: {color: colorFIC}, filter: function(feature, layer) {
         if(feature.properties.Type == "BDRY"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
     const LI_FIC = L.geoJSON(ItalyFIC, {style: {color: colorFIC}, filter: function(feature, layer) {
         if(feature.properties.Type == "BDRY"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
     const LJ_VFR_REPS = L.geoJSON(LJ_VFR_REP, {style: {color: colorPoint}, pointToLayer: function(geoJsonPoint, latlng) {
         return L.marker(latlng, {icon: L.icon(customMarkers.sloveniaMarker)});
-    }} ).bindTooltip(function (layer) {
+    }}).bindTooltip(function (layer) {
          return `${layer.feature.properties.Name}`  
-    })
+        },{sticky: true})
+    
     const LD_VFR_REPS = L.geoJSON(LD_VFR_REP, {style: {color: colorPoint}, pointToLayer: function(geoJsonPoint, latlng) {
         return L.marker(latlng, {icon: L.icon(customMarkers.croatiaMarker)});
-    }} ).bindTooltip(function (layer) {
-         return `${layer.feature.properties.Name}` 
-    })
+    }}).bindTooltip(function (layer) {
+        return `${layer.feature.properties.Name}` 
+        },{sticky: true})
+    
     const EB_FIR = L.geoJSON(Belgium, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
     const EB_TMA = L.geoJSON(Belgium, {style: {color: colorTMA}, filter: function(feature, layer) {
         if(feature.properties.Type == "TMA"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
     const EB_CTR = L.geoJSON(Belgium, {style: {color: colorCTR}, filter: function(feature, layer) {
         if(feature.properties.Type == "CTR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
         return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}`  
-    })
+    },{sticky: true})
         
     const LD_FIR = L.geoJSON(Croatia, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
     const LD_TMA = L.geoJSON(Croatia, {style: {color: colorTMA}, filter: function(feature, layer) {
         if(feature.properties.Type == "TMA"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const LD_CTR = L.geoJSON(Croatia, {style: {color: colorCTR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
+    const LD_CTR = L.geoJSON(Croatia, {style: {color: colorCTR}, filter: function(feature, layer) {
         if(feature.properties.Type == "CTR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
     const LY_FIR = L.geoJSON(Serbia, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
     const LY_TMA = L.geoJSON(Serbia, {style: {color: colorTMA}, filter: function(feature, layer) {
        if(feature.properties.Type == "TMA"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
 
     const ED_FIR = L.geoJSON(Germany, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const LF_FIR = L.geoJSON(France, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+    
+    const LF_FIR = L.geoJSON(France, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const LI_FIR = L.geoJSON(Italy, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const LI_FIR = L.geoJSON(Italy, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const LE_FIR = L.geoJSON(Spain, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const LE_FIR = L.geoJSON(Spain, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const EG_FIR = L.geoJSON(UnitedKingdom, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const EG_FIR = L.geoJSON(UnitedKingdom, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const EI_FIR = L.geoJSON(Ireland, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const EI_FIR = L.geoJSON(Ireland, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const BI_FIR = L.geoJSON(Iceland, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const BI_FIR = L.geoJSON(Iceland, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const EH_FIR = L.geoJSON(Netherlands, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const EH_FIR = L.geoJSON(Netherlands, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
-        const LA_FIR = L.geoJSON(Albania, {style: {color: colorFIR}, filter: function(feature, layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const LA_FIR = L.geoJSON(Albania, {style: {color: colorFIR}, filter: function(feature, layer) {
         if(feature.properties.Type == "FIR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
-    })
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
         
     const groupedOverlays = {
         "Other": {
