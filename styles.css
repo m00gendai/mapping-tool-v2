@@ -83,7 +83,7 @@ mark{
     font-family: "Helvetica";
 }
 
-h4{
+h4, summary{
     text-align: center;
     width: 100%;
     font-weight: bold;
