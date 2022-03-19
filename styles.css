@@ -484,3 +484,60 @@ path.leaflet-interactive.countryShape {
    height: auto;
    white-space: normal;
 }
+
+summary {
+
+text-align: left;
+margin: 0 0 1rem 0;
+}
+
+
+
+
+.resultContainer{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+.inputContainer{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 100%;
+	position: relative;
+}
+
+.inputContainer select,
+.inputContainer textarea,
+.inputContainer button,
+.inputContainer input
+{
+	width: 100%;
+	margin: 0.5em;
+    min-height: 1.5rem;
+}
+
+.inputContainer textarea{
+	min-height: 10em;
+	resize: vertical;
+}
+
+.resultField{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 100%;
+    margin: 0 0 1rem 0;
+}
+
+.resultField textarea{
+	width: 100%;
+	min-height: 5rem;
+	resize: vertical;
+}
+.resultField input {
+	width: 100%;
+}
