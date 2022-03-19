@@ -155,81 +155,124 @@
                                 <hr>
                             </section>
                             <section id="coordinateConversion">
-                                <div class="inputContainer">
-                                Convert Coordinates from one format to the other and plot the result on the map
-                                    <h4>DEG / MIN / SEC to Decimal DEG </h4>
-                                    <br>
-                                    <div class="inputCoordinateConversionContainer">
-                                        <div class="inputCoordinateConversionContainerInner">
-                                            <div class="minutesns">
-                                                <input id="nsmindeg" class="coordinatesSinglePairs" placeholder="46" maxlength="2">
-                                                <input id="nsminmin" class="coordinatesSinglePairs" placeholder="48" maxlength="2">
-                                                <input id="nsminsec" class="coordinatesSinglePairs" placeholder="04" maxlength="2">
-                                                <select id="ns" class="coordinatesSinglePairs" >
-                                                    <option>N</option>
-                                                    <option>S</option>
-                                                </select>
-                                            </div>
-                                            <div class="minutesew">
-                                                <input id="ewmindeg" class="coordinatesSinglePairs" placeholder="008" maxlength="3">
-                                                <input id="ewminmin" class="coordinatesSinglePairs" placeholder="13" maxlength="2">
-                                                <input id="ewminsec" class="coordinatesSinglePairs" placeholder="36" maxlength="2">
-                                                <select id="ew" class="coordinatesSinglePairs" >
-                                                    <option>E</option>
-                                                    <option>W</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <button id="mincalc" class="coordinateConversionButton">Convert</button>
-                                        <div id="result" class="coordresult"></div>
-                                    </div>
-                                    <h4>DEG / Decimal MIN / SEC to DEG / MIN / SEC</h4>
-                                    <br>
-                                    <div class="inputCoordinateConversionContainer">
-                                        <div class="inputCoordinateConversionContainerInner">
-                                            <div class="minutesns">
-                                                <input id="nsmindecdeg" class="coordinatesSinglePairs" placeholder="46" maxlength="2">
-                                                <input id="nsmindecmin" class="coordinatesDecimalMin" placeholder="48.066667" >
-                                                <select id="ns3" class="coordinatesSinglePairs" >
-                                                    <option>N</option>
-                                                    <option>S</option>
-                                                </select>
-                                            </div>
-                                            <div class="minutesew">
-                                                <input id="ewmindecdeg" class="coordinatesSinglePairs" placeholder="008" maxlength="3">
-                                                <input id="ewmindecmin" class="coordinatesDecimalMin" placeholder="13.600000" >
-                                                <select id="ew3" class="coordinatesSinglePairs" >
-                                                    <option>E</option>
-                                                    <option>W</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <button id="mindeccalc" class="coordinateConversionButton">Convert</button>
-                                        <div id="result2" class="coordresult"></div>
-                                    </div>
-                                    <h4>Decimal DEG to DEG / MIN / SEC</h4>
-                                    <br>
-                                    <div class="inputCoordinateConversionContainer">
-                                        <div class="inputCoordinateConversionContainerInner">
-                                            <div class="decimalns">
-                                                <input id="nsdec" class="coordinatesDecimalDeg" placeholder="46.8011">
-                                                <select id="ns2" class="coordinatesSinglePairs" >
-                                                    <option>N</option>
-                                                    <option>S</option>
-                                                </select>
-                                            </div>
-                                            <div class="decimalew">
-                                                <input id="ewdec" class="coordinatesDecimalDeg" placeholder="008.2265">
-                                                <select id="ew2" class="coordinatesSinglePairs" >
-                                                    <option>E</option>
-                                                    <option>W</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <button id="deccalc" class="coordinateConversionButton">Convert</button>
-                                        <div id="result1" class="coordresult"></div>
-                                    </div>
-                                </div>
+                                <details>
+<summary>Coordinate Conversion</summary>
+Please adhere to format. Multiple coordinates separated by spaces. Use Notepad++ or other means to format coordinates if necessary.
+<hr>
+<div class="inputContainer">
+<select id="coordinateConversion_Input_Select">
+	<option value="degMin">WGS84 Deg Min - 4714N00723E</option>
+	<option value="degMinSec">WGS84 Deg Min Sec - 471405N0072354E</option>
+	<option value="decimal">Decimal - 47.1256,7.1526</option>
+	<option value="swissgrid">Swissgrid - 2600000,1200000</option>
+</select>
+<textarea id="coordinateConversion_Input" placeholder="4713N00713E 4857N00757E"></textarea>
+
+<button id="coordinateConversionConvert">Convert</button>
+<button id="coordinateConversionPlot">Plot</button>
+</div>
+<hr>
+<div class="resultContainer">
+<fieldset class="resultField">
+WGS84 Decimal Degrees
+<textarea id="coordinateConversion_Decimal" placeholder="Output Format: 47.1234,7.1234" disabled></textarea>
+</fieldset>
+<fieldset class="resultField">
+WGS84 Degrees Minutes Seconds
+<textarea id="coordinateConversion_WGS_DegMinSec" placeholder="Output Format: 471234N0071234E" disabled></textarea>
+</fieldset>
+<fieldset class="resultField">
+WGS84 Degrees Minutes
+<textarea id="coordinateConversion_WGS_DegMin" placeholder="Output Format: 4713N00713E" disabled></textarea>
+</fieldset>
+<fieldset class="resultField">
+Swissgrid
+<textarea id="coordinateConversion_Swissgrid" placeholder="Output Format: 2600000 1200000" disabled></textarea>
+</fieldset>
+</div>
+</details>
+
+<details>
+<summary>Unit Conversion</summary>
+<hr>
+<div class="inputContainer">
+<select id="heightConversion_Input_Select">
+	<option value="feet">Feet</option>
+	<option value="meter">Meters</option>
+	<option value="statuteMile">Statute Miles</option>
+	<option value="nauticalMile">Nautical Miles</option>
+	<option value="kilometer">Kilometers</option>
+</select>
+<input id="heightConversion_Input" placeholder="123456">
+
+<button id="heightConversion">Convert</button>
+</div>
+<hr>
+<div class="resultContainer">
+<fieldset class="resultField">
+Feet
+<input id="heightConversion_Feet" disabled>
+</fieldset>
+<fieldset class="resultField">
+Meters
+<input id="heightConversion_Meter" disabled>
+</fieldset>
+<fieldset class="resultField">
+Statute Miles
+<input id="heightConversion_StatuteMile" disabled>
+</fieldset>
+<fieldset class="resultField">
+Nautical Miles
+<input id="heightConversion_NauticalMile" disabled>
+</fieldset>
+<fieldset class="resultField">
+Kilometers
+<input id="heightConversion_Kilometer" disabled>
+</fieldset>
+</div>
+</details>
+
+<details>
+<summary>Speed Conversion</summary>
+<hr>
+<div class="inputContainer">
+<select id="speedConversion_Input_Select">
+	<option value="kmh">km/h</option>
+	<option value="mph">mph</option>
+	<option value="ms">m/s</option>
+	<option value="knots">Knots</option>
+	<option value="mach">Mach</option>
+</select>
+<input id="speedConversion_Input" placeholder="123456">
+
+<button id="speedConversion">Convert</button>
+</div>
+<hr>
+<div class="resultContainer">
+<fieldset class="resultField">
+km/h
+<input id="speedConversion_kmh" disabled>
+</fieldset>
+<fieldset class="resultField">
+mph
+<input id="speedConversion_mph" disabled>
+</fieldset>
+<fieldset class="resultField">
+m/s
+<input id="speedConversion_ms" disabled>
+</fieldset>
+<fieldset class="resultField">
+Knots
+<input id="speedConversion_knots" disabled>
+</fieldset>
+<fieldset class="resultField">
+Mach
+<input id="speedConversion_mach" disabled>
+</fieldset>
+</div>
+</details>
+                                    
+
                                 <hr>
                             </section>
                             <section id="circle">
