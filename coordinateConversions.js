@@ -69,96 +69,244 @@ export function calcDegToDec(nsdeg, nsmin, nssec, ewdeg, ewmin, ewsec, nsSel, ew
         decArray.push(ewdegToMinDec) // push E or W coordinate to array
         return decArray // return array
     }
-
-// DEG MIN SEC to DECIMAL Handler
-export function degMinSecToDecimal(nsdeg, nsmin, nssec, nsSel, ewdeg, ewmin, ewsec, ewSel){
-    let inputArray = []; // initialises array for all values
-    inputArray.push(nsdeg, nsmin, nssec, nsSel, ewdeg, ewmin, ewsec, ewSel) // pushes all values into the input array
-    // dataValidation(inputArray)
-     const calculatedToDec = calcDegToDec(nsdeg, nsmin, nssec, ewdeg, ewmin, ewsec, nsSel, ewSel) // calls the calculation function and passing in all inputs. Return value is an array of coordinates
-    document.getElementById("result").innerHTML = "" // resets the result container
-    // This is a bit of styling the text alignment and adding leading zeroes and stuff
-    if (parseInt(nsdeg) < 10) {
-        nsdeg = "0" + parseInt(nsdeg)
-    } else {
-        nsdeg = parseInt(nsdeg)
-    }
-    if (parseInt(nsmin) < 10) {
-        nsmin = "0" + parseInt(nsmin)
-    } else {
-        nsmin = parseInt(nsmin)
-    }
-    if (parseInt(nssec) < 10) {
-        nssec = "0" + parseInt(nssec)
-    } else {
-        nssec = parseInt(nssec)
-    }
-    if (parseFloat(ewdeg) < 10) {
-        ewdeg = "00" + parseFloat(ewdeg)
-    }
-    if (parseFloat(ewdeg) >= 10 && parseFloat(ewdeg) < 100) {
-        ewdeg = "0" + parseFloat(ewdeg)
-    }
-    if (parseInt(ewmin) < 10) {
-        ewmin = "0" + parseInt(ewmin)
-    } else {
-        ewmin = parseInt(ewmin)
-    }
-    if (parseInt(ewsec) < 10) {
-        ewsec = "0" + parseInt(ewsec)
-    } else {
-        ewsec = parseInt(ewsec)
-    }
-    //creates the result input
-    document.getElementById("result").innerHTML = `${nsdeg}° ${nsmin}' ${nssec}" = ${calculatedToDec[0]}<br>${ewdeg}° ${ewmin}' ${ewsec}" = ${calculatedToDec[1]}`
-    document.getElementById("result").style.padding = "2% 5% 2% 5%"
-    return [calculatedToDec[0], calculatedToDec[1]]
+    
+    
+export function placeholderFill(){
+    const unit = document.getElementById("coordinateConversion_Input_Select").value
+	let placeholder
+	if(document.getElementById("coordinateConversion_Input_Select").value == "decimal"){
+		placeholder = "47.1234,7.1234 48.5678,8.5678"
+	}
+	if(document.getElementById("coordinateConversion_Input_Select").value == "degMin"){
+		placeholder = "4713N00713E 4857N00757E"
+	}
+	if(document.getElementById("coordinateConversion_Input_Select").value == "degMinSec"){
+		placeholder = "471234N0071234E 485612N0075612E"
+	}
+	if(document.getElementById("coordinateConversion_Input_Select").value == "swissgrid"){
+		placeholder = "2600000,1200000 2500000,1100000"
+	}
+	document.getElementById("coordinateConversion_Input").placeholder = placeholder
 }
 
-// DECIMAL to DEG MIN SEC Handler
-export function decimalToDegMinSec(nsdec, ewdec, ns2Sel, ew2Sel){
-    const calculatedToDec = calcDecToDeg(nsdec, ewdec, ns2Sel, ew2Sel)
+const convertedCoordinatesMarkerArray = []
 
-        if (parseInt(nsdec) < 10) {
-            nsdec = "0" + parseFloat(nsdec)
-        }
-        if (parseInt(ewdec) < 10) {
-            ewdec = "00" + parseFloat(ewdec)
-        }
-        if (parseInt(ewdec) < 100 && parseInt(ewdec) > 10) {
-            ewdec = "0" + parseFloat(ewdec)
-        }
-
-        document.getElementById("result1").innerHTML = ""
-        let br = document.createElement("br")
-        document.getElementById("result1").innerHTML = "\&nbsp;" + nsdec + " = " + calculatedToDec[0];
-        document.getElementById("result1").appendChild(br)
-        document.getElementById("result1").innerHTML += ewdec + " = " + calculatedToDec[1];
-        document.getElementById("result1").style.padding = "2% 5% 2% 5%"
-        if (ns2Sel == "S") {
-            nsdec = parseFloat("-" + nsdec)
-        }
-        if (ew2Sel == "W") {
-            ewdec = parseFloat("-" + ewdec)
-        }
-        return [calculatedToDec[0], calculatedToDec[1]]
+export async function convertCoordinates(){
+    convertedCoordinatesMarkerArray.length = 0
+    	document.getElementById("coordinateConversion_Decimal").value = ""
+	document.getElementById("coordinateConversion_WGS_DegMin").value = ""
+	document.getElementById("coordinateConversion_WGS_DegMinSec").value = ""
+	document.getElementById("coordinateConversion_Swissgrid").value = ""
+	const input = document.getElementById("coordinateConversion_Input").value
+	const unit = document.getElementById("coordinateConversion_Input_Select").value
+	if(unit == "degMin"){
+		const getCoords = document.getElementById("coordinateConversion_Input").value.split(" ")
+		for(const coord of getCoords){
+			const matches = coord.match(/[0-9]{4}[nNsS][0-9]{5}[eEwW]/)
+			if(!matches){
+				alert("Check either Unit or format")
+				return
+			}
+			const northSouthDeg = coord.substring(0,2)
+			const northSouthMin = coord.substring(2,4)
+			const northSouthSelect = coord.charAt(4).toUpperCase()
+			let northSouth 
+			northSouthSelect == "N" ? northSouth = `${parseFloat(northSouthDeg) + parseFloat(northSouthMin/60)}` : northSouth = `-${parseFloat(northSouthDeg) + parseFloat(northSouthMin/60)}`
+			const eastWestDeg = coord.substring(5,8)
+			const eastWestMin = coord.substring(8,10)
+			const eastWestSelect = coord.charAt(10).toUpperCase()
+			let eastWest
+			eastWestSelect == "E" ? eastWest = `${parseFloat(eastWestDeg) + parseFloat(eastWestMin/60)}` : eastWest = `-${parseFloat(eastWestDeg) + parseFloat(eastWestMin/60)}`
+			
+			const ret = {
+				northing: northSouth,
+				easting: eastWest
+			}
+			fillFromDecimal(ret)
+		}		
+	}
+	if(unit == "degMinSec"){
+		const getCoords = document.getElementById("coordinateConversion_Input").value.split(" ")
+		for(const coord of getCoords){
+			const matches = coord.match(/[0-9]{6}[nNsS][0-9]{7}[eEwW]/)
+			if(!matches){
+				alert("Check either Unit or format")
+				return
+			}
+			const northSouthDeg = coord.substring(0,2)
+			const northSouthMin = coord.substring(2,4)
+			const northSouthSec = coord.substring(4,6)
+			const northSouthSelect = coord.charAt(6).toUpperCase()
+			let northSouth 
+			northSouthSelect == "N" ? northSouth = `${parseFloat(northSouthDeg) + parseFloat(northSouthMin/60) + parseFloat(northSouthSec/3600)}` : northSouth = `-${parseFloat(northSouthDeg) + parseFloat(northSouthMin/60) + parseFloat(northSouthSec/3600)}`
+			const eastWestDeg = coord.substring(7,10)
+			const eastWestMin = coord.substring(10,12)
+			const eastWestSec = coord.substring(12,14)
+			const eastWestSelect = coord.charAt(14).toUpperCase()
+			let eastWest
+			eastWestSelect == "E" ? eastWest = `${parseFloat(eastWestDeg) + parseFloat(eastWestMin/60) + parseFloat(eastWestSec/3600)}` : eastWest = `-${parseFloat(eastWestDeg) + parseFloat(eastWestMin/60) + parseFloat(eastWestSec/3600)}`
+			
+			const ret = {
+				northing: northSouth,
+				easting: eastWest
+			}
+			fillFromDecimal(ret)
+		}		
+	}
+	if(unit == "decimal"){
+		const getCoords = document.getElementById("coordinateConversion_Input").value.split(" ")
+		const returned = []
+		for(const coord of getCoords){
+			const matches = coord.match(/^[-]?[0-9]{1,3}\.?[0-9]*,[-]?[0-9]{1,3}\.?[0-9]*$/)
+			if(!matches){
+				alert("Check either Unit or format")
+				return
+			}
+			const getCoords = coord.split(",")
+			const ret = {
+				easting: getCoords[1],
+				northing: getCoords[0]
+			}
+			returned.push(ret)
+		}
+		for (const ret of returned){
+			fillFromDecimal(ret)
+		}
+	}
+	if(unit == "swissgrid"){
+		const getCoords = document.getElementById("coordinateConversion_Input").value.split(" ")
+		const returned = []
+		for(const coord of getCoords){
+			const matches = coord.match(/^[0-9]{7},[0-9]{7}$/)
+			if(!matches){
+				alert("Check either Unit or format")
+				return
+			}
+			const sendCoords = coord.split(",")
+			const conversion = await fetch(`https://geodesy.geo.admin.ch/reframe/lv95towgs84?easting=${sendCoords[0]}&northing=${sendCoords[1]}&format=json`).then(result => result.json())
+			returned.push(conversion)
+		}
+		for(const ret of returned){
+			await fillFromDecimal(ret)
+		}
+	}
 }
 
-// DEG DECIMAL to DEG MIN SEC Handler
-export function degDecimalToDegMinSec(nsdeg, nsmin, ewdeg, ewmin, ns3Sel, ew3Sel){
-    const minns = parseInt(nsmin)
-    const secns = (nsmin - minns) * 60
-    const minew = parseInt(ewmin)
-    const secew = (ewmin - minew) * 60
-    let calculatedToDec = calcDegToDec(nsdeg, minns, secns.toFixed(0), ewdeg, minew, secew.toFixed(0), ns3Sel, ew3Sel)
-    if (ns3Sel == "S") {
-        nsdeg = parseFloat(`-${nsdeg}`)
-    }
-    if (ew3Sel == "W") {
-        ewdeg = parseFloat(`-${ewdeg}`)
-    }
-    document.getElementById("result2").innerHTML = ""
-    document.getElementById("result2").innerHTML = `${nsdeg}° ${nsmin}' = ${nsdeg}° ${minns}' ${secns.toFixed(0)}"<br>${ewdeg}° ${ewmin}' = ${ewdeg}° ${minew}' "${secew.toFixed(0)}"`
-    document.getElementById("result2").style.padding = "2% 5% 2% 5%"
-    return [calculatedToDec[0], calculatedToDec[1]]
+
+
+async function fillFromDecimal(ret){
+	document.getElementById("coordinateConversion_Decimal").value += `${ret.northing},${ret.easting}\n`
+	document.getElementById("coordinateConversion_WGS_DegMinSec").value += toDegMinSec(ret)
+	document.getElementById("coordinateConversion_WGS_DegMin").value += toDegMin(ret)
+	await toSwissgrid(ret)
+	convertedCoordinatesMarkerArray.push([ret.easting, ret.northing])
+}
+
+function toDegMinSec(ret){
+	const northSouth = Math.abs(ret.northing)
+	let northSouthDeg = parseInt(northSouth)
+	let northSouthMin = parseInt((northSouth-northSouthDeg)*60)
+	let northSouthSec = Math.round((((northSouth-northSouthDeg)*60)-northSouthMin)*60)
+	Math.abs(northSouthDeg) < 10 ? northSouthDeg = `0${northSouthDeg}` : northSouthDeg = northSouthDeg
+	northSouthMin < 10 ? northSouthMin = `0${northSouthMin}` : northSouthMin = northSouthMin
+	northSouthSec < 10 ? northSouthSec = `0${northSouthSec}` : northSouthSec = northSouthSec
+	let wgsNorthSouth
+	ret.northing > 0.0 ? wgsNorthSouth = `${northSouthDeg}${northSouthMin}${northSouthSec}N` : wgsNorthSouth = `${northSouthDeg}${northSouthMin}${northSouthSec}S`
+	const eastWest = Math.abs(ret.easting)
+	let eastWestDeg = parseInt(eastWest)
+	let eastWestMin = parseInt((eastWest-eastWestDeg)*60)
+	let eastWestSec = Math.round((((eastWest-eastWestDeg)*60)-eastWestMin)*60)
+	Math.abs(eastWestDeg) < 10 ? eastWestDeg = `00${eastWestDeg}` : eastWestDeg = eastWestDeg
+	Math.abs(eastWestDeg) > 10 && Math.abs(eastWestDeg) < 100 ? eastWestDeg = `0${eastWestDeg}` : eastWestDeg = eastWestDeg
+	eastWestMin < 10 ? eastWestMin = `0${eastWestMin}` : eastWestMin = eastWestMin
+	eastWestSec < 10 ? eastWestSec = `0${eastWestSec}` : eastWestSec = eastWestSec
+	let wgsEastWest
+	ret.easting > 0.0 ? wgsEastWest = `${eastWestDeg}${eastWestMin}${eastWestSec}E` : wgsEastWest = `${eastWestDeg}${eastWestMin}${eastWestSec}W`
+	return `${wgsNorthSouth}${wgsEastWest}\n`
+}
+
+function toDegMin(ret){
+	const northSouth = Math.abs(ret.northing)
+	let northSouthDeg = parseInt(northSouth)
+	let northSouthMin = Math.round((northSouth-northSouthDeg)*60)
+	Math.abs(northSouthDeg) < 10 ? northSouthDeg = `0${northSouthDeg}` : northSouthDeg = northSouthDeg
+	northSouthMin < 10 ? northSouthMin = `0${northSouthMin}` : northSouthMin = northSouthMin
+	let wgsNorthSouth
+	ret.northing > 0.0 ? wgsNorthSouth = `${northSouthDeg}${northSouthMin}N` : wgsNorthSouth = `${northSouthDeg}${northSouthMin}S`
+	const eastWest = Math.abs(ret.easting)
+	let eastWestDeg = parseInt(eastWest)
+	let eastWestMin = Math.round((eastWest-eastWestDeg)*60)
+	Math.abs(eastWestDeg) < 10 ? eastWestDeg = `00${eastWestDeg}` : eastWestDeg = eastWestDeg
+	Math.abs(eastWestDeg) > 10 && Math.abs(eastWestDeg) < 100 ? eastWestDeg = `0${eastWestDeg}` : eastWestDeg = eastWestDeg
+	eastWestMin < 10 ? eastWestMin = `0${eastWestMin}` : eastWestMin = eastWestMin
+	let wgsEastWest
+	ret.easting > 0.0 ? wgsEastWest = `${eastWestDeg}${eastWestMin}E` : wgsEastWest = `${eastWestDeg}${eastWestMin}W`
+	return `${wgsNorthSouth}${wgsEastWest}\n`
+}
+
+async function toSwissgrid(ret){
+console.log(ret)
+	const conversion = await fetch(`https://geodesy.geo.admin.ch/reframe/wgs84tolv95?easting=${ret.easting}&northing=${ret.northing}&format=json`).then(response => response.json())
+	console.log(`${Math.round(conversion.easting)} ${Math.round(conversion.northing)}`)
+	document.getElementById("coordinateConversion_Swissgrid").value += `${Math.round(conversion.easting)} ${Math.round(conversion.northing)}\n`
+}
+
+export function plotConvertedCoordinates(){
+    return convertedCoordinatesMarkerArray
+}
+
+export function convertHeight(){
+    const input = document.getElementById("heightConversion_Input").value
+	const unit = document.getElementById("heightConversion_Input_Select").value
+	if(unit == "meter"){
+		fillFromMeter(parseFloat(input))
+	}
+	if(unit == "feet"){
+		fillFromMeter(parseFloat(input)/3.2808)
+	}
+	if(unit == "statuteMile"){
+		fillFromMeter(parseFloat(input)/0.00062137)
+	}
+	if(unit == "nauticalMile"){
+		fillFromMeter(parseFloat(input)*1852)
+	}
+	if(unit == "kilometer"){
+		fillFromMeter(parseFloat(input)*1000)
+	}
+}
+
+function fillFromMeter(input){
+	document.getElementById("heightConversion_Meter").value = input
+	document.getElementById("heightConversion_Feet").value = input*3.2808
+	document.getElementById("heightConversion_StatuteMile").value = input*0.00062137
+	document.getElementById("heightConversion_NauticalMile").value = input/1852
+	document.getElementById("heightConversion_Kilometer").value = input/1000
+}
+
+export function convertSpeed(){
+    const input = document.getElementById("speedConversion_Input").value
+	const unit = document.getElementById("speedConversion_Input_Select").value
+	if(unit == "kmh"){
+		fillFromMs(parseFloat(input)/3.6)
+	}
+	if(unit == "mph"){
+		fillFromMs(parseFloat(input)/2.237)
+	}
+	if(unit == "ms"){
+		fillFromMs(parseFloat(input))
+	}
+	if(unit == "knots"){
+		fillFromMs(parseFloat(input)/1.944)
+	}
+	if(unit == "mach"){
+		fillFromMs(parseFloat(input)*343)
+	}
+}
+
+function fillFromMs(input){
+	document.getElementById("speedConversion_ms").value = input
+	document.getElementById("speedConversion_kmh").value = input*3.6
+	document.getElementById("speedConversion_mph").value = input*2.237
+	document.getElementById("speedConversion_knots").value = input*1.944
+	document.getElementById("speedConversion_mach").value = input/343
 }
