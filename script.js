@@ -1,5 +1,5 @@
 import { placeLoci, placeNavaid, placeRep, placeCoords, placePlace, placeBrgDist } from "/queryFunctions.js"
-import { degMinSecToDecimal, decimalToDegMinSec, degDecimalToDegMinSec , calcDecToDeg } from "/coordinateConversions.js"
+import { calcDecToDeg, placeholderFill, convertCoordinates, plotConvertedCoordinates, convertHeight, convertSpeed } from "/coordinateConversions.js"
 import { routeDeconstructor } from "/routeDeconstructor.js"
 import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorCTR, colorFIC, colorPoint, colorDroneSchutzgebiet, colorDroneSperrgebiet, colorDroneCTR} from "/configs.js"
 import { Iceland, Belgium, Germany, UnitedKingdom, Netherlands, Ireland, Albania, Croatia, LD_VFR_REP, Spain, France, ItalyFIC, Italy, LJ_VFR_REP, Switzerland, SwitzerlandSub, Serbia } from "/Data/airspaces.js"
@@ -265,43 +265,28 @@ window.onload = async function(){
     
 // C O O R D I N A T E   C O N V E R S I O N S   H A N D L E R S
     
-    // calculating DEG MIN SEC to DECIMAL
-    document.getElementById("mincalc").addEventListener("click", function() {
-        const nsdeg = document.getElementById("nsmindeg").value; // gets the values
-        const nsmin = document.getElementById("nsminmin").value;
-        const nssec = document.getElementById("nsminsec").value;
-        const ewdeg = document.getElementById("ewmindeg").value;
-        const ewmin = document.getElementById("ewminmin").value;
-        const ewsec = document.getElementById("ewminsec").value;
-        const nsSel = document.getElementById("ns").value;
-        const ewSel = document.getElementById("ew").value;
-        const calculatedCoordinates = degMinSecToDecimal(nsdeg, nsmin, nssec, nsSel, ewdeg, ewmin, ewsec, ewSel)
-        addMarker(calculatedCoordinates[0], calculatedCoordinates[1])
-    })
-    
-    // calculating DECIMAL to DEG MIN SEC
-    // This is more or less the same as mincalc but the other way around
-    document.getElementById("deccalc").addEventListener("click", function() {
-        const nsdec = document.getElementById("nsdec").value;
-        const ewdec = document.getElementById("ewdec").value;
-        const ns2Sel = document.getElementById("ns2").value;
-        const ew2Sel = document.getElementById("ew2").value;
-        const calculatedCoordinates = decimalToDegMinSec(nsdec, ewdec, ns2Sel, ew2Sel)
-        addMarker(nsdec, ewdec)
-    })
-
-    // calculating DEG DECIMAL MINUTES to DEG MIN SEC
-    // again more or less the same as mincalc and degcalc
-    document.getElementById("mindeccalc").addEventListener("click", function() {
-        const nsdeg = document.getElementById("nsmindecdeg").value;
-        const nsmin = document.getElementById("nsmindecmin").value;
-        const ewdeg = document.getElementById("ewmindecdeg").value;
-        const ewmin = document.getElementById("ewmindecmin").value;
-        const ns3Sel = document.getElementById("ns3").value;
-        const ew3Sel = document.getElementById("ew3").value;
-        const calculatedCoordinates = degDecimalToDegMinSec(nsdeg, nsmin, ewdeg, ewmin, ns3Sel, ew3Sel)
-        addMarker(calculatedCoordinates[0], calculatedCoordinates[1])
-    })
+    document.getElementById("coordinateConversion_Input_Select").addEventListener("change", function(){
+        placeholderFill()
+})
+   
+   document.getElementById("coordinateConversionConvert").addEventListener("click", function(){
+       convertCoordinates()
+   })
+   
+   document.getElementById("coordinateConversionPlot").addEventListener("click", function(){
+	const markers = plotConvertedCoordinates()
+    for (const marker of markers){
+        addMarker(marker[1], marker[0], null, "COORDINATE", null)
+    }
+})
+   
+   document.getElementById("heightConversion").addEventListener("click", function(){
+       convertHeight()
+   })
+   
+   document.getElementById("speedConversion").addEventListener("click", function(){
+       convertSpeed()
+   })
 
     const airportIcon = L.icon(customMarkers.airportMarker);
     const locationIcon = L.icon(customMarkers.locationMarker);
