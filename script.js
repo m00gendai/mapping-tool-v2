@@ -265,29 +265,48 @@ window.onload = async function(){
     
 // C O O R D I N A T E   C O N V E R S I O N S   H A N D L E R S
     
-    document.getElementById("coordinateConversion_Input_Select").addEventListener("change", function(){
+document.getElementById("coordinateConversion_Input_Select").addEventListener("change", function(){
         placeholderFill()
-})
+    })
    
-   document.getElementById("coordinateConversionConvert").addEventListener("click", function(){
-       convertCoordinates()
-   })
-   
-   document.getElementById("coordinateConversionPlot").addEventListener("click", function(){
-	const markers = plotConvertedCoordinates()
-    for (const marker of markers){
-        addMarker(marker[1], marker[0], null, "COORDINATE", null)
-    }
-})
-   
-   document.getElementById("heightConversion").addEventListener("click", function(){
-       convertHeight()
-   })
-   
-   document.getElementById("speedConversion").addEventListener("click", function(){
-       convertSpeed()
-   })
+    document.getElementById("coordinateConversion_Input").addEventListener("keyup", function(e) {
+        if(e.key == "Enter"){
+            convertCoordinates()
+        }
 
+    })
+   
+    document.getElementById("coordinateConversionConvert").addEventListener("click", function(){
+        convertCoordinates()
+    })
+   
+    document.getElementById("coordinateConversionPlot").addEventListener("click", function(){
+        const markers = plotConvertedCoordinates()
+        for (const marker of markers){
+            addMarker(marker[1], marker[0], null, "COORDINATE", null)
+        }
+    })
+   
+    document.getElementById("heightConversion").addEventListener("click", function(){
+        convertHeight()
+    })
+   
+    document.getElementById("heightConversion_Input").addEventListener("keyup", function(e) {
+        if(e.key == "Enter"){
+            convertHeight()
+        }
+    })
+   
+    document.getElementById("speedConversion").addEventListener("click", function(){
+        convertSpeed()
+    })
+   
+    document.getElementById("speedConversion_Input").addEventListener("keyup", function(e) {
+        if(e.key == "Enter"){
+            convertSpeed()
+        }
+    })
+	
     const airportIcon = L.icon(customMarkers.airportMarker);
     const locationIcon = L.icon(customMarkers.locationMarker);
     const navaidIcon = L.icon(customMarkers.navaidMarker);
