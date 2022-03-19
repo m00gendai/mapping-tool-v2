@@ -271,6 +271,7 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
    
     document.getElementById("coordinateConversion_Input").addEventListener("keyup", function(e) {
         if(e.key == "Enter"){
+	    e.preventDefault()
             convertCoordinates()
         }
 
