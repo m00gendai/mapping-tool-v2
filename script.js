@@ -269,12 +269,11 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
         placeholderFill()
     })
    
-    document.getElementById("coordinateConversion_Input").addEventListener("keyup", function(e) {
+    document.getElementById("coordinateConversion_Input").addEventListener("keypress", function(e) {
         if(e.key == "Enter"){
-	    e.preventDefault()
+            e.preventDefault()
             convertCoordinates()
         }
-
     })
    
     document.getElementById("coordinateConversionConvert").addEventListener("click", function(){
