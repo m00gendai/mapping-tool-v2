@@ -328,10 +328,11 @@ Mach
                                 <div id="mapToolAboutContent">
                                     AIM Mapping Tool is an open source application developed as a supplementary tool for AIM Services Switzerland, specifically to aid in plotting VFR flight plan routes.
                                     Although it features official Swiss federal map and Eurocontrol data, it is not an official application and thus shall not be used for navigational purposes.
-                                    <br><br>
-                                    A complete documentation can be found in the <a href="https://github.com/m00gendai/mapping-tool-v2" target="_blank">github repository.</a>
-                                    <br><br>
-                                    A changelog, detailing progress, bugtracking, planned features etc can be found on <a href="https://trello.com/b/yzfLBL7h/aim-mapping-tool" target="_blank">Trello.</a><br>
+                                    <div class="aboutButtons">
+                                        <button class="aboutButton"><a href="https://github.com/m00gendai/mapping-tool-v2" target="_blank"><i class="fab fa-git-alt"></i><br>Source Code</a></button>
+                                        <button class="aboutButton"><a href="https://trello.com/b/yzfLBL7h/aim-mapping-tool" target="_blank"><i class="fab fa-trello"></i><br>Changelog</a></button>
+                                        <button class="aboutButton"><a href="./Manual/User Manual.pdf" target="_blank"><i class="fas fa-book"></i><br>User Manual</a></button>
+                                    </div>
                                     <h4>Coordinate Precision</h4>
                                     <ul>
                                         <li>Coordinate conversion based on WGS84 coordinates</li>
@@ -358,7 +359,7 @@ Mach
                                     </ul>
                                     <h4>POI Data Source</h4>
                                     <ul>
-                                        <li>Place names and coordinates via <a href="https://developers.google.com/maps/documentation/javascript/places" target="_blank">google Maps JavaScript API</a></li>
+                                        <li>Place names and coordinates via <a href="https://www.geoapify.com/places-api" target="_blank">Geoapify Places API</a></li>
                                         <li>ICAO Location Indicators, Navaids and Waypoints from <a href="https://www.ead.eurocontrol.int/cms-eadbasic/opencms/en/login/ead-basic/" target="_blank">Eurocontrol EAD</a></li>
                                     </ul>
                                     <h4>Attributions</h4>
@@ -370,7 +371,6 @@ Mach
                                     <br>
                                     <h4>Legal</h4>
                                         &copy; 2021-<span id="currentYear"></span> <a href="www.linkedin.com/in/marcel-weber-3a05a61bb" target="_blank" title="See LinkedIn Profile">Marcel Weber</a> for AIM Services Switzerland<br>
-                                        Source code on <a href="https://github.com/m00gendai/mapping-tool-v2" target="_blank">github</a><br>
                                     <br>
                                 </div>
                                 <hr>
