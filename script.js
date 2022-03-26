@@ -685,7 +685,41 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
     }
 
     L.control.groupedLayers(null, groupedOverlays /* overlays */, {groupCheckboxes: true}).addTo(map);
-    LS_SUBFIR.addTo(map)
+    
+    for(const group of Object.entries(groupedOverlays)){
+        const h5 = document.createElement("h5")
+        h5.innerText = group[0]
+        document.getElementById("defaultLayers").appendChild(h5)
+        for(const items of Object.entries(group[1])){
+            const checkboxContainer = document.createElement("div")
+            checkboxContainer.className="optionsCheckboxContainer"
+            document.getElementById("defaultLayers").appendChild(checkboxContainer)
+            const checkbox = document.createElement("input")
+            checkbox.type = "checkbox"
+            let isChecked = JSON.parse(localStorage.getItem(`AIM_Mapping_Tool_Default_Layer_${items[0]}`))
+            if(isChecked == "true"){
+                checkbox.checked = true
+                items[1].addTo(map)
+            } else {
+                if(items[0] == "LS - LSAG/LSAZ Boundary" && JSON.parse(localStorage.getItem(`AIM_Mapping_Tool_Default_Layer_${items[0]}`)) == null){
+                    checkbox.checked = true
+                    items[1].addTo(map)
+                } else {
+                    checkbox.checked = false
+                }
+            }
+            checkbox.name = `${items[0]}`
+            checkboxContainer.appendChild(checkbox)
+            const label = document.createElement("label")
+            label.for = `${items[0]}`
+            label.innerText = `${items[0]}`
+            checkboxContainer.appendChild(label)
+            checkbox.addEventListener("change", function(){
+                checkbox.checked ? items[1].addTo(map) : map.removeLayer(items[1])
+                localStorage.setItem(`AIM_Mapping_Tool_Default_Layer_${items[0]}`, JSON.stringify(`${checkbox.checked}`))
+            })
+        }
+    }
 	
     document.getElementById("clearPopups").addEventListener("click", function(){
         let popupCount = document.querySelectorAll(".leaflet-popup-close-button")
