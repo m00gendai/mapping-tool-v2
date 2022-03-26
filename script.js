@@ -1090,6 +1090,7 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
                 group.removeLayer(layer)
             })
             centerPoint = null
+	    document.getElementById("timeOfCircle").innerText = ""
         });
         }
     }
