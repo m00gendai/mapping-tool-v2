@@ -570,20 +570,28 @@ margin: 0 0 1rem 0;
 .aboutButton a{
     text-decoration: none;
     color: black;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.aboutButton a:hover{
+    curspor:pointer;
 }
 
 .aboutButton{
     width: 30%;
     aspect-ratio: 1/0.75;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    
+    margin: 0;
+    padding: 0;
 }
 
 .aboutButton i {
     color: black;
     font-size: 300%;
     margin: 0 0 0.5em 0;
+    width: 100%;
 }
