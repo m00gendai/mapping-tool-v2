@@ -559,3 +559,31 @@ margin: 0 0 1rem 0;
 .resultField input {
 	width: 100%;
 }
+.aboutButtons{
+    margin: 1em 0 0 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.aboutButton a{
+    text-decoration: none;
+    color: black;
+}
+
+.aboutButton{
+    width: 30%;
+    aspect-ratio: 1/0.75;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    
+}
+
+.aboutButton i {
+    color: black;
+    font-size: 300%;
+    margin: 0 0 0.5em 0;
+}
