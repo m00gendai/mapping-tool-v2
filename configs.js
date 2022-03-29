@@ -28,13 +28,13 @@ export const tabFlags = [
         hover: "Measurements"
     },
     {
-        title: `<i class="fas fa-cog"></i>`,
+        title: `<i class="fa-solid fa-gear"></i>`,
         content: "options",
         visible: false,
         hover: "Options"
     },
     {
-        title: `<i class="fa-solid fa-question"></i>`,
+        title: `<i class="fa-solid fa-circle-info"></i>`,
         content: "about",
         visible: false,
         hover: "About"
