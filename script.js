@@ -4,16 +4,12 @@ import { routeDeconstructor } from "/routeDeconstructor.js"
 import { tabFlags, mapTileChoices, tileLayers, drawLineOptions, rainviewerOptions, customMarkers, colorFIR, colorTMA, colorCTR, colorFIC, colorPoint, colorDroneSchutzgebiet, colorDroneSperrgebiet, colorDroneCTR} from "/configs.js"
 import { Iceland, Belgium, Germany, UnitedKingdom, Netherlands, Ireland, Albania, Croatia, LD_VFR_REP, Spain, France, ItalyFIC, Italy, LJ_VFR_REP, Switzerland, SwitzerlandSub, Serbia } from "/Data/airspaces.js"
 
-window.onload = async function(){
+window.addEventListener('DOMContentLoaded', async (event) => {
     console.time("start onload")
 
     const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
     document.getElementById("currentYear").innerText = currentYear
-
-    console.log(`Waypoints: ${waypoints.length}`)
-    console.log(`Navaids: ${navaids.length}`)
-    console.log(`Airports: ${airports.length}`)
     
 // R E N D E R   T O O L B O X E S / T A B S
     
@@ -1204,4 +1200,4 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
     
     console.timeEnd("start onload")
   
-}
+})
