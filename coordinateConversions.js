@@ -177,7 +177,7 @@ export async function convertCoordinates(){
 		const getCoords = document.getElementById("coordinateConversion_Input").value.split(" ")
 		const returned = []
 		for(const coord of getCoords){
-			const matches = coord.match(/^[0-9]{7},[0-9]{7}$/)
+			const matches = coord.match(/^[0-9]{7}[.]*[0-9]*,[0-9]{7}[.]*[0-9]*$/)
 			if(!matches){
 				alert("Check either Unit or format")
 				return
