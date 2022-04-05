@@ -537,14 +537,14 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
         if(feature.properties.Type == "TMA"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}<br>${layer.feature.properties.Lower} - ${layer.feature.properties.Upper}` 
             },{sticky: true})
     
     const EB_CTR = L.geoJSON(Belgium, {style: {color: colorCTR}, filter: function(feature, layer) {
         if(feature.properties.Type == "CTR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}`  
+        return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}<br>${layer.feature.properties.Lower} - ${layer.feature.properties.Upper}` 
     },{sticky: true})
         
     const LD_FIR = L.geoJSON(Croatia, {style: {color: colorFIR}, filter: function(feature, layer) {
@@ -558,14 +558,14 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
         if(feature.properties.Type == "TMA"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}<br>${layer.feature.properties.Lower} - ${layer.feature.properties.Upper}` 
             },{sticky: true})
     
     const LD_CTR = L.geoJSON(Croatia, {style: {color: colorCTR}, filter: function(feature, layer) {
         if(feature.properties.Type == "CTR"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}<br>${layer.feature.properties.Lower} - ${layer.feature.properties.Upper}` 
             },{sticky: true})
     
     const LY_FIR = L.geoJSON(Serbia, {style: {color: colorFIR}, filter: function(feature, layer) {
@@ -579,7 +579,7 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
        if(feature.properties.Type == "TMA"){
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
-            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}<br>${layer.feature.properties.Lower} - ${layer.feature.properties.Upper}` 
             },{sticky: true})
 
     const ED_FIR = L.geoJSON(Germany, {style: {color: colorFIR}, filter: function(feature, layer) {
@@ -615,6 +615,13 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
             return feature.properties.Type;
         }}}).bindTooltip(function (layer) {
             return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}` 
+            },{sticky: true})
+        
+    const EG_CTR = L.geoJSON(UnitedKingdom, {style: {color: colorCTR}, filter: function(feature, layer) {
+        if(feature.properties.Type == "CTR"){
+            return feature.properties.Type;
+        }}}).bindTooltip(function (layer) {
+            return `${layer.feature.properties.ICAO}<br>${layer.feature.properties.Name}<br>${layer.feature.properties.Lower} - ${layer.feature.properties.Upper}` 
             },{sticky: true})
         
     const EI_FIR = L.geoJSON(Ireland, {style: {color: colorFIR}, filter: function(feature, layer) {
@@ -656,6 +663,7 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
         },
         "CTR": {
             "EB - Belgium & Luxembourg": EB_CTR,
+            "EG - United Kingdom (Channel Islands)": EG_CTR,
             "LD - Croatia": LD_CTR
         },
         "TMA": {
