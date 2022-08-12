@@ -1206,7 +1206,7 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
         }
     }
 	
-	 var url_to_geotiff_file = "..Data/2022-07-12_ENR611_COM2_APP1_v68.0_LV03.tif";
+	 var url_to_geotiff_file = "/Data/2022-07-12_ENR611_COM2_APP1_v68.0_LV03.tif";
 
 fetch(url_to_geotiff_file)
   .then(response => response.arrayBuffer())
