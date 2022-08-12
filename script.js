@@ -1236,6 +1236,7 @@ fetch(url_to_geotiff_file)
       map.fitBounds(layer.getBounds());
 
   });
+});
     
     console.timeEnd("start onload")
   
