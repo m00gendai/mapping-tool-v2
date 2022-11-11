@@ -324,6 +324,7 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
     let overlay
     // Overlay toggle state initialisers
     let vfrToggleCH = false
+    let gldToggleCH = false
     let vfrToggleFR = false
     let vfrToggleDE = false
     let droneSchutzToggle = false
@@ -415,6 +416,13 @@ document.getElementById("coordinateConversion_Input_Select").addEventListener("c
         !vfrToggleCH ? createOverlay(map, tileLayers.vfrChartCH, null) : removeOverlays(tileLayers.vfrChartCH)
         !vfrToggleCH ? document.getElementById("vfrCH").style.color = "lime" : document.getElementById("vfrCH").style.color = "white"
         vfrToggleCH = !vfrToggleCH
+    })
+
+    document.getElementById("gldCH").addEventListener("click", function(){
+        console.log("ok")
+        !gldToggleCH ? createOverlay(map, tileLayers.gldChartCH, null) : removeOverlays(tileLayers.gldChartCH)
+        !gldToggleCH ? document.getElementById("gldCH").style.color = "lime" : document.getElementById("gldCH").style.color = "white"
+        gldToggleCH = !gldToggleCH
     })
     
     document.getElementById("vfrFrance").addEventListener("click", function(){
